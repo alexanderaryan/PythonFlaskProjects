@@ -1,0 +1,4 @@
+e, eStudents = int(input()), set(map(int, input().split()))
+f, fStudents = int(input()), set(map(int, input().split()))
+
+print(len(eStudents - fStudents))
