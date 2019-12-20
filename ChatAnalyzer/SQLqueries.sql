@@ -1,1 +1,0 @@
-select count(emoji) from chat where source=' Kadar' and emoji<>'';

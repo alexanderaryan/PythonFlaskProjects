@@ -1,19 +1,26 @@
-import datetime
+from datetime import datetime
 import re
 import sqlite3
 import emoji
 
-class Databaseclass():
+class Databaseclass(object):
     conn = sqlite3.connect("chatilizer.db",detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
 
     cursor = conn.cursor()
 
     # create a table
-    cursor.execute("drop table chat")
-    cursor.execute("""CREATE TABLE chat
-                      (moment datetime, source text, message text, 
-                       media text, emoji text) 
+    try:
+        cursor.execute("drop table chat")
+    except:
+        cursor.execute("""CREATE TABLE chat
+                      (MOMENT timestamp, SOURCE text, MESSAGE text, 
+                       MEDIA text, EMOJI text) 
                    """)
+    else:
+        cursor.execute("""CREATE TABLE chat
+                              (MOMENT timestamp, SOURCE text, MESSAGE text, 
+                               MEDIA text, EMOJI text) 
+                           """)
 
     def __init__(self):
         self.insert_query = """INSERT INTO CHAT (moment, source, message, 
@@ -26,11 +33,19 @@ class Databaseclass():
         # save data to database
 
 
+class Chat_data_analytics(Databaseclass):
+    def __init__(self):
+        Databaseclass.__init__(self)
+        self.select_source_query = """SELECT distinct(replace(source,'You','Alex')) from chat where source not in ('');"""
+
+    def selectsources(self):
+        pass
 
 
 
-class Chat():
-    d = Databaseclass()
+class Chat(object):
+    d = Chat_data_analytics()
+
     def __init__(self,filename):
         self.fileopen = open(filename, "r", encoding="utf8")
         self.linecount = 0
@@ -46,20 +61,25 @@ class Chat():
         for n in self.fileopen.readlines():
             msglist = n.split('-')
             if re.findall("\d\d/\d\d/\d\d\d\d", n):
-                dattime = msglist[0]
+                dattime = datetime.strptime(str(msglist[0].replace(',','').strip()),"%d/%m/%Y %I:%M %p")
 
                 try:
                     if "<Media omitted>" in msglist[1].split(':')[1]:
                         self.mediacount += 1
-                        self.media = msglist[1].split(':')[1]
-                        self.name = msglist[1].split(':')[0]
-                        self.d.executequery(dattime,self.name,'',self.media,'')
+                        self.media = msglist[1].split(':')[1].strip()
+                        self.name = msglist[1].split(':')[0].strip()
+                        self.d.executequery(dattime,self.name,None,self.media,None)
 
                 except:
                     self.event += 1
-                    self.name = msglist[1].split()[0]
-                    self.msg = msglist[1]
-                    self.d.executequery(dattime, self.name, self.msg, '','')
+                    if " left" in msglist[1]:
+                        self.name = msglist[1].split('left')[0].strip()
+                    elif " changed" in msglist[1]:
+                        self.name = msglist[1].split('changed')[0].strip()
+                    elif " added" in msglist[1]:
+                        self.name = msglist[1].split('added')[0].strip()
+                    self.msg = msglist[1].strip()
+                    self.d.executequery(dattime, self.name, self.msg, None,None)
 
                 else:
                     if "<Media omitted>" not in msglist[1].split(':')[1]:
@@ -71,10 +91,12 @@ class Chat():
                             if emoji.demojize(letter)!=letter:
                                 self.emoji = self.emoji + letter
                                 #print (self.emoji)
-                        self.msg= msglist[1].split(':')[1]
-                        self.name = msglist[1].split(':')[0]
-                        self.d.executequery(dattime, self.name, self.msg, '',self.emoji)
-
+                        self.msg= msglist[1].split(':')[1].strip()
+                        self.name = msglist[1].split(':')[0].strip()
+                        if self.emoji != "":
+                            self.d.executequery(dattime, self.name, self.msg, None,self.emoji)
+                        else:
+                            self.d.executequery(dattime, self.name, self.msg, None, None)
                 self.linecount += 1
         self.d.conn.commit()
         self.d.conn.close()
