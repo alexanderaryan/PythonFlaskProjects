@@ -105,7 +105,10 @@ class Chat_data_analytics(Databaseclass,Chat):
         Databaseclass.__init__(self)
         self.name = name
         self.select_source_query = """SELECT distinct(replace(source,'You','{}')) from chat where source not in ('');""".format(self.name)
-        self.mode_to_be_calculated = ['MESSAGE','MEDIA','EMOJI']
+        #self.mode_to_be_calculated = ['MESSAGE','MEDIA','EMOJI']
+        self.mode_to_be_calculated = {'MESSAGE':"Select source,count(message) from chat where source<>'' group by source",
+                                      'MEDIA':"Select source,count(media) from chat where source<>'' group by source",
+                                      'EMOJI':"Select source,sum(length(emoji)) from chat where source<>'' group by source"}
         self.first_message_moment = """SELECT min(moment),SOURCE from chat where source<>'' order by moment;"""
         self.event_to_be_calculated = ['% changed%','% added %','% left']
         self.event_dictionary = {1:'Once',2:'Twice',3:'Thrice'}
@@ -113,15 +116,19 @@ class Chat_data_analytics(Databaseclass,Chat):
                                       "changed":"Changed this group name/icon %s",
                                       "left":"Left this group %s"}
         self.event_query = """Select source,count(*) from chat where message like ? group by source"""
-        self.message_count_query = """select source,count(%s) from chat where source in (select DISTINCT(source) from chat where source<>'') group by source;"""
+        self.message_count_query = """select count(message) from chat where source<>''"""
         #print (self.select_source_query)
         self.source_list = []
         self.emoji_count_query = """select sum(length(emoji)) from chat where EMOJI is not null"""
 
 
     def select_data(self):
+        self.cursor.execute(self.message_count_query)
+        total_message_count = self.cursor.fetchall()[0][0]
+
         self.cursor.execute(self.emoji_count_query)
-        emoji_count = self.cursor.fetchall()
+        emoji_count = self.cursor.fetchall()[0][0]
+
         self.cursor.execute(self.first_message_moment)
         first_message_collection = self.cursor.fetchone()
         print("*"+chat.filename.strip(".txt")+"*","conversation has it's first message since", first_message_collection[0], "sent by ", first_message_collection[1])
@@ -131,37 +138,39 @@ class Chat_data_analytics(Databaseclass,Chat):
         for source in source_collection:
             self.source_list.append(source[0])
         print ("There are ",len(self.source_list),"Participants in this group. They are", ",".join(self.source_list).upper())
-        print(chat.linecount, "is the number of messages")
+        print(chat.linecount, "is the total number of messages")
 
 
-        for every in self.mode_to_be_calculated:
+        for every in self.mode_to_be_calculated.keys():
             message_mode=every+'S'
             print ("*"+message_mode.replace('MEDIAS','MEDIA')+"*")
-            self.cursor.execute(self.message_count_query%every)
+            #print (self.mode_to_be_calculated[every])
+            self.cursor.execute(self.mode_to_be_calculated[every])
             message_count = self.cursor.fetchall()
             if every=='MESSAGE':
-                print (chat.ot, "is the number of messages shared in text")
+                print (total_message_count, "is the number of messages shared in text")
             elif every=='MEDIA':
                 print (chat.mediacount,"is the number of media shared")
             elif every == 'EMOJI':
-                print(emoji_count[0][0], "is the total emojis shared")
+                print(emoji_count, "is the total emojis shared")
             for msg_cnt in message_count:
                 print (msg_cnt[0].capitalize(),"sent ", msg_cnt[1], message_mode.replace('MEDIAS','MEDIA'))
 
-        for event in self.event_to_be_calculated:
-            #print (event)
-            event_type=event.replace('%','').strip()
-            print("*"+event_type.upper()+"*")
-            self.cursor.execute(self.event_query,(event,))
-            #self.cursor.execute(self.event_query%event)
-            event_count = self.cursor.fetchall()
-            #print (event_count)
-            #print (self.event_query)
+        if len(self.source_list)>2:
+            for event in self.event_to_be_calculated:
+                #print (event)
+                event_type=event.replace('%','').strip()
+                print("*"+event_type.upper()+"*")
+                self.cursor.execute(self.event_query,(event,))
+                #self.cursor.execute(self.event_query%event)
+                event_count = self.cursor.fetchall()
+                #print (event_count)
+                #print (self.event_query)
 
-            for events in event_count:
-                times = self.event_dictionary.setdefault(events[1], str(events[1]) + " times")
-                print (events[0],
-                       self.event_type_dictionary[event_type.lower()]%times)
+                for events in event_count:
+                    times = self.event_dictionary.setdefault(events[1], str(events[1]) + " times")
+                    print (events[0],
+                           self.event_type_dictionary[event_type.lower()]%times)
 
 
 
