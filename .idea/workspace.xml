@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24e9feca-22af-4c56-9145-3801141e7828" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/BankAccountFlaskOops.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChatAnalyzer/Changes" beforeDir="false" afterPath="$PROJECT_DIR$/ChatAnalyzer/Changes" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChatAnalyzer/ChatAnalyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/ChatAnalyzer/ChatAnalyzer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChatAnalyzer/chatilizer.db" beforeDir="false" afterPath="$PROJECT_DIR$/ChatAnalyzer/chatilizer.db" afterDir="false" />
     </list>
@@ -16,7 +18,8 @@
     <session id="1893470739">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="9" />
+          <entry key="project.closed" value="10" />
+          <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.17" value="2" />
@@ -30,45 +33,40 @@
           <entry key="project.open.time.34" value="1" />
           <entry key="project.open.time.40" value="1" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="18" />
+          <entry key="project.opened" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="log" value="1" />
-          <entry key="py" value="24" />
+          <entry key="py" value="25" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="24" />
+          <entry key="Python" value="25" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="8302" />
+          <entry key="py" value="8776" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="8302" />
+          <entry key="Python" value="8776" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ChatAnalyzer/ChatAnalyzer.py">
+        <entry file="file://$PROJECT_DIR$/BankAccountFlaskOops.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="164" column="16" selection-start-line="164" selection-start-column="16" selection-end-line="164" selection-end-column="60" />
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-                <marker date="1576943395836" expanded="true" signature="3781:3786" ph="..." />
-                <marker date="1576943395836" expanded="true" signature="5528:5746" ph="..." />
-              </folding>
+            <state relative-caret-position="255">
+              <caret line="39" lean-forward="true" selection-end-line="80" />
             </state>
           </provider>
         </entry>
@@ -85,6 +83,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>print</find>
+      <find>you</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -97,12 +96,13 @@
         <option value="$PROJECT_DIR$/sqlite_query.py" />
         <option value="$PROJECT_DIR$/ChatAnalyzer.py" />
         <option value="$PROJECT_DIR$/ChatAnalyzer/ChatAnalyzer.py" />
+        <option value="$PROJECT_DIR$/BankAccountFlaskOops.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
-    <option name="y" value="-10" />
+    <option name="x" value="85" />
+    <option name="y" value="25" />
     <option name="width" value="1750" />
     <option name="height" value="970" />
   </component>
@@ -118,17 +118,15 @@
               <item name="PythonWork" type="b2602c69:ProjectViewProjectNode" />
               <item name="PythonWork" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="PythonWork" type="b2602c69:ProjectViewProjectNode" />
-              <item name="PythonWork" type="462c0819:PsiDirectoryNode" />
-              <item name="ChatAnalyzer" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
     </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -142,7 +140,28 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ChatAnalyzer (1)">
+  <component name="RunManager" selected="Python.BankAccountFlaskOops">
+    <configuration name="BankAccountFlaskOops" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="PythonWork" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/BankAccountFlaskOops.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="ChatAnalyzer (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PythonWork" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -232,9 +251,11 @@
       <item itemvalue="Python.sqlite_create_insert" />
       <item itemvalue="Python.sqlite_query" />
       <item itemvalue="Python.ChatAnalyzer (1)" />
+      <item itemvalue="Python.BankAccountFlaskOops" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.BankAccountFlaskOops" />
         <item itemvalue="Python.ChatAnalyzer (1)" />
         <item itemvalue="Python.ChatAnalyzer" />
         <item itemvalue="Python.sqlite_query" />
@@ -364,13 +385,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ChatAnalyzer/ChatAnalyzer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="164" column="16" selection-start-line="164" selection-start-column="16" selection-end-line="164" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <marker date="1576943395836" expanded="true" signature="3781:3786" ph="..." />
-            <marker date="1576943395836" expanded="true" signature="5528:5746" ph="..." />
-          </folding>
+        <state relative-caret-position="187">
+          <caret line="130" lean-forward="true" selection-start-line="130" selection-end-line="130" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BankAccountFlaskOops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="39" lean-forward="true" selection-end-line="80" />
         </state>
       </provider>
     </entry>

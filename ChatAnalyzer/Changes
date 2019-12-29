@@ -1,14 +1,17 @@
 Trim unwanted space in source -- Done
 make empty emojis as null -- Done
-take source and start data analytics
+take source and start data analytics -- In Progress
 
-1. who sent how many messages
-2. who sent how many medias
-3. who sent how many emojis
+1. who sent how many messages -- Done
+2. who sent how many medias -- Done
+3. who sent how many emojis -- Done
 
-4. who changed group names
-5. Who added people to groups
-6. Who left the group
+4. who changed group names -- Done
+5. Who added people to groups -- Done
+6. Who left the group -- Done
+
+7. Yearwise messages, emojis, medias
+8. monthwise messages, emojis, medias
 
 
 select * from chat where message is null;

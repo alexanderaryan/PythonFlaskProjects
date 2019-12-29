@@ -175,6 +175,6 @@ class Chat_data_analytics(Databaseclass,Chat):
 
 
 if __name__ == '__main__':
-    chat = Chat("D:\Localgit\PythonWork\ChatAnalyzer\WhatsApp Chat with Hon.txt","Alex")
+    chat = Chat("D:\Localgit\PythonWork\ChatAnalyzer\WhatsApp Chat with Sukhanubavam 😈.txt","Alex")
     chat.messagesplitter()
 
