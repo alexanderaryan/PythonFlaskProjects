@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    {% for mess in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ mess }}
+    </div>
+    {% endfor %}
+    <p>Here are the list of puppies!!</p>
+    <ul>
+    {% for puppy in puppies %}
+    <li>{{ puppy }}</li>
+    {% endfor %}
+    </ul>
+
+
+</div>
+{% endblock %}

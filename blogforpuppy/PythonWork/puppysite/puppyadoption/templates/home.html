@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    {% if current_user.is_authenticated %}
+    {% for mess in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ mess }}
+    </div>
+    {% endfor %}
+    <h1>Welcome {{current_user.username | capitalize }}</h1>
+    {% else %}
+    {% for mess in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ mess }}
+    </div>
+    {% endfor %}
+    <h1>Welcome to our Adoption Website</h1>
+    <p>Please Log in or Register</p>
+</div>
+{% endif %}
+{% endblock %}
