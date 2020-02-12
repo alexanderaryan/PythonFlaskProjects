@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+<div class="container" align="center">
+    <form class="form-group" method="POST">
+        {{form.hidden_tag()}}
+        {% for sub in form.attires%}
+        <div class="row form-group">
+            <div class="col-6">
+                {{sub.shirt.label(class="form-group")}}
+            </div>
+            <div class="col-6">
+                {{sub.pants.label(class="form-group")}}
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-6" id="shirt-add">
+                {{sub.shirt(class="form-control")}}<button class="btn btn-success shirt-add " type="button"><span class="fas fa-plus"></span></button>
+            </div>
+            <div class="col-6" id="pants-add">
+                {{sub.pants(class="form-control")}}<button class="btn btn-success pant-add " type="button">
+                <span class="fas fa-plus"></span>
+            </button>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="form-group">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

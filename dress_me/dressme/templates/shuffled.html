@@ -1,0 +1,23 @@
+{% extends "base.html"%}
+{% block content %}
+
+<br>
+<div class="container" align="center">
+    <form action="{{url_for('dress_print.main_list')}}" method="POST">
+        {{form.hidden_tag()}}
+        {% for d in session.pop('dress_list',[]) %}
+            <div class="form-check">
+      <input class="form-check-input" name="attire" type="checkbox" value="{{d[0]}} with {{d[1]}}" id="defaultCheck1">
+      <label class="form-check-label" for="defaultCheck1">
+        {{d[0]}} with {{d[1]}}
+      </label>
+    </div>
+
+        {% endfor %}
+    <div class="form-group">
+        {{form.submit(class='btn btn-primary')}}
+</div>
+
+    </form>
+</div>
+{% endblock %}

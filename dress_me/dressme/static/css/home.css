@@ -1,0 +1,16 @@
+body{
+background-color: whitesmoke;
+}
+
+img{
+border-radius: 50%;
+}
+
+.align-items-center{
+text-align: center;
+}
+
+.title-tag{
+color: black;
+text-align: center;
+}
