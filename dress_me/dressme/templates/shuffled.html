@@ -5,7 +5,7 @@
 <div class="container" align="center">
     <form action="{{url_for('dress_print.main_list')}}" method="POST">
         {{form.hidden_tag()}}
-        {% for d in session.pop('dress_list',[]) %}
+        {% for d in dress %}
             <div class="form-check">
       <input class="form-check-input" name="attire" type="checkbox" value="{{d[0]}} with {{d[1]}}" id="defaultCheck1">
       <label class="form-check-label" for="defaultCheck1">

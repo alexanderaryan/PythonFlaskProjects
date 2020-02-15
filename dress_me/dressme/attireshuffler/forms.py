@@ -17,8 +17,8 @@ class FemaleForm(FlaskForm):
 
 class MaleForm(Form):
 
-    shirt = StringField("Shirt")
-    pants = StringField("Pants")
+    shirt = StringField("Shirt",validators=[DataRequired()])
+    pants = StringField("Pants",validators=[DataRequired()])
 
 
 class MainMaleForm(FlaskForm):

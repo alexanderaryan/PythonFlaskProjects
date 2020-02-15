@@ -16,38 +16,105 @@ days_number = {'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday
 class DressMe(object):
 
     def __init__(self):
-        #self.shirt = shirts
-        #self.pants = pants
+        self.shirt = []
+        self.pants = []
         self.main_combo = []
 
     def create_combo(self, shirt, pants):
+        self.shirt=shirt
+        self.pants=pants
         if len(shirt) > len(pants):
             for m in range(len(shirt)):
                 for n in range(len(shirt)):
-                    self.main_combo.append((self.shirt[m] , self.pants[n - 1]))
+                    self.main_combo.append((shirt[m] , pants[n - 1]))
                     m -= 1
         else:
             for m in range(len(pants)):
                 for n in range(len(shirt)):
                     self.main_combo.append((pants[m] , shirt[n - 1]))
                     m -= 1
+        main_combo = self.main_combo
         return self.main_combo
 
-    def alter_the_sequence(self, shirt, pants):
+    def remove_the_dress(self,main_list,remove_list):
+        for every_dress in remove_list:
+            self.main_combo.remove(every_dress)
+        return self.main_combo
 
-        def pair_check(li):
+    def alter_the_sequence(self, li):
+
+        def pair_check(li, change):
             for ind, val in enumerate(li):
-                if li[ind] == li[ind - 1] or li[ind][0] == li[ind - 1][0] or li[ind][1] == li[ind - 1][1]:
-                    return True
+                if change == 'All':
+                    if li[ind] == li[ind - 1] or li[ind][0] == li[ind - 1][0] or li[ind][1] == li[ind - 1][1]:
+                        print(li)
+                        print(li[ind], 'all')
+                        print(li[ind - 1], 'all')
+                        return True
+                elif change == 'Shirt':
+                    if li[ind] == li[ind - 1] or li[ind][0] == li[ind - 1][0]:
+                        print(li)
+                        print(li[ind], 's')
+                        print(li[ind - 1], 's')
+                        return True
+                elif change == 'Pairs':
+                    print(li[ind], li[ind - 1])
+                    if li[ind] == li[ind - 1]:
+                        print(li)
+                        print(li[ind], 'p')
+                        print(li[ind - 1], 'p')
+                        return True
 
-        def pair_swap(li):
+        def pair_swap(li, change):
             for ind, val in enumerate(li):
-                while li[ind] == li[ind - 1] or li[ind][0] == li[ind - 1][0] or li[ind][1] == li[ind - 1][1]:
-                    li[ind - len(shirt)], li[ind] = li[ind], li[ind - (len(shirt))]
+                if change == 'All':
+                    all_loop = 0
+                    while (li[ind] == li[ind - 1] or li[ind][0] == li[ind - 1][0] or li[ind][1] == li[ind - 1][\
+                        1]) and all_loop * 2 <= len(li):
+                        li[ind - len(self.shirt)], li[ind] = li[ind], li[ind - len(self.shirt)]
+                        all_loop += 1
+                        print('all')
+                elif change == 'Shirt':
+                    shirt_loop = 0
+                    while (li[ind] == li[ind - 1] or li[ind][0] == li[ind - 1][0]) and shirt_loop * 2 <= len(\
+                            li):
+                        li[ind - len(self.shirt)], li[ind] = li[ind], li[ind - len(self.shirt)]
+                        shirt_loop += 1
+                        print('shirt')
+                elif change == 'Pairs':
+                    pair_loop = 0
+                    while li[ind] == li[ind - 1] and pair_loop * 2 < len(li):
+                        li[ind - len(self.shirt)], li[ind] = li[ind], li[ind - len(self.shirt)]
+                        pair_loop += 1
+                        print('pants')
+        all_loop_check = 0
+        shirt_loop_check = 0
+        pair_loop_check = 0
+        while pair_check(li, 'All'):
+            if all_loop_check <= len(li):
+                pair_swap(li, 'All')
+                all_loop_check += 1
+            else:
+                print('ended all')
+                while pair_check(li, 'Shirt'):
+                    if shirt_loop_check <= len(li):
+                        pair_swap(li, 'Shirt')
+                        shirt_loop_check += 1
+                    else:
+                        print('ended shirt')
+                        while pair_check(li, 'Pairs'):
+                            if pair_loop_check <= len(li):
+                                pair_swap(li, 'Pairs')
+                                pair_loop_check += 1
+                            else:
+                                print('ended pairs')
+                                break
+                        break
+                break
+        self.main_combo = li
+        return self.main_combo
 
-        li = self.create_combo(shirt, pants)
-        while pair_check(li):
-            pair_swap(li)
+
 
 
 class CalenderDress(DressMe):
@@ -59,22 +126,27 @@ class CalenderDress(DressMe):
         self.dress = []
         self.calendar_date = []
 
-    def create_calendar(self,from_time, to_time, week_off):
+    def create_calendar(self, from_time, to_time, week_off):
         for date in datetime_range(start=datetime(from_time[0], from_time[1], from_time[2]), end=datetime(to_time[0], to_time[1], to_time[2])):
             if date.timetuple()[6] not in (days_number['Saturday'], days_number['Sunday']):
-                self.calendar_date.append(date.strftime("%A, %d-%B-%Y "))
+                self.calendar_date.append((date.strftime("%A"), date.strftime("%d-%B-%Y ")))
 
     def create_schedule(self):
-
-        if len(self.main_combo)>len(self.calendar_date):
+        print ('I am in ')
+        print (self.main_combo)
+        print (self.calendar_date)
+        if len(self.main_combo) > len(self.calendar_date):
+            print ('inside if')
             self.dress = list(zip(self.calendar_date, self.main_combo))
-            print (self.dress)
+            return self.dress
         else:
+            print('inside else')
             while self.calendar_date != []:
+                print ('hell with you')
                 self.dress.append(list(zip(self.calendar_date[:len(self.main_combo)],self.main_combo)))
                 self.calendar_date=self.calendar_date[len(self.main_combo):]
-
-            print (self.dress)
+            print (self.main_combo)
+            return self.dress
 
 
 cal_dress = CalenderDress()
@@ -85,9 +157,9 @@ if __name__ == '__main__':
     pants = ['black chino','green formal','white checked']
 
     cal_dress = CalenderDress()
-    #cal_dress.create_combo()
+    x=cal_dress.create_combo(shirt,pants)
     #print (cal_dress.main_combo)
-    cal_dress.alter_the_sequence(shirt,pants)
+    cal_dress.alter_the_sequence(x)
     print (cal_dress.main_combo)
     cal_dress.create_calendar((2020, 2, 7), (2020, 8, 29),(5,6))
     cal_dress.create_schedule()
