@@ -3,8 +3,10 @@
 
 <br>
 <div class="container" align="center">
-    <form action="{{url_for('dress_print.main_list')}}" method="POST">
+    <form  method="POST">
         {{form.hidden_tag()}}
+        {{form.from_date}}
+        {{form.to_date}}
         {% for d in dress %}
             <div class="form-check">
       <input class="form-check-input" name="attire" type="checkbox" value="{{d[0]}} with {{d[1]}}" id="defaultCheck1">

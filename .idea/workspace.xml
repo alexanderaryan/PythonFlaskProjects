@@ -2,11 +2,55 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24e9feca-22af-4c56-9145-3801141e7828" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/BankAccountFlaskOops.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChatAnalyzer/Changes" beforeDir="false" afterPath="$PROJECT_DIR$/ChatAnalyzer/Changes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChatAnalyzer/ChatAnalyzer.py" beforeDir="false" afterPath="$PROJECT_DIR$/ChatAnalyzer/ChatAnalyzer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChatAnalyzer/chatilizer.db" beforeDir="false" afterPath="$PROJECT_DIR$/ChatAnalyzer/chatilizer.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BankAccountFlaskOops.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Divisibleornot.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Facebook.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Factorial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Palindromegen.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Randomgenerators.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SquareGenerator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Squaredict.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ValidateIP.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/capitalizepara.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dress_me/dressme/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/dress_me/dressme/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dress_me/dressme/attireshuffler/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/dress_me/dressme/attireshuffler/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dress_me/dressme/attireshuffler/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/dress_me/dressme/attireshuffler/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dress_me/dressme/attireshuffler/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dress_me/dressme/attireshuffler/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dress_me/dressme/templates/shuffled.html" beforeDir="false" afterPath="$PROJECT_DIR$/dress_me/dressme/templates/shuffled.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/app.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/attireshuffler/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/attireshuffler/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/static/css/home.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/templates/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/templates/error_pages/403.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/templates/error_pages/404.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/templates/error_pages/500.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/templates/female.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/templates/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dressme/dressme/templates/male.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/formulaclass.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gudiwizard.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lessthangreaterthan.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/letter&amp;count.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/listandtuple.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/miniongame.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/multidimearray.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/passwordgenerator.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/puppyapp.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sortthestring.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sqlite_create_insert.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sqlite_delete.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sqlite_query.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sqlite_update.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/stringuppperinclass.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twitface.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twitter.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/whatsapp.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -59,14 +103,165 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-1161878785">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.10" value="1" />
+          <entry key="project.open.time.14" value="1" />
+          <entry key="project.open.time.15" value="2" />
+          <entry key="project.open.time.18" value="1" />
+          <entry key="project.open.time.19" value="2" />
+          <entry key="project.open.time.20" value="3" />
+          <entry key="project.open.time.21" value="1" />
+          <entry key="project.open.time.22" value="1" />
+          <entry key="project.open.time.23" value="1" />
+          <entry key="project.open.time.24" value="1" />
+          <entry key="project.open.time.25" value="1" />
+          <entry key="project.open.time.26" value="2" />
+          <entry key="project.open.time.27" value="1" />
+          <entry key="project.open.time.28" value="1" />
+          <entry key="project.open.time.29" value="1" />
+          <entry key="project.open.time.31" value="1" />
+          <entry key="project.open.time.33" value="1" />
+          <entry key="project.open.time.38" value="1" />
+          <entry key="project.open.time.39" value="1" />
+          <entry key="project.open.time.46" value="1" />
+          <entry key="project.open.time.50" value="1" />
+          <entry key="project.open.time.53" value="1" />
+          <entry key="project.opened" value="27" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="css" value="2" />
+          <entry key="html" value="40" />
+          <entry key="py" value="61" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="CSS" value="2" />
+          <entry key="HTML" value="40" />
+          <entry key="Python" value="61" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="css" value="195" />
+          <entry key="html" value="3862" />
+          <entry key="py" value="8924" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="CSS" value="195" />
+          <entry key="HTML" value="3862" />
+          <entry key="Python" value="8924" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/BankAccountFlaskOops.py">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dress_me/dressme/attireshuffler/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="39" lean-forward="true" selection-end-line="80" />
+            <state relative-caret-position="365">
+              <caret line="41" column="83" selection-start-line="41" selection-start-column="83" selection-end-line="41" selection-end-column="83" />
+              <folding>
+                <element signature="e#0#119#0" expanded="true" />
+                <marker date="1581842323653" expanded="true" signature="1005:1006" ph="..." />
+                <marker date="1581842323653" expanded="true" signature="1005:1007" ph="..." />
+                <marker date="1581842323653" expanded="true" signature="1005:1186" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dress_me/dressme/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="4" column="42" selection-start-line="4" selection-start-column="42" selection-end-line="4" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#82#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/shuffled.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="7" column="24" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/dress_me/dressme/attireshuffler/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="39" column="21" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#85#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/main_list.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="399">
+              <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="7" column="38" selection-end-line="29" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/male.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="567">
+              <caret line="27" column="119" selection-start-line="27" selection-start-column="119" selection-end-line="27" selection-end-column="119" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dress_me/dressme/attireshuffler/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="63">
+              <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dress_me/app.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="63">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
             </state>
           </provider>
         </entry>
@@ -77,6 +272,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -84,6 +280,10 @@
     <findStrings>
       <find>print</find>
       <find>you</find>
+      <find>after-add-more</find>
+      <find>controlForm</find>
+      <find>pants-add</find>
+      <find>form</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -97,6 +297,30 @@
         <option value="$PROJECT_DIR$/ChatAnalyzer.py" />
         <option value="$PROJECT_DIR$/ChatAnalyzer/ChatAnalyzer.py" />
         <option value="$PROJECT_DIR$/BankAccountFlaskOops.py" />
+        <option value="$PROJECT_DIR$/dressme/templates/index.html" />
+        <option value="$PROJECT_DIR$/Tinder/secrets.py" />
+        <option value="$PROJECT_DIR$/Tinder/tinder.py" />
+        <option value="$PROJECT_DIR$/dressme/dressme/attireshuffler/__init__.py" />
+        <option value="$PROJECT_DIR$/dressme/dressme/templates/base.html" />
+        <option value="$PROJECT_DIR$/dressme/dressme/static/css/home.css" />
+        <option value="$PROJECT_DIR$/dressme/dressme/templates/male.html" />
+        <option value="$PROJECT_DIR$/dressme/dressme/templates/female.html" />
+        <option value="$PROJECT_DIR$/dressme/dressme/templates/index.html" />
+        <option value="$PROJECT_DIR$/dressme/app.py" />
+        <option value="$PROJECT_DIR$/dressme/dressme/__init__.py" />
+        <option value="$PROJECT_DIR$/dressme/dressme/attireshuffler/forms.py" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/templates/index.html" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/static/css/home.css" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/templates/female.html" />
+        <option value="$PROJECT_DIR$/dress_me/app.py" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/templates/base.html" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/templates/male.html" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/templates/main_list.html" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/attireshuffler/__init__.py" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/templates/shuffled.html" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/__init__.py" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/attireshuffler/forms.py" />
+        <option value="$PROJECT_DIR$/dress_me/dressme/attireshuffler/views.py" />
       </list>
     </option>
   </component>
@@ -106,11 +330,15 @@
     <option name="width" value="1750" />
     <option name="height" value="970" />
   </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -118,15 +346,67 @@
               <item name="PythonWork" type="b2602c69:ProjectViewProjectNode" />
               <item name="PythonWork" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="PythonWork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PythonWork" type="462c0819:PsiDirectoryNode" />
+              <item name="dress_me" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PythonWork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PythonWork" type="462c0819:PsiDirectoryNode" />
+              <item name="dress_me" type="462c0819:PsiDirectoryNode" />
+              <item name="dressme" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PythonWork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PythonWork" type="462c0819:PsiDirectoryNode" />
+              <item name="dress_me" type="462c0819:PsiDirectoryNode" />
+              <item name="dressme" type="462c0819:PsiDirectoryNode" />
+              <item name="attireshuffler" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PythonWork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PythonWork" type="462c0819:PsiDirectoryNode" />
+              <item name="dress_me" type="462c0819:PsiDirectoryNode" />
+              <item name="dressme" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PythonWork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PythonWork" type="462c0819:PsiDirectoryNode" />
+              <item name="dress_me" type="462c0819:PsiDirectoryNode" />
+              <item name="dressme" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PythonWork" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PythonWork" type="462c0819:PsiDirectoryNode" />
+              <item name="dress_me" type="462c0819:PsiDirectoryNode" />
+              <item name="dressme" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="ReadonlyStatusHandler">
+    <option name="SHOW_DIALOG" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Localgit\PuppyFlask\PythonWork\dressme\dressme\templates" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Localgit\PuppyFlask\PythonWork\dressme\dressme\templates" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -140,8 +420,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.BankAccountFlaskOops">
-    <configuration name="BankAccountFlaskOops" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.app (1)">
+    <configuration name="__init__ (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PythonWork" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -149,11 +429,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dress_me/dressme/attireshuffler" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/BankAccountFlaskOops.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dress_me/dressme/attireshuffler/__init__.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -162,7 +442,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="ChatAnalyzer (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PythonWork" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -170,11 +450,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ChatAnalyzer" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dressme/dressme/attireshuffler" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ChatAnalyzer/ChatAnalyzer.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dressme/dressme/attireshuffler/__init__.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -183,7 +463,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="ChatAnalyzer" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="app (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PythonWork" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -191,11 +471,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dress_me" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ChatAnalyzer.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dress_me/app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -204,7 +484,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="sqlite_create_insert" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PythonWork" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -212,11 +492,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dressme" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sqlite_create_insert.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dressme/app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -225,7 +505,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="sqlite_query" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="tinder" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PythonWork" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -233,11 +513,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Tinder" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sqlite_query.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Tinder/tinder.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -247,19 +527,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.ChatAnalyzer" />
-      <item itemvalue="Python.sqlite_create_insert" />
-      <item itemvalue="Python.sqlite_query" />
-      <item itemvalue="Python.ChatAnalyzer (1)" />
-      <item itemvalue="Python.BankAccountFlaskOops" />
+      <item itemvalue="Python.__init__" />
+      <item itemvalue="Python.tinder" />
+      <item itemvalue="Python.app" />
+      <item itemvalue="Python.app (1)" />
+      <item itemvalue="Python.__init__ (1)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.BankAccountFlaskOops" />
-        <item itemvalue="Python.ChatAnalyzer (1)" />
-        <item itemvalue="Python.ChatAnalyzer" />
-        <item itemvalue="Python.sqlite_query" />
-        <item itemvalue="Python.sqlite_create_insert" />
+        <item itemvalue="Python.app (1)" />
+        <item itemvalue="Python.__init__ (1)" />
+        <item itemvalue="Python.app" />
+        <item itemvalue="Python.__init__" />
+        <item itemvalue="Python.tinder" />
       </list>
     </recent_temporary>
   </component>
@@ -278,22 +558,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24983476" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.34419262" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3512748" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.22237961" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.60339946" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32907802" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -303,86 +582,8 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Facebook.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="46" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Divisibleornot.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/debug.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ChatAnalyzer.py" />
-    <entry file="file://$PROJECT_DIR$/listandtuple.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/multidimearray.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Squaredict.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SquareGenerator.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stringuppperinclass.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/twitface.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="109" lean-forward="true" selection-start-line="109" selection-end-line="109" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/twitter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ValidateIP.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/whatsapp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="29" column="16" lean-forward="true" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/capitalizepara.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sqlite_query.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sqlite_delete.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sqlite_create_insert.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="24" column="13" lean-forward="true" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sqlite_update.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/sqlite_create_insert.py" />
+    <entry file="file://$PROJECT_DIR$/sqlite_update.py" />
     <entry file="file://$PROJECT_DIR$/ChatAnalyzer/ChatAnalyzer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -390,10 +591,241 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BankAccountFlaskOops.py">
+    <entry file="file://$PROJECT_DIR$/BankAccountFlaskOops.py" />
+    <entry file="file://$PROJECT_DIR$/app.py" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37-32/Lib/site-packages/selenium/webdriver/chrome/webdriver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="39" lean-forward="true" selection-end-line="80" />
+        <state relative-caret-position="373">
+          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Facebook.py" />
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/templates/base.html" />
+    <entry file="file://$PROJECT_DIR$/Tinder/tinder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tinder/secrets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="1" column="20" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/static/css/home.css" />
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/templates/male.html" />
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/templates/female.html" />
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/templates/index.html" />
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/templates/error_pages/500.html" />
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/error_pages/handlers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/templates/error_pages/404.html" />
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/core/views.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/users/models.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/users/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/templates/error_pages/403.html" />
+    <entry file="file://$PROJECT_DIR$/dressme/app.py" />
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/blog_posts/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/attireshuffler/forms.py" />
+    <entry file="file://$PROJECT_DIR$/dressme/dressme/attireshuffler/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/templates/blogpost.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="16" column="7" lean-forward="true" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/templates/account.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="903">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/users/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2058">
+          <caret line="104" column="14" selection-start-line="104" selection-start-column="14" selection-end-line="104" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/static/css/home.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="13" column="12" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/users/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/templates/createpost.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="105" column="14" lean-forward="true" selection-start-line="105" selection-start-column="14" selection-end-line="105" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/blog_posts/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/female.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/blog_posts/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="5" column="60" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/templates/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1134">
+          <caret line="54" column="14" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blogforpuppy/puppyblog/blog_posts/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="42" selection-start-line="42" selection-end-line="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/main_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="38" selection-end-line="29" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/male.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="567">
+          <caret line="27" column="119" selection-start-line="27" selection-start-column="119" selection-end-line="27" selection-end-column="119" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="42" selection-start-line="4" selection-start-column="42" selection-end-line="4" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#82#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/attireshuffler/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/templates/shuffled.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="24" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/attireshuffler/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="41" column="83" selection-start-line="41" selection-start-column="83" selection-end-line="41" selection-end-column="83" />
+          <folding>
+            <element signature="e#0#119#0" expanded="true" />
+            <marker date="1581842323653" expanded="true" signature="1005:1006" ph="..." />
+            <marker date="1581842323653" expanded="true" signature="1005:1007" ph="..." />
+            <marker date="1581842323653" expanded="true" signature="1005:1186" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dress_me/dressme/attireshuffler/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="39" column="21" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#85#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

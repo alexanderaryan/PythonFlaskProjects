@@ -133,19 +133,21 @@ class CalenderDress(DressMe):
 
     def create_schedule(self):
         print ('I am in ')
-        print (self.main_combo)
-        print (self.calendar_date)
+        print (self.main_combo,"main now")
+        print (self.calendar_date,"schedule")
+        self.dress = []
         if len(self.main_combo) > len(self.calendar_date):
+
             print ('inside if')
             self.dress = list(zip(self.calendar_date, self.main_combo))
             return self.dress
         else:
-            print('inside else')
+
             while self.calendar_date != []:
-                print ('hell with you')
                 self.dress.append(list(zip(self.calendar_date[:len(self.main_combo)],self.main_combo)))
                 self.calendar_date=self.calendar_date[len(self.main_combo):]
             print (self.main_combo)
+            print (self.dress,"is here")
             return self.dress
 
 
