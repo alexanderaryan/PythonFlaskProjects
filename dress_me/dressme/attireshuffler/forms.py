@@ -4,9 +4,11 @@ from datetime import datetime
 
 
 def present_or_future_date(value):
+
     if value < datetime.date.today():
         raise FlaskForm.ValidationError("The date cannot be in the past!")
     return value
+
 """class MaleForm(FlaskForm):
 
     shirt = StringField("Shirt",validators=[DataRequired()])
@@ -38,6 +40,8 @@ class MainMaleForm(FlaskForm):
 
 class ShuffleForm(FlaskForm):
 
-    from_date = DateField('From', format='%Y-%m-%d', validators=[present_or_future_date])
-    to_date = DateField('To', format='%Y-%m-%d',validators=[present_or_future_date])
+    #from_date = DateField('From', format='%Y-%m-%d', validators=[present_or_future_date])
+    #to_date = DateField('To', format='%Y-%m-%d',validators=[present_or_future_date])
+    from_date = StringField('From')
+    to_date = StringField('To')
     submit =SubmitField('Remove')

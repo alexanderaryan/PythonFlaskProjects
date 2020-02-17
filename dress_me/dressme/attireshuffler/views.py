@@ -34,18 +34,19 @@ def female():
 @dress_print.route('/shuffled/', methods=['GET', 'POST'])
 def shuffled():
     form = ShuffleForm()
-    if request.method == 'POST':
+    if form.validate_on_submit():
+    #if request.method == 'POST':
         print (form.from_date.data)
         print(form.to_date.data)
-        remove_dress=[tuple(dress.split(' with ')) for dress in request.form.getlist('attire')]
+        remove_dress = [tuple(dre.split(' with ')) for dre in request.form.getlist('attire')]
         print (remove_dress,'x')
-        removed = cal_dress.remove_the_dress(dress,remove_dress)
+        removed = cal_dress.remove_the_dress(dress, remove_dress)
         print (removed,'removed list')
         session['dress_list'] = removed
         to_roaster = cal_dress.alter_the_sequence(removed)
         print (to_roaster)
         print (cal_dress.main_combo,'main')
-        cal_dress.create_calendar((2020, 2, 7), (2020, 8, 29), (5, 6))
+        cal_dress.create_calendar((int(form.from_date.data[6:]), int(form.from_date.data[3:5]),int(form.from_date.data[:2])), (int(form.to_date.data[6:]), int(form.to_date.data[3:5]),int(form.to_date.data[:2])), (5, 6))
         final_result = cal_dress.create_schedule()
         print (final_result,'final_result')
         return render_template("main_list.html",final_result = final_result,x='12' )
