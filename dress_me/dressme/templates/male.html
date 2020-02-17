@@ -2,17 +2,18 @@
 {% block content %}
 <br>
 <div class="container" align="center">
+    <div class="row form-group">
+            <div class="col-6">
+                <label class="form-group" for="attires-0-shirt">Shirt</label>
+            </div>
+            <div class="col-6">
+                <label class="form-group" for="attires-0-pants">Shirt</label>
+            </div>
+        </div>
     <form class="form-group" method="POST">
         {{form.hidden_tag()}}
         {% for sub in form.attires%}
-        <div class="row form-group">
-            <div class="col-6">
-                {{sub.shirt.label(class="form-group")}}
-            </div>
-            <div class="col-6">
-                {{sub.pants.label(class="form-group")}}
-            </div>
-        </div>
+
         <div class="row form-group">
             <div class="col-6" id="shirt-add">
                 {{sub.shirt(class="form-control")}}<button class="btn btn-success shirt-add " type="button"><span class="fas fa-plus"></span></button>

@@ -16,16 +16,18 @@ def present_or_future_date(value):
     submit = SubmitField("I am done!")"""
 
 
-class FemaleForm(FlaskForm):
+class ShuffleForm(FlaskForm):
 
-    attire = StringField("Attire",validators=[DataRequired()])
-    submit = SubmitField("I am done!")
-
+    #from_date = DateField('From', format='%Y-%m-%d', validators=[present_or_future_date])
+    #to_date = DateField('To', format='%Y-%m-%d',validators=[present_or_future_date])
+    from_date = StringField('From')
+    to_date = StringField('To')
+    submit =SubmitField('Remove')
 
 class MaleForm(Form):
 
-    shirt = StringField("Shirt",validators=[DataRequired()])
-    pants = StringField("Pants",validators=[DataRequired()])
+    shirt = StringField("Shirt")
+    pants = StringField("Pants")
 
 
 class MainMaleForm(FlaskForm):
@@ -38,10 +40,19 @@ class MainMaleForm(FlaskForm):
     submit = SubmitField("I am done!")
 
 
-class ShuffleForm(FlaskForm):
+class FemaleForm(Form):
 
-    #from_date = DateField('From', format='%Y-%m-%d', validators=[present_or_future_date])
-    #to_date = DateField('To', format='%Y-%m-%d',validators=[present_or_future_date])
-    from_date = StringField('From')
-    to_date = StringField('To')
-    submit =SubmitField('Remove')
+    attire = StringField("Attire",validators=[DataRequired()])
+    from_date = StringField("From")
+    to_date = StringField("To")
+
+
+class MainFemaleForm(FlaskForm):
+
+    attires = FieldList(
+        FormField(FemaleForm),
+        min_entries=1,
+        max_entries=100
+    )
+    submit = SubmitField("I am done!")
+

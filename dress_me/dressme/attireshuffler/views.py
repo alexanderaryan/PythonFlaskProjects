@@ -1,4 +1,4 @@
-from dress_me.dressme.attireshuffler.forms import FemaleForm,MainMaleForm,ShuffleForm
+from dress_me.dressme.attireshuffler.forms import FemaleForm,MainMaleForm,ShuffleForm,MainFemaleForm
 from dress_me.dressme import app, render_template, redirect, Blueprint,url_for,request, session
 from dress_me.dressme.attireshuffler import cal_dress
 
@@ -25,10 +25,20 @@ def male():
     return render_template("male.html",form=form)
 
 
-@dress_print.route('/female')
+@dress_print.route('/female',methods=['POST','GET'])
 def female():
-    form = FemaleForm()
-    return render_template('female.html', form=form)
+    form = MainFemaleForm()
+    date_form = ShuffleForm()
+    global dress
+    dress = []
+    if form.validate_on_submit():
+        dress = [n['attire'] for n in form.attires.data]
+        print (dress)
+        print (date_form.from_date.data)
+        print(date_form.to_date.data)
+        return redirect(url_for('dress_print.shuffled'))
+
+    return render_template('female.html', form=form, date_form=date_form)
 
 
 @dress_print.route('/shuffled/', methods=['GET', 'POST'])
@@ -46,7 +56,10 @@ def shuffled():
         to_roaster = cal_dress.alter_the_sequence(removed)
         print (to_roaster)
         print (cal_dress.main_combo,'main')
-        cal_dress.create_calendar((int(form.from_date.data[6:]), int(form.from_date.data[3:5]),int(form.from_date.data[:2])), (int(form.to_date.data[6:]), int(form.to_date.data[3:5]),int(form.to_date.data[:2])), (5, 6))
+        cal_dress.create_calendar((int(form.from_date.data[6:]), int(form.from_date.data[3:5]),\
+                                   int(form.from_date.data[:2])), \
+                                  (int(form.to_date.data[6:]), int(form.to_date.data[3:5]),\
+                                   int(form.to_date.data[:2])), (5, 6))
         final_result = cal_dress.create_schedule()
         print (final_result,'final_result')
         return render_template("main_list.html",final_result = final_result,x='12' )

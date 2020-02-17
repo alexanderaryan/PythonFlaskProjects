@@ -2,23 +2,44 @@
 {% block content %}
 <br>
 <div class="container" align="center">
-    <form method="POST">
+
+
+    <form  method="POST">
         {{form.hidden_tag()}}
-        <div class="row" align="center">
-        <div class="col-6 form-group" >
-            {{form.attire.label(class="form-group")}}
-        </div>
+        <div class="row form-group">
+            <div class="col-6" >
+        {{date_form.from_date.label}}
             </div>
-        <div class="row" align="center">
-        <div class="col-6 form-group" >
-            {{form.attire(class="form-group")}}
+            <div class="col-6">
+        {{date_form.to_date.label}}
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-6" >
+        {{date_form.from_date}}
+            </div>
+            <div class="col-6">
+        {{date_form.to_date}}
+            </div>
         </div>
 
+        <div class="row" align="center">
+        <div class="col-6 form-group" >
+            <label class="form-group" for="attires-0">Attires</label>
+        </div>
             </div>
-    <div class="form-group">
-        {{form.submit(class='btn btn-primary')}}
-</div>
 
+        {% for sub in form.attires%}
+
+        <div class="row form-group">
+            <div class="col-6" id="attire-add">
+                {{sub.attire(class="form-control")}}<button class="btn btn-success attire-add " type="button"><span class="fas fa-plus"></span></button>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="form-group">
+            {{form.submit(class="btn btn-primary")}}
+        </div>
     </form>
 </div>
 
