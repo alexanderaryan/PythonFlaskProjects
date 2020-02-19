@@ -2,13 +2,44 @@
 {% block content %}
 
 <br>
-<div class="container" align="center">
+<div class="container" align="center" style="border: inset;">
     <form  method="POST">
         {{form.hidden_tag()}}
+        <div class="row">
+             <div class="col-6">
+        {{form.from_date.label()}}
+                </div>
+            <div class="col-6">
+        {{form.to_date.label()}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
         {{form.from_date}}
+                </div>
+            <div class="col-6">
         {{form.to_date}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3" style="text-align: end;">
+        {{form.weekends.label()}}
+            </div>
+            <div class="col-9" style="text-align: left;">
+        {%for x in form.weekends%}
+        <div class="form-check form-check-inline" >
+      <input class="form-check-input" name="attire" type="checkbox" value="{{x.value}}" id="defaultCheck1">
+      <label class="form-check-label" for="defaultCheck1">
+        {{x}}
+      </label>
+    </div>
+        {% endfor %}
+            </div>
+</div>
+
+
         {% for d in dress %}
-            <div class="form-check">
+            <div class="form-check" id="defaultCheck">
       <input class="form-check-input" name="attire" type="checkbox" value="{{d[0]}} with {{d[1]}}" id="defaultCheck1">
       <label class="form-check-label" for="defaultCheck1">
         {{d[0]}} with {{d[1]}}

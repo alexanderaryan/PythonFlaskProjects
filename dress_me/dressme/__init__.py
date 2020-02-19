@@ -1,6 +1,6 @@
 from flask import Flask,render_template,redirect,Blueprint,url_for,request,session
 from flask_wtf import FlaskForm
-from wtforms import StringField,SubmitField, FormField, FieldList, Form
+from wtforms import StringField,SubmitField, FormField, FieldList, Form, SelectMultipleField
 from wtforms.validators import DataRequired
 from wtforms.fields.html5 import DateField
 

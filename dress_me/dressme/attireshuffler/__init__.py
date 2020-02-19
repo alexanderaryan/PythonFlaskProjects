@@ -128,7 +128,8 @@ class CalenderDress(DressMe):
 
     def create_calendar(self, from_time, to_time, week_off):
         for date in datetime_range(start=datetime(from_time[0], from_time[1], from_time[2]), end=datetime(to_time[0], to_time[1], to_time[2])):
-            if date.timetuple()[6] not in (days_number['Saturday'], days_number['Sunday']):
+            #if date.timetuple()[6] not in (days_number['Saturday'], days_number['Sunday']):
+            if date.timetuple()[6] not in week_off:
                 self.calendar_date.append((date.strftime("%A"), date.strftime("%d-%B-%Y ")))
 
     def create_schedule(self):

@@ -34,14 +34,25 @@
     var current_date = date.getDate();
 
     $("#from_date").datepicker({
-               dateFormat:"dd-mm-yy",
+
                minDate: 0 ,
+               onSelect: function(selected){
+               var from = new Date(Date.parse($(this).datepicker('getDate')));
+               from.setDate(from.getDate() + 1);
+               $("#to_date").datepicker("option","minDate",from);
+               },
+                dateFormat:"dd-mm-yy",
     });
     $("#from_date").attr("placeholder","dd-mm-yyyy");
 
     $("#to_date").datepicker({
             dateFormat:"dd-mm-yy",
             minDate: 1,
+            onSelect: function(selected){
+               var to = new Date(Date.parse($(this).datepicker('getDate')));
+               to.setDate(to.getDate() - 1)
+               $("#from_date").datepicker("option","maxDate",to);
+               }
     });
     $("#to_date").attr("placeholder","dd-mm-yyyy");
 

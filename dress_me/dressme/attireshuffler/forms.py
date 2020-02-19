@@ -1,5 +1,5 @@
 from dress_me.dressme import StringField,FlaskForm,DataRequired,SubmitField,\
-    FormField, FieldList, Form, DateField
+    FormField, FieldList, Form, SelectMultipleField
 from datetime import datetime
 
 
@@ -21,8 +21,13 @@ class ShuffleForm(FlaskForm):
     #from_date = DateField('From', format='%Y-%m-%d', validators=[present_or_future_date])
     #to_date = DateField('To', format='%Y-%m-%d',validators=[present_or_future_date])
     from_date = StringField('From')
-    to_date = StringField('To')
-    submit =SubmitField('Remove')
+    to_date = StringField('To' )
+    weekends = SelectMultipleField("Your Weekends",\
+                                   choices=[(0, 'Monday'), (1,'Tuesday'), ( 2,'Wednesday'),\
+                                                             ( 3,'Thursday'),(4,'Friday'),(5,'Saturday'),\
+                                                             (6,'Sunday')])
+    submit = SubmitField('Remove')
+
 
 class MaleForm(Form):
 

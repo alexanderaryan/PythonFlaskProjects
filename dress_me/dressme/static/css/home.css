@@ -14,3 +14,18 @@ text-align: center;
 color: black;
 text-align: center;
 }
+#defaultCheck {
+    position: relative;
+    display: flex;
+    padding-left: 35%;
+}
+
+.Days{
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-left: 0;
+    margin-right: .75rem;
+}
+

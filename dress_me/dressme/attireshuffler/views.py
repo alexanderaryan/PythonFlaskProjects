@@ -13,6 +13,7 @@ def male():
     global dress
     dress = []
     if form.validate_on_submit():
+        dress = []
         shirt=[n['shirt'] for n in form.attires.data]
         print (shirt,'shirt')
         pants=[n['pants'] for n in form.attires.data if n['pants'] != '']
@@ -31,12 +32,23 @@ def female():
     date_form = ShuffleForm()
     global dress
     dress = []
+    print(date_form.weekends.data)
     if form.validate_on_submit():
+        dress = []
         dress = [n['attire'] for n in form.attires.data]
         print (dress)
         print (date_form.from_date.data)
         print(date_form.to_date.data)
-        return redirect(url_for('dress_print.shuffled'))
+
+        cal_dress.create_calendar((int(date_form.from_date.data[6:]), int(date_form.from_date.data[3:5]), \
+                                   int(date_form.from_date.data[:2])), \
+                                  (int(date_form.to_date.data[6:]), int(date_form.to_date.data[3:5]), \
+                                   int(date_form.to_date.data[:2])), tuple(map(int,date_form.weekends.data)))
+        cal_dress.main_combo = dress
+        final_result = cal_dress.create_schedule()
+
+        print(final_result, 'final_result')
+        return render_template("main_list.html", final_result=final_result, sex="female")
 
     return render_template('female.html', form=form, date_form=date_form)
 
@@ -44,10 +56,14 @@ def female():
 @dress_print.route('/shuffled/', methods=['GET', 'POST'])
 def shuffled():
     form = ShuffleForm()
-    if form.validate_on_submit():
-    #if request.method == 'POST':
+    print(form.errors)
+    print(form.weekends.data)
+    print(form.validate_on_submit())
+    #if form.validate_on_submit():
+    if request.method == 'POST':
         print (form.from_date.data)
         print(form.to_date.data)
+        print (tuple(map(int,form.weekends.data)))
         remove_dress = [tuple(dre.split(' with ')) for dre in request.form.getlist('attire')]
         print (remove_dress,'x')
         removed = cal_dress.remove_the_dress(dress, remove_dress)
@@ -59,10 +75,10 @@ def shuffled():
         cal_dress.create_calendar((int(form.from_date.data[6:]), int(form.from_date.data[3:5]),\
                                    int(form.from_date.data[:2])), \
                                   (int(form.to_date.data[6:]), int(form.to_date.data[3:5]),\
-                                   int(form.to_date.data[:2])), (5, 6))
+                                   int(form.to_date.data[:2])), tuple(map(int,form.weekends.data)))
         final_result = cal_dress.create_schedule()
         print (final_result,'final_result')
-        return render_template("main_list.html",final_result = final_result,x='12' )
+        return render_template("main_list.html",final_result = final_result)
     return render_template("shuffled.html", form=form,dress=dress)
 
 
