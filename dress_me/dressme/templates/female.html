@@ -2,8 +2,6 @@
 {% block content %}
 <br>
 <div class="container" align="center">
-
-
     <form  method="POST">
         {{form.hidden_tag()}}
         <div class="row form-group">
@@ -22,7 +20,18 @@
         {{date_form.to_date}}
             </div>
         </div>
+        <div class="row">
+            <div class="col-3" style="text-align: end;">
+        {{date_form.weekends.label()}}
+            </div>
+            <div class="col-9" style="text-align: left;">
+        {%for x in date_form.weekends%}
+                {{x}}
+                {{x.label()}}
+                {% endfor %}
 
+</div>
+        </div>
         <div class="row" align="center">
         <div class="col-6 form-group" >
             <label class="form-group" for="attires-0">Attires</label>
@@ -30,7 +39,6 @@
             </div>
 
         {% for sub in form.attires%}
-
         <div class="row form-group">
             <div class="col-6" id="attire-add">
                 {{sub.attire(class="form-control")}}<button class="btn btn-success attire-add " type="button"><span class="fas fa-plus"></span></button>

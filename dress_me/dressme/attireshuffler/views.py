@@ -33,12 +33,14 @@ def female():
     global dress
     dress = []
     print(date_form.weekends.data)
+    print (form.errors)
     if form.validate_on_submit():
         dress = []
         dress = [n['attire'] for n in form.attires.data]
         print (dress)
         print (date_form.from_date.data)
         print(date_form.to_date.data)
+        print (date_form.weekends.data)
 
         cal_dress.create_calendar((int(date_form.from_date.data[6:]), int(date_form.from_date.data[3:5]), \
                                    int(date_form.from_date.data[:2])), \
@@ -57,8 +59,6 @@ def female():
 def shuffled():
     form = ShuffleForm()
     print(form.errors)
-
-
 
     print(form.validate_on_submit())
     print(form.errors)

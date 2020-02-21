@@ -21,6 +21,7 @@ class DressMe(object):
         self.main_combo = []
 
     def create_combo(self, shirt, pants):
+        self.main_combo = []
         self.shirt=shirt
         self.pants=pants
         if len(shirt) > len(pants):
