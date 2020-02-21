@@ -19,6 +19,17 @@ text-align: center;
     display: flex;
     padding-left: 35%;
 }
+.table td, .table th {
+    padding: 1%;
+    padding-left: 7%;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+
+
+
+
 
 .Days{
     display: -ms-inline-flexbox;

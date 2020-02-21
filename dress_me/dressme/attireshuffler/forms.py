@@ -1,5 +1,5 @@
 from dress_me.dressme import StringField,FlaskForm,DataRequired,SubmitField,\
-    FormField, FieldList, Form, SelectMultipleField
+    FormField, FieldList, Form, SelectMultipleField,ListWidget,CheckboxInput
 from datetime import datetime
 
 
@@ -9,11 +9,10 @@ def present_or_future_date(value):
         raise FlaskForm.ValidationError("The date cannot be in the past!")
     return value
 
-"""class MaleForm(FlaskForm):
+class MultiSelect(SelectMultipleField):
 
-    shirt = StringField("Shirt",validators=[DataRequired()])
-    pants = StringField("Pants", validators=[DataRequired()])
-    submit = SubmitField("I am done!")"""
+    widget = ListWidget(prefix_label=False)
+    option_widget = CheckboxInput()
 
 
 class ShuffleForm(FlaskForm):
@@ -22,10 +21,10 @@ class ShuffleForm(FlaskForm):
     #to_date = DateField('To', format='%Y-%m-%d',validators=[present_or_future_date])
     from_date = StringField('From')
     to_date = StringField('To' )
-    weekends = SelectMultipleField("Your Weekends",\
-                                   choices=[(0, 'Monday'), (1,'Tuesday'), ( 2,'Wednesday'),\
-                                                             ( 3,'Thursday'),(4,'Friday'),(5,'Saturday'),\
-                                                             (6,'Sunday')])
+    weekends = MultiSelect("Your Weekends",\
+                                   choices=[('0', 'Monday'), ('1','Tuesday'), ('2','Wednesday'),\
+                                                             ('3','Thursday'),('4','Friday'),('5','Saturday'),\
+                                                             ('6','Sunday')])
     submit = SubmitField('Remove')
 
 

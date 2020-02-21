@@ -25,7 +25,10 @@ class DressMe(object):
         self.pants=pants
         if len(shirt) > len(pants):
             for m in range(len(shirt)):
-                for n in range(len(shirt)):
+                for n in range(len(pants)):
+                    print (m,n)
+                    print (shirt[m])
+                    print (pants[n-1])
                     self.main_combo.append((shirt[m] , pants[n - 1]))
                     m -= 1
         else:
@@ -38,8 +41,13 @@ class DressMe(object):
 
     def remove_the_dress(self,main_list,remove_list):
         for every_dress in remove_list:
-            self.main_combo.remove(every_dress)
-        return self.main_combo
+            try:
+                main_list.remove(every_dress)
+            except:
+                print (every_dress,"not in ",main_list)
+            else:
+                continue
+        return main_list
 
     def alter_the_sequence(self, li):
 

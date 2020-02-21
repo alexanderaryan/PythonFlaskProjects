@@ -2,6 +2,7 @@ from flask import Flask,render_template,redirect,Blueprint,url_for,request,sessi
 from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField, FormField, FieldList, Form, SelectMultipleField
 from wtforms.validators import DataRequired
+from wtforms.widgets import ListWidget,CheckboxInput
 from wtforms.fields.html5 import DateField
 
 app = Flask(__name__)

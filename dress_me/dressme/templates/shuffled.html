@@ -27,26 +27,37 @@
             </div>
             <div class="col-9" style="text-align: left;">
         {%for x in form.weekends%}
-        <div class="form-check form-check-inline" >
-      <input class="form-check-input" name="attire" type="checkbox" value="{{x.value}}" id="defaultCheck1">
-      <label class="form-check-label" for="defaultCheck1">
-        {{x}}
-      </label>
-    </div>
-        {% endfor %}
-            </div>
+                {{x}}
+                {{x.label()}}
+
+                {% endfor %}
+
 </div>
+        </div>
+<div class="row">
+        <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Remove</th>
+      <th scope="col">Shirt</th>
+      <th scope="col">Pants</th>
+    </tr>
+  </thead>
+      <tbody>
+              {% for d in dress %}
+                <tr>
 
+                        <div class="form-check" id="defaultCheck">
+                            <td> <input class="form-check-input" name="attire" type="checkbox" value="{{d[0]}} with {{d[1]}}" id="defaultCheck1"></td>
+                  <label class="form-check-label" for="defaultCheck1">
+                      <td>{{d[0]}}</td> <td>{{d[1]}}</td>
+                  </label>
+                </div>
+                </tr>
+                    {% endfor %}
+      </tbody>
+    </table>
 
-        {% for d in dress %}
-            <div class="form-check" id="defaultCheck">
-      <input class="form-check-input" name="attire" type="checkbox" value="{{d[0]}} with {{d[1]}}" id="defaultCheck1">
-      <label class="form-check-label" for="defaultCheck1">
-        {{d[0]}} with {{d[1]}}
-      </label>
-    </div>
-
-        {% endfor %}
     <div class="form-group">
         {{form.submit(class='btn btn-primary')}}
 </div>
