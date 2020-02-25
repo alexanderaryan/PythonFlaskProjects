@@ -1,4 +1,4 @@
-from dress_me.dressme import StringField,FlaskForm,DataRequired,SubmitField,\
+from dressme import StringField,FlaskForm,DataRequired,SubmitField,\
     FormField, FieldList, Form, SelectMultipleField,ListWidget,CheckboxInput
 from datetime import datetime
 
@@ -31,7 +31,11 @@ class ShuffleForm(FlaskForm):
 class MaleForm(Form):
 
     shirt = StringField("Shirt")
+    shirt_pattern = StringField("Shirt")
+    shirt_brand = StringField("Shirt")
     pants = StringField("Pants")
+    pants_pattern = StringField("Pants")
+    pants_brand = StringField("Pants")
 
 
 class MainMaleForm(FlaskForm):

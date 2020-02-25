@@ -15,8 +15,14 @@
         {% for sub in form.attires%}
 
         <div class="row form-group">
-            <div class="col-6" id="shirt-add">
+            <div class="col-3" id="shirt-add">
                 {{sub.shirt(class="form-control")}}<button class="btn btn-success shirt-add " type="button"><span class="fas fa-plus"></span></button>
+            </div>
+            <div class="col-3" id="shirt-add">
+                {{sub.shirt_pattern(class="form-control")}}<button class="btn btn-success shirt-add " type="button"><span class="fas fa-plus"></span></button>
+            </div>
+            <div class="col-3" id="shirt-add">
+                {{sub.shirt_brand(class="form-control")}}<button class="btn btn-success shirt-add " type="button"><span class="fas fa-plus"></span></button>
             </div>
             <div class="col-6" id="pants-add">
                 {{sub.pants(class="form-control")}}<button class="btn btn-success pant-add " type="button">

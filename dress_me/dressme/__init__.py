@@ -12,5 +12,5 @@ app.config['SECRET_KEY']="mysecretkey"
 def index():
     return render_template('index.html')
 
-from dress_me.dressme.attireshuffler.views import dress_print
+from dressme.attireshuffler.views import dress_print
 app.register_blueprint(dress_print)

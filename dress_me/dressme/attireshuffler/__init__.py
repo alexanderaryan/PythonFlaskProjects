@@ -35,8 +35,9 @@ class DressMe(object):
         else:
             for m in range(len(pants)):
                 for n in range(len(shirt)):
-                    self.main_combo.append((pants[m] , shirt[n - 1]))
-                    m -= 1
+                    self.main_combo.append((shirt[n] , pants[m - 1]))
+                    n -= 1
+
         main_combo = self.main_combo
         return self.main_combo
 

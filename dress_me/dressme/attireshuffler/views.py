@@ -1,6 +1,6 @@
-from dress_me.dressme.attireshuffler.forms import FemaleForm,MainMaleForm,ShuffleForm,MainFemaleForm
-from dress_me.dressme import app, render_template, redirect, Blueprint,url_for,request, session
-from dress_me.dressme.attireshuffler import cal_dress
+from dressme.attireshuffler.forms import FemaleForm,MainMaleForm,ShuffleForm,MainFemaleForm
+from dressme import app, render_template, redirect, Blueprint,url_for,request, session
+from dressme.attireshuffler import cal_dress
 
 
 dress_print = Blueprint('dress_print',__name__)
@@ -14,7 +14,7 @@ def male():
     dress = []
     if form.validate_on_submit():
         dress = []
-        shirt=[n['shirt'] for n in form.attires.data]
+        shirt=[n['shirt'] for n in form.attires.data if n['shirt'] != '']
         print (shirt,'shirt')
         pants=[n['pants'] for n in form.attires.data if n['pants'] != '']
         print(pants,'pants')
