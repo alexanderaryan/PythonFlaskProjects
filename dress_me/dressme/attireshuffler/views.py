@@ -14,9 +14,12 @@ def male():
     dress = []
     if form.validate_on_submit():
         dress = []
-        shirt=[n['shirt'] for n in form.attires.data if n['shirt'] != '']
+        print(form.attires.data)
+        shirt=[n['shirt']+' '+n['shirt_pattern']+' '+n['shirt_brand'] for n in form.attires.data \
+               if n['shirt'] != '' or n['shirt_pattern'] != '' or  n['shirt_brand'] != '']
         print (shirt,'shirt')
-        pants=[n['pants'] for n in form.attires.data if n['pants'] != '']
+        pants=[n['pants']+' '+n['pants_pattern']+' '+n['pants_brand'] for n in form.attires.data \
+               if n['pants'] != '' or n['pants_pattern'] != '' or  n['pants_brand'] != '']
         print(pants,'pants')
         #global dress
         dress=cal_dress.create_combo(shirt,pants)

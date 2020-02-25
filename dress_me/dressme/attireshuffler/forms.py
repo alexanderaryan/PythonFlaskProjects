@@ -31,11 +31,11 @@ class ShuffleForm(FlaskForm):
 class MaleForm(Form):
 
     shirt = StringField("Shirt")
-    shirt_pattern = StringField("Shirt")
-    shirt_brand = StringField("Shirt")
+    shirt_pattern = StringField("Shirt Pattern")
+    shirt_brand = StringField("Shirt Brand")
     pants = StringField("Pants")
-    pants_pattern = StringField("Pants")
-    pants_brand = StringField("Pants")
+    pants_pattern = StringField("Pants Pattern")
+    pants_brand = StringField("Pants Brand")
 
 
 class MainMaleForm(FlaskForm):

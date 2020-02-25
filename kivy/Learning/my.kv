@@ -1,0 +1,24 @@
+<MyGrid>
+    num1: num1
+    num2: num2
+    GridLayout:
+        cols:1
+        size: root.width,root.height
+
+        GridLayout:
+            cols:2
+            Label:
+                text: "Type a Number"
+            TextInput:
+                id:num1
+                multiline: False
+            Label:
+                text: "Type a Number"
+            TextInput:
+                id:num2
+                multiline: False
+
+        Button:
+            text:"Submit"
+            on_press:root.pressed()
+
