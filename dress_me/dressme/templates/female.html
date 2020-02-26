@@ -4,6 +4,7 @@
 <div class="container" align="center">
     <form  method="POST">
         {{form.hidden_tag()}}
+
         <div class="row form-group">
             <div class="col-6" >
         {{date_form.from_date.label}}
@@ -12,6 +13,8 @@
         {{date_form.to_date.label}}
             </div>
         </div>
+
+
         <div class="row form-group">
             <div class="col-6" >
         {{date_form.from_date}}
@@ -32,6 +35,7 @@
 
 </div>
         </div>
+        <div class="table table-borderless" align="center">
         <div class="row" align="center">
         <div class="col-6 form-group" >
             <label class="form-group" for="attires-0">Attires</label>
@@ -48,7 +52,10 @@
         <div class="form-group">
             {{form.submit(class="btn btn-primary")}}
         </div>
+
     </form>
 </div>
+</div>
+
 
 {% endblock %}

@@ -88,7 +88,7 @@ $(this).on('click','.remove',function(){
 $('.attire-add').click(function(){
        s++;
 
-    $('#attire-add').append('<div class="col-6" id="attires-'+s+'-attire"><input class="form-control" id="attires-'+s+'-attire" name="attires-'+s+'-attire" type="text"><button class="btn btn-danger remove" type="button"><span class="fas fa-minus"></span></button></div>');
+    $('#attire-add').after('<div class="col-6" id="attires-'+s+'-attire"><input class="form-control" id="attires-'+s+'-attire" name="attires-'+s+'-attire" type="text"><button class="btn btn-danger remove" type="button"><span class="fas fa-minus"></span></button></div>');
     });
 $(this).on('click','.remove',function(){
        var target_input = $(this).parent();
