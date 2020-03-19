@@ -36,15 +36,15 @@
 </div>
         </div>
         <div class="table table-borderless" align="center">
-        <div class="row" align="center">
-        <div class="col-6 form-group" >
+        <div class="row attire-add" align="center">
+        <div class="col-6 form-group " >
             <label class="form-group" for="attires-0">Attires</label>
         </div>
             </div>
 
         {% for sub in form.attires%}
-        <div class="row form-group">
-            <div class="col-6" id="attire-add">
+        <div class="row form-group attire-add" id="attire-add">
+            <div class="col-6">
                 {{sub.attire(class="form-control")}}<button class="btn btn-success attire-add " type="button"><span class="fas fa-plus"></span></button>
             </div>
         </div>
