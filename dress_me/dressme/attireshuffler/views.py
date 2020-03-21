@@ -1,5 +1,5 @@
 from dressme.attireshuffler.forms import FemaleForm,MainMaleForm,ShuffleForm,MainFemaleForm
-from dressme import app, render_template, redirect, Blueprint,url_for,request, session
+from dressme import app, render_template, redirect, Blueprint,url_for,request, session, flash
 from dressme.attireshuffler import cal_dress
 
 
@@ -12,6 +12,8 @@ def male():
     form = MainMaleForm()
     global dress
     dress = []
+    print(form.errors)
+    print (form)
     if form.validate_on_submit():
         dress = []
         print(form.attires.data)
@@ -26,7 +28,7 @@ def male():
         print (dress,"dreee")
         return redirect(url_for('dress_print.shuffled'))
 
-    return render_template("male.html",form=form)
+    return render_template("male.html",form=form,flash=form.errors)
 
 
 @dress_print.route('/female',methods=['POST','GET'])
@@ -36,7 +38,7 @@ def female():
     global dress
     dress = []
     print(date_form.weekends.data)
-    print (form.errors)
+
     if form.validate_on_submit():
         dress = []
         dress = [n['attire'] for n in form.attires.data]
@@ -55,7 +57,7 @@ def female():
         print(final_result, 'final_result')
         return render_template("main_list.html", final_result=final_result, sex="female")
 
-    return render_template('female.html', form=form, date_form=date_form)
+    return render_template('female.html', form=form, flash=form.errors, date_form=date_form)
 
 
 @dress_print.route('/shuffled/', methods=['GET', 'POST'])

@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
 <br>
+{% if flash%}
+    {% for mess,m in flash.items() %}
+        {% for message_keys,message_values in m[0].items() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{message_keys | capitalize }}!</strong> {{message_values[0]}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+        {% endfor %}
 
+    {% endif %}
 <div class="container" align="center">
     <div class="row form-group">
             <div class="col-6">
@@ -13,7 +25,7 @@
         </div>
 
 
-	<form class="form-group" method="POST">
+	<form class="form-group" method="POST" name="theform">
         {{form.hidden_tag()}}
         {% for sub in form.attires%}
 
@@ -35,13 +47,13 @@
 
         <div class="row form-group" id="shirt-add">
             <div class="col-3" >
-                {{sub.shirt(class="form-control")}}
+                {{sub.shirt(class="form-control",onkeyup="checkform()")}}
             </div>
             <div class="col-3" >
-                {{sub.shirt_pattern(class="form-control")}}
+                {{sub.shirt_pattern(class="form-control",onkeyup="checkform()")}}
             </div>
             <div class="col-3">
-                {{sub.shirt_brand(class="form-control")}}
+                {{sub.shirt_brand(class="form-control",onkeyup="checkform()")}}
             </div>
             <div  >
                 <button class="btn btn-success shirt-add " type="button"><span class="fas fa-plus"></span></button>
@@ -63,13 +75,13 @@
                    </div>
 			 <div class="row form-group" id="pants-add">
             <div class="col-3" >
-                {{sub.pants(class="form-control")}}
+                {{sub.pants(class="form-control",onkeyup="checkform()")}}
             </div>
             <div class="col-3" >
-                {{sub.pants_pattern(class="form-control")}}
+                {{sub.pants_pattern(class="form-control",onkeyup="checkform()")}}
             </div>
             <div class="col-3" >
-                {{sub.pants_brand(class="form-control")}}
+                {{sub.pants_brand(class="form-control",onkeyup="checkform()")}}
             </div>
             <div >
             <button class="btn btn-success pant-add " type="button">
@@ -82,7 +94,7 @@
 		</table>
         {% endfor %}
         <div class="form-group">
-            {{form.submit(class="btn btn-primary")}}
+            {{form.submit(class="btn btn-primary",id="submitbutton")}}
             <!--{{form.submit(class="btn btn-primary",**{'data-toggle':'modal','data-target':"#exampleModal",'type':'submit'})}}-->
         </div>
     </form>

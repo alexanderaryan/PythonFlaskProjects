@@ -38,21 +38,22 @@ class MaleForm(Form):
     pants_brand = StringField("Pants Brand")
 
 
+
 class MainMaleForm(FlaskForm):
 
     attires = FieldList(
         FormField(MaleForm),
         min_entries=1,
-        max_entries=100
+        max_entries=100,validators=[DataRequired()]
     )
-    submit = SubmitField("I am done!")
 
+    submit = SubmitField("I am done!")
 
 class FemaleForm(Form):
 
-    attire = StringField("Attire",validators=[DataRequired()])
-    from_date = StringField("From")
-    to_date = StringField("To")
+    attire = StringField("Attire", validators=[DataRequired()])
+    from_date = StringField("From", validators=[DataRequired()])
+    to_date = StringField("To", validators=[DataRequired()])
 
 
 class MainFemaleForm(FlaskForm):
