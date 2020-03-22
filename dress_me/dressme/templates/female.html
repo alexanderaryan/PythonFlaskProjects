@@ -1,20 +1,44 @@
 {% extends "base.html"%}
 {% block content %}
-<br>
-<div class="container" align="center">
-    {% if flash%}
-    {% for mess in flash.items() %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>{{mess[0] | capitalize }}!</strong>  {{ mess }}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Hope you have your own choices!! Good!</strong>  Please enter your dress details! I will give you the schedule!
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+
+<div class="container" align="center">
+   {% if date_flash%}
+    {% for mess,m in date_flash.items() %}
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>{{mess | capitalize }}!</strong> {{m[0]}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
         {% endfor %}
 
     {% endif %}
 
-    <form  method="POST">
+
+    {% if flash%}
+    {% for mess,m in flash.items() %}
+        {% for message_keys,message_values in m[0].items() %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>{{message_keys | capitalize }}!</strong> {{message_values[0]}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+        {% endfor %}
+
+    {% endif %}
+
+
+    <form  method="POST" name="theform">
         {{form.hidden_tag()}}
 
         <div class="row form-group">
@@ -57,12 +81,12 @@
         {% for sub in form.attires%}
         <div class="row form-group attire-add" id="attire-add">
             <div class="col-6">
-                {{sub.attire(class="form-control")}}<button class="btn btn-success attire-add-plus " type="button"><span class="fas fa-plus"></span></button>
+                {{sub.attire(class="form-control", onkeyup="checkform()")}}<button class="btn btn-success attire-add-plus "  type="button"><span class="fas fa-plus"></span></button>
             </div>
         </div>
         {% endfor %}
         <div class="form-group">
-            {{form.submit(class="btn btn-primary")}}
+            {{form.submit(class="btn btn-primary",id="submitbutton")}}
         </div>
 
     </form>

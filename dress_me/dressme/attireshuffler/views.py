@@ -7,6 +7,7 @@ dress_print = Blueprint('dress_print',__name__)
 
 dress = []
 
+
 @dress_print.route('/male',methods=['GET','POST'])
 def male():
     form = MainMaleForm()
@@ -38,8 +39,10 @@ def female():
     global dress
     dress = []
     print(date_form.weekends.data)
+    print(date_form.from_date.data)
+    print (date_form.to_date.data)
 
-    if form.validate_on_submit():
+    if form.validate_on_submit() and date_form.validate_on_submit():
         dress = []
         dress = [n['attire'] for n in form.attires.data]
         print (dress)
@@ -57,41 +60,48 @@ def female():
         print(final_result, 'final_result')
         return render_template("main_list.html", final_result=final_result, sex="female")
 
-    return render_template('female.html', form=form, flash=form.errors, date_form=date_form)
+    return render_template('female.html', form=form, flash=form.errors,date_flash=date_form.errors, date_form=date_form)
 
 
-@dress_print.route('/shuffled/', methods=['GET', 'POST'])
+@dress_print.route('/shuffled', methods=['GET', 'POST'])
 def shuffled():
     form = ShuffleForm()
     print(form.errors)
 
     print(form.validate_on_submit())
     print(form.errors)
-    if form.validate_on_submit():
-    #if request.method == 'POST':
-        print(dress,"here at shuffled")
-        print (form.from_date.data)
-        print(form.to_date.data)
-        print (form.weekends.data)
-        print(request.form.getlist('weekends'), "week")
-        weekend_selected = tuple(map(int, form.weekends.data))
-        print (weekend_selected,"weekends")
-        remove_dress = [tuple(dre.split(' with ')) for dre in request.form.getlist('attire')]
-        print (remove_dress,'x')
-        removed = cal_dress.remove_the_dress(dress, remove_dress)
-        print (removed,'removed list')
-        session['dress_list'] = removed
-        to_roaster = cal_dress.alter_the_sequence(removed)
-        print (to_roaster)
-        print (cal_dress.main_combo,'main')
-        cal_dress.create_calendar((int(form.from_date.data[6:]), int(form.from_date.data[3:5]),\
-                                   int(form.from_date.data[:2])), \
-                                  (int(form.to_date.data[6:]), int(form.to_date.data[3:5]),\
-                                   int(form.to_date.data[:2])), weekend_selected)
-        final_result = cal_dress.create_schedule()
-        print (final_result,'final_result')
-        return render_template("main_list.html",final_result = final_result)
-    return render_template("shuffled.html", form=form,dress=dress)
+
+    if form.validate_on_submit() :
+        if len(dress)>0:
+            #if request.method == 'POST':
+            print(dress,"here at shuffled")
+            print (form.from_date.data)
+            print(form.to_date.data)
+            print (form.weekends.data)
+            print(request.form.getlist('weekends'), "week")
+            weekend_selected = tuple(map(int, form.weekends.data))
+            print (weekend_selected,"weekends")
+            remove_dress = [tuple(dre.split(' with ')) for dre in request.form.getlist('attire')]
+            print (remove_dress,'x')
+            removed = cal_dress.remove_the_dress(dress, remove_dress)
+            print (removed,'removed list')
+            session['dress_list'] = removed
+            to_roaster = cal_dress.alter_the_sequence(removed)
+            print (to_roaster)
+            print (cal_dress.main_combo,'main')
+            cal_dress.create_calendar((int(form.from_date.data[6:]), int(form.from_date.data[3:5]),\
+                                       int(form.from_date.data[:2])), \
+                                      (int(form.to_date.data[6:]), int(form.to_date.data[3:5]),\
+                                       int(form.to_date.data[:2])), weekend_selected)
+            final_result = cal_dress.create_schedule()
+            print (final_result,'final_result')
+
+            return render_template("main_list.html",final_result = final_result)
+        else:
+
+            return redirect(url_for("dress_print.male",flash_new="sess"))
+            #return render_template("male.html",flash_new=flash,form=MainMaleForm())
+    return render_template("shuffled.html", form=form,flash=form.errors,dress=dress)
 
 
 """@dress_print.route('/main_list', methods=['GET', 'POST'])

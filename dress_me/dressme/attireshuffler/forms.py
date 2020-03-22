@@ -19,21 +19,21 @@ class ShuffleForm(FlaskForm):
 
     #from_date = DateField('From', format='%Y-%m-%d', validators=[present_or_future_date])
     #to_date = DateField('To', format='%Y-%m-%d',validators=[present_or_future_date])
-    from_date = StringField('From')
-    to_date = StringField('To' )
-    weekends = MultiSelect("Your Weekends",\
+    from_date = StringField('From',validators=[DataRequired(message="Please select from date")])
+    to_date = StringField('To',validators=[DataRequired(message="Please select to date")] )
+    weekends = MultiSelect("Your Week Offs",\
                                    choices=[('0', 'Monday'), ('1','Tuesday'), ('2','Wednesday'),\
                                                              ('3','Thursday'),('4','Friday'),('5','Saturday'),\
                                                              ('6','Sunday')])
-    submit = SubmitField('Remove')
+    submit = SubmitField('Schedule')
 
 
 class MaleForm(Form):
 
-    shirt = StringField("Shirt")
+    shirt = StringField("Shirt Color")
     shirt_pattern = StringField("Shirt Pattern")
     shirt_brand = StringField("Shirt Brand")
-    pants = StringField("Pants")
+    pants = StringField("Pants Color")
     pants_pattern = StringField("Pants Pattern")
     pants_brand = StringField("Pants Brand")
 
@@ -52,8 +52,8 @@ class MainMaleForm(FlaskForm):
 class FemaleForm(Form):
 
     attire = StringField("Attire", validators=[DataRequired()])
-    from_date = StringField("From", validators=[DataRequired()])
-    to_date = StringField("To", validators=[DataRequired()])
+    #from_date = StringField("From", validators=[DataRequired()])
+    #to_date = StringField("To", validators=[DataRequired()])
 
 
 class MainFemaleForm(FlaskForm):

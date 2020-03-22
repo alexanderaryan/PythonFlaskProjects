@@ -140,6 +140,7 @@ class CalenderDress(DressMe):
         self.calendar_date = []
 
     def create_calendar(self, from_time, to_time, week_off):
+        self.calendar_date = []
         for date in datetime_range(start=datetime(from_time[0], from_time[1], from_time[2]), end=datetime(to_time[0], to_time[1], to_time[2])):
             #if date.timetuple()[6] not in (days_number['Saturday'], days_number['Sunday']):
             if date.timetuple()[6] not in week_off:
@@ -154,7 +155,9 @@ class CalenderDress(DressMe):
 
             print ('inside if')
             self.dress = list(zip(self.calendar_date, self.main_combo))
-            return self.dress
+            add_list=[]
+            add_list.append(self.dress)
+            return add_list
         else:
 
             while self.calendar_date != []:

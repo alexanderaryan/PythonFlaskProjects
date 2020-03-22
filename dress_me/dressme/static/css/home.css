@@ -42,4 +42,22 @@ text-align: center;
     padding-left: 0;
     margin-right: .75rem;
 }
+.container{
+    border-style: inset;
+}
+.table-dark {
+    color: honeydew;
+    background-color: darkgreen;
+}
 
+.navbar{
+
+    background-color: #4578a4 !important;
+    border: 12px #2c9843;
+    border-bottom-style: inset;
+    border-top-style: outset;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+    font-family: cursive;
+}
