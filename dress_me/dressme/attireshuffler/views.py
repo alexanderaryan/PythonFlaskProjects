@@ -18,15 +18,15 @@ def male():
     if form.validate_on_submit():
         dress = []
         print(form.attires.data)
-        shirt=[n['shirt']+' '+n['shirt_pattern']+' '+n['shirt_brand'] for n in form.attires.data \
+        session['shirt']=[n['shirt']+' '+n['shirt_pattern']+' '+n['shirt_brand'] for n in form.attires.data \
                if n['shirt'] != '' or n['shirt_pattern'] != '' or  n['shirt_brand'] != '']
-        print (shirt,'shirt')
-        pants=[n['pants']+' '+n['pants_pattern']+' '+n['pants_brand'] for n in form.attires.data \
+        #print (shirt,'shirt')
+        session['pants']=[n['pants']+' '+n['pants_pattern']+' '+n['pants_brand'] for n in form.attires.data \
                if n['pants'] != '' or n['pants_pattern'] != '' or  n['pants_brand'] != '']
-        print(pants,'pants')
+        #print(pants,'pants')
         #global dress
-        dress=cal_dress.create_combo(shirt,pants)
-        print (dress,"dreee")
+        session['dress']=cal_dress.create_combo(session['shirt'],session['pants'])
+        print (session['dress'],"dreee")
         return redirect(url_for('dress_print.shuffled'))
 
     return render_template("male.html",form=form,flash=form.errors)
@@ -72,36 +72,36 @@ def shuffled():
     print(form.errors)
 
     if form.validate_on_submit() :
-        if len(dress)>0:
+        if len(session['dress'])>0:
             #if request.method == 'POST':
-            print(dress,"here at shuffled")
+            print(session['dress'],"here at shuffled")
             print (form.from_date.data)
             print(form.to_date.data)
             print (form.weekends.data)
             print(request.form.getlist('weekends'), "week")
             weekend_selected = tuple(map(int, form.weekends.data))
             print (weekend_selected,"weekends")
-            remove_dress = [tuple(dre.split(' with ')) for dre in request.form.getlist('attire')]
-            print (remove_dress,'x')
-            removed = cal_dress.remove_the_dress(dress, remove_dress)
-            print (removed,'removed list')
-            session['dress_list'] = removed
-            to_roaster = cal_dress.alter_the_sequence(removed)
+            session['remove_dress'] = [tuple(dre.split(' with ')) for dre in request.form.getlist('attire')]
+            #print (remove_dress,'x')
+            session['removed'] = cal_dress.remove_the_dress(session['dress'], session['remove_dress'])
+            #print (removed,'removed list')
+            session['dress_list'] = session['removed']
+            to_roaster = cal_dress.alter_the_sequence(session['removed'])
             print (to_roaster)
             print (cal_dress.main_combo,'main')
             cal_dress.create_calendar((int(form.from_date.data[6:]), int(form.from_date.data[3:5]),\
                                        int(form.from_date.data[:2])), \
                                       (int(form.to_date.data[6:]), int(form.to_date.data[3:5]),\
                                        int(form.to_date.data[:2])), weekend_selected)
-            final_result = cal_dress.create_schedule()
-            print (final_result,'final_result')
+            session['final_result'] = cal_dress.create_schedule()
+            print (session['final_result'],'final_result')
 
-            return render_template("main_list.html",final_result = final_result)
+            return render_template("main_list.html",final_result = session['final_result'])
         else:
 
             return redirect(url_for("dress_print.male",flash_new="sess"))
             #return render_template("male.html",flash_new=flash,form=MainMaleForm())
-    return render_template("shuffled.html", form=form,flash=form.errors,dress=dress)
+    return render_template("shuffled.html", form=form,flash=form.errors,dress=session['dress'])
 
 
 """@dress_print.route('/main_list', methods=['GET', 'POST'])

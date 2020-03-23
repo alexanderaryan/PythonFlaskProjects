@@ -21,7 +21,7 @@ class ShuffleForm(FlaskForm):
     #to_date = DateField('To', format='%Y-%m-%d',validators=[present_or_future_date])
     from_date = StringField('From',validators=[DataRequired(message="Please select from date")])
     to_date = StringField('To',validators=[DataRequired(message="Please select to date")] )
-    weekends = MultiSelect("Your Week Offs",\
+    weekends = MultiSelect("Week Offs/Leave Days",\
                                    choices=[('0', 'Monday'), ('1','Tuesday'), ('2','Wednesday'),\
                                                              ('3','Thursday'),('4','Friday'),('5','Saturday'),\
                                                              ('6','Sunday')])
@@ -30,12 +30,12 @@ class ShuffleForm(FlaskForm):
 
 class MaleForm(Form):
 
-    shirt = StringField("Shirt Color")
-    shirt_pattern = StringField("Shirt Pattern")
-    shirt_brand = StringField("Shirt Brand")
-    pants = StringField("Pants Color")
-    pants_pattern = StringField("Pants Pattern")
-    pants_brand = StringField("Pants Brand")
+    shirt = StringField("Shirt Color",render_kw={"placeholder": "White"})
+    shirt_pattern = StringField("Shirt Pattern",render_kw={"placeholder": "Checked"})
+    shirt_brand = StringField("Shirt Brand",render_kw={"placeholder": "Pepe"})
+    pants = StringField("Pants Color",render_kw={"placeholder": "Cream"})
+    pants_pattern = StringField("Pants Pattern",render_kw={"placeholder": "Plain"})
+    pants_brand = StringField("Pants Brand",render_kw={"placeholder": "Indian Terrain"})
 
 
 
@@ -51,7 +51,7 @@ class MainMaleForm(FlaskForm):
 
 class FemaleForm(Form):
 
-    attire = StringField("Attire", validators=[DataRequired()])
+    attire = StringField("Attire", validators=[DataRequired()], render_kw={"placeholder": "Yellow Chudi Black Leggings"})
     #from_date = StringField("From", validators=[DataRequired()])
     #to_date = StringField("To", validators=[DataRequired()])
 

@@ -30,9 +30,9 @@ class DressMe(object):
         if len(shirt) > len(pants):
             for m in range(len(shirt)):
                 for n in range(len(pants)):
-                    print (m,n)
-                    print (shirt[m])
-                    print (pants[n-1])
+                    #print (m,n)
+                    #print (shirt[m])
+                    #print (pants[n-1])
                     self.main_combo.append((shirt[m] , pants[n - 1]))
                     m -= 1
         else:
@@ -179,7 +179,7 @@ if __name__ == '__main__':
     x=cal_dress.create_combo(shirt,pants)
     #print (cal_dress.main_combo)
     cal_dress.alter_the_sequence(x)
-    print (cal_dress.main_combo)
+    #print (cal_dress.main_combo)
     cal_dress.create_calendar((2020, 2, 7), (2020, 8, 29),(5,6))
     cal_dress.create_schedule()
 

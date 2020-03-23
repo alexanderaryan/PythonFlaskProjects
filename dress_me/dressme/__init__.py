@@ -24,6 +24,10 @@ google_blueprint = make_google_blueprint(client_id='1069073817725-vsujpd8i576fjd
 def index():
     return render_template('index.html')
 
+@app.route('/tour')
+def tour():
+    return render_template('tour.html')
+
 @app.route('/login')
 def login():
     if not google.authorized:

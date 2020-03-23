@@ -29,8 +29,11 @@
     <div class="col-3">
         <a class="nav-item nav-link d-inline-block" href="{{url_for('index')}}"><img src="/static/Images/Logo.jpg" width="100" height="100"></a>
     </div>
-    <div class="col-9">
+    <div class="col-8">
         <h1 class="nav-item nav-link d-inline-block " id="header">A simple Web application to schedule your everyday wear!! </h1>
+                </div>
+        <div class="col-1">
+            <a class="nav-item nav-link d-inline-block " id="header" href="{{url_for('tour')}}">Take a tour! </a>
                 </div>
     </div>
         </div>
@@ -177,7 +180,9 @@ window.onload = checkform;
   $('#myInput').trigger('focus')
 });*/
 
-
+$(function () {
+  $('[data-toggle="popover"]').popover()
+});
 </script>
 
 </body>
