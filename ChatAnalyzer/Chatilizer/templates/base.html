@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Analyzer</title>
+    <link rel = "icon" type = "image/jpeg" href = "/static/images/Logo.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+          <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-light bg-primary">
+
+        <a  href={{url_for("index")}} class="navbar-brand"><img src="/static/images/Logo.png" width="100" height="100">
+        <div class="desc">Your Chat Analytics!</div>
+  </div></a>
+    <h1 id="header">Chat Analyzer </h1>
+<div class="navbar-nav">
+    <ul  class="navbar-nav">
+        <li class="nav-item">
+            <a id="header" class="nav-link" href="#">Take a tour! </a>
+        </li>
+    </ul>
+
+
+</div>
+</nav>
+
+
+{% block content %}
+
+
+{% endblock %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Emoji', 'Count'],
+          {% if emoji_list %}
+          {% for v in emoji_list %}
+          ['{{v[0]}}',{{v[1]}}],
+          {% endfor %}
+          {% else %}
+          ['',0]
+          {% endif %}
+        ]);
+
+        var options = {
+          title: 'Top 10 Emojis Used',
+          animation: {"startup": true,duration: 5000,easing: 'linear'}
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        //var chart = new google.visualization.ColumnChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+
+      <script language = "JavaScript">
+         function drawChart() {
+            // Define the chart to be drawn.
+            var data = google.visualization.arrayToDataTable([
+
+                   {% if emoji_stacked_data %}
+                {{emoji_stacked_data_title | tojson}},
+
+                {%for data in emoji_stacked_data %}
+                {{data | tojson }},
+               {% endfor %}
+               {% else %}
+               ['Name','Emoji'],
+               ['',0]
+               {% endif %}
+            ]);
+
+            var options = {title: 'Individual Emoji Contribution', isStacked:true,showRowNumber: true,
+            animation: {"startup": true,duration: 5000,easing: 'linear'}};
+
+            // Instantiate and draw the chart.
+            var chart = new google.visualization.ColumnChart(document.getElementById('stackedcolumn'));
+
+
+
+            chart.draw(data, options);
+
+         }
+         google.charts.setOnLoadCallback(drawChart);
+      </script>
+
+
+<script language = "JavaScript">
+         function drawChart() {
+            // Define the chart to be drawn.
+            var data = google.visualization.arrayToDataTable([
+                ['Name', 'Emoji Count'],
+                {%if sent_emoji%}
+          {% for v in sent_emoji %}
+          ['{{v[0]}}',{{v[1]}}],
+          {% endfor %}
+           {% else %}
+           ['',0]
+          {% endif %}
+            ]);
+
+            var options = {title: 'Emoji Count Per user',animation: {"startup": true,duration: 1000,easing: 'linear'}};
+
+            // Instantiate and draw the chart.
+            var chart = new google.visualization.ColumnChart(document.getElementById('emoji_count'));
+            chart.draw(data, options);
+
+         }
+         google.charts.setOnLoadCallback(drawChart);
+      </script>
+
+
+<script language = "JavaScript">
+/*
+         function drawChart() {
+            // Define the chart to be drawn.
+
+            var options = {
+      animation: {
+        duration: 1000,
+        easing: 'out'
+      }
+    };
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'x');
+    data.addColumn('number', 'A');
+    data.addColumn('number', 'B');
+    data.addRow(['A', 123, 40]);
+    data.addRow(['B', 17, 20]);
+
+
+    var addButton = document.getElementById('b1');
+    var removeButton = document.getElementById('b2');
+
+    function drawChart() {
+      // Disabling the buttons while the chart is drawing.
+      addButton.disabled = true;
+      removeButton.disabled = true;
+      google.visualization.events.addListener(chart, 'ready',
+          function() {
+            // Enabling only relevant buttons.
+            addButton.disabled = (data.getNumberOfColumns() - 1) >= chars.length;
+            removeButton.disabled = (data.getNumberOfColumns() - 1) < 2;
+          });
+      chart.draw(data, options);
+    }
+
+
+    function shuffleAndDrawChart() {
+      for (var i = 0; i < data.getNumberOfRows(); ++i) {
+        for (var j = 1; j < data.getNumberOfColumns(); ++j) {
+          var num = Math.floor(Math.random() * 1000);
+          data.setValue(i, j, num);
+          alert(i);
+          alert(j);
+          alert(num);
+        }
+      }
+      drawChart();
+    }
+
+     addButton.onclick = function() {
+      data.addColumn('number', chars[data.getNumberOfColumns() - 1]);
+      shuffleAndDrawChart();
+    }
+    removeButton.onclick = function() {
+      data.removeColumn(data.getNumberOfColumns() - 1);
+      shuffleAndDrawChart();
+    }
+            // Instantiate and draw the chart.
+            var chart = new google.visualization.ColumnChart(document.getElementById('visualize'));
+            chart.draw(data, options);
+
+         }
+         google.charts.setOnLoadCallback(drawChart);
+         */
+      </script>
+
+<script language="JavaScript">
+
+  google.charts.load('current', {
+  callback: drawChart,
+  packages: ['corechart']
+});
+
+function drawChart() {
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Name');
+  data.addColumn('number', 'Messages');
+  data.addColumn('number', 'Emojis');
+  data.addColumn('number', 'Media');
+  data.addColumn('number', 'Words');
+  //data.addColumn('number', 'Links');
+
+  {% for value in final_output %}
+  //data.addRow(['January 2016', 500, 100, 1200,1344]);
+  data.addRow({{value | tojson }});
+
+    {% endfor %}
+  var colors = ['red', 'yellow', 'green', 'blue'];
+ // var colors = ['red', 'yellow', 'green'];
+  colors.forEach(function (color, index) {
+    data.setColumnProperty(index + 1, 'color', color);
+  });
+
+  var options = {
+
+    legend: {
+      position: 'bottom'
+    },
+    colors: colors,
+    hAxis: {
+      slantedText: true
+    },
+    vAxis: {
+      title: 'Amount'
+    },
+
+    bar: {
+      groupWidth: '90%'
+    },
+    height: 400
+  };
+
+  $('.series-chk').on('change', drawChart);
+  $(window).resize(drawChart);
+  drawChart();
+
+  function drawChart() {
+    //debugger;
+    var chartColors = [];
+    var chartColumns = [0];
+    var view = new google.visualization.DataView(data);
+
+    $.each($('.series-chk'), function (index, checkbox) {
+      var seriesColumn = parseInt(checkbox.value);
+      if (checkbox.checked) {
+        chartColumns.push(seriesColumn);
+        chartColors.push(data.getColumnProperty(seriesColumn, 'color'));
+      }
+    });
+    view.setColumns(chartColumns);
+    options.colors = chartColors;
+    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    chart.draw(view, options);
+  }
+}
+
+</script>
+
+
+</body>
+</html>

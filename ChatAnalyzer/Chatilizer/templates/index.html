@@ -1,0 +1,15 @@
+{%extends "base.html"%}
+{%block content%}
+<div class="container">
+<form method="POST" action="" enctype="multipart/form-data">
+    {{form.hidden_tag()}}
+
+   <div class="form-group">
+        {{form.chat_file.label(class="form-group")}}{{form.chat_file(class="form-control-file")}}<br>
+
+    <div class="form-group">{{form.submit(class="btn btn-primary")}}</div>
+</div>
+    </form>
+</div>
+</div>
+{% endblock %}
