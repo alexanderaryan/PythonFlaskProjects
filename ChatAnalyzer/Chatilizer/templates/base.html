@@ -77,6 +77,104 @@
       }
     </script>
 
+        <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Words', 'Count'],
+          {% if word_list %}
+          {% for v in word_list %}
+          ['{{v[0]}}',{{v[1]}}],
+          {% endfor %}
+          {% else %}
+          ['',0]
+          {% endif %}
+        ]);
+
+        var options = {
+          title: 'Top 10 Words Used',
+          animation: {"startup": true,duration: 5000,easing: 'linear'}
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('wordpie'));
+
+
+        chart.draw(data, options);
+      }
+    </script>
+
+
+
+
+        <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Year & Month', 'Messages'],
+          {% if year_group %}
+          {% for v in year_group %}
+          ['{{v[0]}}',{{v[1]}}],
+          {% endfor %}
+          {% else %}
+          ['',0]
+          {% endif %}
+        ]);
+
+        var options = {
+          title: 'Most Active Year & Month',
+          animation: {"startup": true,duration: 5000,easing: 'linear'}
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById('yearchart'));
+
+
+        chart.draw(data, options);
+      }
+    </script>
+
+
+
+
+        <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Time', 'Count'],
+          {% if time_group %}
+          {% for v in time_group %}
+          ['{{v[0]}}:00',{{v[1]}}],
+          {% endfor %}
+          {% else %}
+          ['',0]
+          {% endif %}
+        ]);
+
+        var options = {
+          title: 'Active By Time',
+          animation: {"startup": true,duration: 5000,easing: 'linear'}
+        };
+
+        var chart = new google.visualization.BarChart(document.getElementById('timechart'));
+
+
+        chart.draw(data, options);
+      }
+    </script>
 
       <script language = "JavaScript">
          function drawChart() {
@@ -110,97 +208,7 @@
       </script>
 
 
-<script language = "JavaScript">
-         function drawChart() {
-            // Define the chart to be drawn.
-            var data = google.visualization.arrayToDataTable([
-                ['Name', 'Emoji Count'],
-                {%if sent_emoji%}
-          {% for v in sent_emoji %}
-          ['{{v[0]}}',{{v[1]}}],
-          {% endfor %}
-           {% else %}
-           ['',0]
-          {% endif %}
-            ]);
 
-            var options = {title: 'Emoji Count Per user',animation: {"startup": true,duration: 1000,easing: 'linear'}};
-
-            // Instantiate and draw the chart.
-            var chart = new google.visualization.ColumnChart(document.getElementById('emoji_count'));
-            chart.draw(data, options);
-
-         }
-         google.charts.setOnLoadCallback(drawChart);
-      </script>
-
-
-<script language = "JavaScript">
-/*
-         function drawChart() {
-            // Define the chart to be drawn.
-
-            var options = {
-      animation: {
-        duration: 1000,
-        easing: 'out'
-      }
-    };
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'x');
-    data.addColumn('number', 'A');
-    data.addColumn('number', 'B');
-    data.addRow(['A', 123, 40]);
-    data.addRow(['B', 17, 20]);
-
-
-    var addButton = document.getElementById('b1');
-    var removeButton = document.getElementById('b2');
-
-    function drawChart() {
-      // Disabling the buttons while the chart is drawing.
-      addButton.disabled = true;
-      removeButton.disabled = true;
-      google.visualization.events.addListener(chart, 'ready',
-          function() {
-            // Enabling only relevant buttons.
-            addButton.disabled = (data.getNumberOfColumns() - 1) >= chars.length;
-            removeButton.disabled = (data.getNumberOfColumns() - 1) < 2;
-          });
-      chart.draw(data, options);
-    }
-
-
-    function shuffleAndDrawChart() {
-      for (var i = 0; i < data.getNumberOfRows(); ++i) {
-        for (var j = 1; j < data.getNumberOfColumns(); ++j) {
-          var num = Math.floor(Math.random() * 1000);
-          data.setValue(i, j, num);
-          alert(i);
-          alert(j);
-          alert(num);
-        }
-      }
-      drawChart();
-    }
-
-     addButton.onclick = function() {
-      data.addColumn('number', chars[data.getNumberOfColumns() - 1]);
-      shuffleAndDrawChart();
-    }
-    removeButton.onclick = function() {
-      data.removeColumn(data.getNumberOfColumns() - 1);
-      shuffleAndDrawChart();
-    }
-            // Instantiate and draw the chart.
-            var chart = new google.visualization.ColumnChart(document.getElementById('visualize'));
-            chart.draw(data, options);
-
-         }
-         google.charts.setOnLoadCallback(drawChart);
-         */
-      </script>
 
 <script language="JavaScript">
 
@@ -273,6 +281,76 @@ function drawChart() {
 }
 
 </script>
+
+
+
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["calendar"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+   function drawChart() {
+       var dataTable = new google.visualization.DataTable();
+       dataTable.addColumn({ type: 'date', id: 'Date' });
+       dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
+       dataTable.addRows([
+          {% for n in cal_group %}
+       [new Date({{n[0].strftime('%Y,%m,%d') }}),{{n[1]}}],
+        //[ new Date(2013, 9, 30), 38447 ],
+
+          {% endfor %}
+
+        ]);
+
+       var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
+
+       var options = {
+         title: "Calendar Days and Count",
+         height: 350,
+         calendar: {
+         yearLabel: {
+        fontName: 'Times-Roman',
+        fontSize: 32,
+        color: '#1A8763',
+        bold: true,
+        italic: true
+      },
+      monthLabel: {
+        fontName: 'Times-Roman',
+        fontSize: 12,
+        color: '#1A8763',
+        bold: true,
+        italic: true
+      },
+      monthOutlineColor: {
+        stroke: '#1A8763',
+        strokeOpacity: 0.8,
+        strokeWidth: 2
+      },
+      unusedMonthOutlineColor: {
+        stroke: '#9FE582',
+        strokeOpacity: 0.8,
+        strokeWidth: 1
+      },
+      underMonthSpace: 16,
+    },
+    colorAxis: {
+        minValue: 0,
+        colors: ['#99E37C','#40921F']
+    },
+    cellColor: {
+        stroke: '#76a7fa',
+        strokeOpacity: 0.5,
+        strokeWidth: 1,
+      }
+       };
+
+       chart.draw(dataTable, options);
+   }
+    </script>
+
+
+
+
 
 
 </body>

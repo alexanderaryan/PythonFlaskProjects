@@ -50,23 +50,44 @@
 
     </div>
 
+    <div class="row center-content">
 
-    <div id="emoji_count" style="width: 1000px; height: 500px;"></div>
+        <div class="col ">
+            <h2> Longest Message </h2>
 
-    <div id="piechart" style="width: 1000px; height: 500px;"></div>
+            <h3><b>"{{longest_msg_Author}}"</b></h3><h4>({{longest_msg_count }})</h4>
 
-    <div id = "stackedcolumn" style = "width: 1000px; height: 800px;"></div>
 
-    <!--div id = "visualize" style = "width: 1000px; height: 800px;"></div>
-    <div id="b1" class="btn btn-primary">A</div>
-    <div id="b2" class="btn btn-primary">B</div!-->
 
-    <input class="series-chk" id="chk-0" type="checkbox" value="1" checked /><label for="chk-0">Messages</label>
+        </div>
+
+
+
+    </div>
+<div class="center-content">
+        <input class="series-chk" id="chk-0" type="checkbox" value="1" checked /><label for="chk-0">Messages</label>
 <input class="series-chk" id="chk-1" type="checkbox" value="2"  /><label for="chk-1">Emojis</label>
 <input class="series-chk" id="chk-2" type="checkbox" value="3"  /><label for="chk-2">Media</label>
     <input class="series-chk" id="chk-3" type="checkbox" value="4"  /><label for="chk-3">Words</label>
 <!--input class="series-chk" id="chk-4" type="checkbox" value="4" checked /><label for="chk-4">Links</label!-->
+    </div>
 <div id="chart_div"></div>
+    <div id = "stackedcolumn" style = "width: 1000px; height: 800px;"></div>
+
+    <div id="wordpie" style="width: 1000px; height: 500px;"></div>
+
+    <div id="piechart" style="width: 1000px; height: 500px;"></div>
+
+    <div id="timechart" style="width: 1000px; height: 500px;"></div>
+
+    <div id="yearchart" style="width: 1000px; height: 500px;"></div>
+
+
+    <!--div id = "visualize" style = "width: 1000px; height: 800px;"></div>
+    <div id="b1" class="btn btn-primary">A</div>
+    <div id="b2" class="btn btn-primary">B</div!-->
+      <div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
+
 
 </div>
 {% endblock %}

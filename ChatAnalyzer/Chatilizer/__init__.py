@@ -30,9 +30,11 @@ def index():
         #session['parsedData'] = dataframe_parse(session['file_path'])
         try:
             session['max_date'],session['min_date'],session['emoji_list'], \
-            session['emoji_stacked_data'], session['sent_emoji'],\
+            session['word_list'],session['emoji_stacked_data'], session['sent_emoji'],\
             session['final_output'],session['total_members'],session['total'],\
-                session['most']= dataframe_parse(
+                session['most'],session['longest_msg_count'],\
+                session['longest_msg_Author'],session['time_group'],\
+                session['year_group'],session['cal_group']= dataframe_parse(
                 session['file_path'])
             print ('*'*24)
 
@@ -54,11 +56,17 @@ def index():
                                    max_date=session['max_date'],
                                    min_date=session['min_date'], sent_emoji=session['sent_emoji'],
                                    emoji_list=session['emoji_list'],
+                                   word_list=session['word_list'],
                                    emoji_stacked_data_title=session['emoji_stacked_data'][0],
                                    emoji_stacked_data=session['emoji_stacked_data'][1],
                                    final_output=session['final_output'],
                                    total_members=session['total_members'],
-                                   total=session['total'], most=session['most'])
+                                   total=session['total'], most=session['most'],
+                                   longest_msg_count=session['longest_msg_count'],
+                                   longest_msg_Author=session['longest_msg_Author'],
+                                   time_group=session['time_group'],
+                                   year_group=session['year_group'],
+                                   cal_group=session['cal_group'])
 
     return render_template('index.html',form=form)
 

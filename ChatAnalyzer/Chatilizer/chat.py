@@ -303,9 +303,24 @@ def dataframe_parse(filename):
 
         long_day_list = [(author.Author, author.Message) for author in long_day_list.itertuples()]
 
+        longest_msg_count, longest_msg = int(df['Word_Count'].max()),\
+                                         df.iloc[df.Word_Count.idxmax()][['Message', 'Author','Date']]
 
+        time_group = pd.to_datetime(df['Time']).apply(lambda s: str(s.hour))
 
-        return max_date,min_date,emoji_list,emoji_stacked_data,sent_emoji,final_output,total_members_list,total,most
+        time_group = [n for n in time_group.value_counts()[:10].items()]
+
+        year_group = pd.to_datetime(df['Date']).apply(lambda s: str(s.year) + ' ' + str(s.month_name()))
+
+        year_group = [n for n in year_group.value_counts()[:10].items()]
+
+        cal_group = pd.to_datetime(df['Date'])
+
+        cal_group = [n for n in cal_group.value_counts()[:50].items()]
+        print (cal_group)
+
+        return max_date,min_date,emoji_list,word_list,emoji_stacked_data,sent_emoji,final_output,total_members_list,total,\
+               most,longest_msg_count,str(longest_msg.Author),time_group,year_group,cal_group
     else:
         print ("Invalid file")
         return None
