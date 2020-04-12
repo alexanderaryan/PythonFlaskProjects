@@ -3,9 +3,20 @@ import pandas as pd
 import emoji,string
 from collections import Counter
 import numpy
+import logging
+
+logging.basicConfig(handlers = [logging.FileHandler('logfile.log', 'w', 'utf-8')],
+           format = '%(levelname)s: %(message)s',
+                    datefmt = '%m-%d %H:%M',
+                    level=logging.INFO
+)
+
+# Creating an object
+logger = logging.getLogger()
 
 
 def startsWithDateTime(s):
+
     pattern = '^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)(\d{2}|\d{4}), (([0-9]|)[0-9]):([0-9][0-9]) ([a|p]m) -'
     result = re.match(pattern, s)
     if result:
@@ -15,15 +26,15 @@ def startsWithDateTime(s):
 def  tosplitauthor(s):
     try:
         author = s.split('-')[1].split(':')[0]
-        print (author)
+
     except:
         author=None
-        print (author,s)
     else:
-        print (author)
+        logger.info(author, " - Author Found")
 
 
 def startsWithAuthor(s):
+
     patterns = [
         '([\w]+):',                        # First Name
         '([\w]+[\s]+[\w]+):',              # First Name + Last Name
@@ -61,6 +72,7 @@ def getDataPoint(line):
 def dataframe_parse(filename):
     parsedData = []  # List to keep track of data so it can be used by a Pandas dataframe
     conversationPath = filename
+    logger.info("%s is the file name passed",filename)
     with open(conversationPath, encoding="utf-8") as fp:
         fp.readline()  # Skipping first line of the file (usually contains information about end-to-end encryption)
 
@@ -88,14 +100,14 @@ def dataframe_parse(filename):
                 messageBuffer.append(
                     line)  # If a line doesn't start with a Date Time pattern, then it is part of a multi-line message. So, just append to buffer
 
+    logger.info("Parsed the file completely!")
 
-    print (parsedData[0][0])
     if parsedData[0][0]!=None:
 
-        print ("Entered")
+        logger.info ("Parsed value is not None. Creating data frame")
         df = pd.DataFrame(parsedData, columns=['Date', 'Time', 'Author', 'Message'])
+        logger.info("Data Frame Successfully Created")
 
-        print (df.head())
 
         author_value_counts = df['Author'].value_counts()  # Number of messages per author
 
@@ -104,50 +116,64 @@ def dataframe_parse(filename):
         author_media_messages_value_counts = media_messages_df['Author'].value_counts()
 
         df['Letter_Count'] = df['Message'].apply(lambda s: len(s))
+        logger.info("Letter count column created")
 
         df['Emoji_Count'] = df['Message'].apply(lambda s: emoji.emoji_count(s))
+        logger.info("Emoji count column created")
+
         df['Emojis'] = df['Message'].apply(lambda s: [n for n in s if emoji.demojize(n) != n \
                                                       and emoji.demojize(n).count('skin_tone')==0\
                                                       and  emoji.demojize(n).count('male_sign')==0])
 
+        logger.info("Emojis are separated from Messages")
+
         df['Word_Count'] = df['Message'].apply(lambda s: len([w for w in s.split(' ') if w not in string.punctuation]))
+
+        logger.info("Word count column created")
+
 
         emoji_data = df[df.Emojis.apply(lambda s: s if s != [] else None).notnull()]
 
         emoji_list = Counter([n for ind, val in emoji_data.Emojis.items() for n in val]).most_common(10)
-
-        df['Letter_Count'].sum(), df['Word_Count'].sum(), df['Emoji_Count'].sum(), df.Message.count(), df.Author.count()
+        logger.info("Emoji list created")
+        #df['Letter_Count'].sum(), df['Word_Count'].sum(),\
+        #df['Emoji_Count'].sum(), df.Message.count(), df.Author.count()
 
         df['Changed_Author'] = df.loc[
             (df['Author'].isnull()) & (df['Message'].str.contains('changed|deleted', regex=True))].Message.apply(
             lambda s: re.sub(r' (changed|deleted).*$', '', s) if re.sub(r' (changed|deleted).*$','',s)!= 'You' else numpy.NaN)
 
+        logger.info("Group name Changed/deleted Authors column created")
 
         df['Added_Author'] = df.loc[
             (df['Author'].isnull()) & (df['Message'].str.contains('added', regex=True))].Message.apply(
             lambda s: re.sub(r' added.*$', '', s))
 
+        logger.info("Group Name Added Authors column created")
 
         df['Removed_Author'] = df.loc[
             (df['Author'].isnull()) & (df['Message'].str.contains('removed', regex=True))].Message.apply(
             lambda s: re.sub(r' removed.*$', '', s))
 
+        logger.info("Group Name removed Authors column Created")
 
         df['Left_People'] = df.loc[
             (df['Author'].isnull()) & (df['Message'].str.contains('left$', regex=True))].Message.apply(
             lambda s: re.sub(r' left$', '', s))
 
-        print("Total Message Sent : ", df.count().Author)
-        print("Users Contributed Count : ", df['Author'].nunique())
-        print("Users Contributed : ", df['Author'].dropna().unique())
+        logger.info("People left from group column Created")
 
-        print(df['Word_Count'].max())
+        logger.info("Total Message Sent : %d", df.count().Author)
+        logger.info("Users Contributed Count : %s", df['Author'].nunique())
+        #logger.info("Users Contributed : ", df['Author'].dropna().unique())
+
+
         longest_message, longest_msg = df['Word_Count'].max(), df.iloc[df.Word_Count.idxmax()][['Message', 'Author']]
 
-        print("""Longest Message is sent by : " """, longest_msg.Author, """" and the message has : """, longest_message,
-              """ words""")
+        logger.info("Longest Message is identified sucessfully!")
 
-        print("Total Emoji Sent : ", df[df['Author'].notnull()].Emoji_Count.sum())
+
+
         msg_emoji = df.groupby(['Author']).sum()['Emoji_Count']
         group_name_emoji = df.groupby(['Changed_Author']).sum()['Emoji_Count']
 
@@ -156,16 +182,14 @@ def dataframe_parse(filename):
 
         msg_word_by_author = df.groupby(['Author']).sum()['Word_Count']
         changed_word_by_author = df.groupby(['Changed_Author']).sum()['Word_Count']
-        print("Total Words : ", df[(df['Author'].notnull()) | (df['Changed_Author'].notnull())].Word_Count.sum())
+        #logger.info("Total Words : ", df[(df['Author'].notnull()) | (df['Changed_Author'].notnull())].Word_Count.sum())
         words_by_author = msg_word_by_author.add(changed_word_by_author, fill_value=0).apply(lambda s: int(s))
 
         author_media_messages_value_counts = author_media_messages_value_counts.apply(lambda s: int(s))
-        print(type(author_media_messages_value_counts))
-        print(type(words_by_author))
-        print(type(sent_emoji))
-        print(type(author_media_messages_value_counts))
+
 
         def emoji_per_person_usage_cal(emoji_list, emoji_values):
+
             emoji_stacked_data = {'Name': []}
             for emo in emoji_list:
                 for author, data in emoji_values:
@@ -188,11 +212,11 @@ def dataframe_parse(filename):
         group_name_emoji = df.groupby(['Changed_Author']).Emojis
 
         msg_emoji_stacked_data = emoji_per_person_usage_cal(emoji_list, message_emoji)
+        logger.info("Stacked emoji out of messages calculated")
 
         group_emoji_stacked_data = emoji_per_person_usage_cal(emoji_list, group_name_emoji)
+        logger.info("Stacked emoji out of group name change calculated")
 
-        # print (msg_emoji_stacked_data)
-        # print (group_emoji_stacked_data)
 
         for key, value in group_emoji_stacked_data.items():
             if key != 'Name':
@@ -205,15 +229,16 @@ def dataframe_parse(filename):
                         try:
                             msg_emoji_stacked_data['Name'].index(group_emoji_stacked_data['Name'][value.index(val)])
                         except:
-                            pass
+                            logger.error("Value Error in combining message and group stacked emoji")
                         else:
                             name_col = msg_emoji_stacked_data['Name'].index(
                                 group_emoji_stacked_data['Name'][value.index(val)])
-                            # print (name_col)
-                            # print (msg_emoji_stacked_data[key][name_col])
+
                             msg_emoji_stacked_data[key][name_col] += val
-                            # print (msg_emoji_stacked_data[key][name_col])
+
         emoji_stacked_data = [[m for m in msg_emoji_stacked_data.keys()]]
+        logger.info("Stacked Emoji values for graph is calculated!")
+
 
         emoji_stacked_data.append(
             (numpy.asarray([n for n in msg_emoji_stacked_data.values()], dtype=object).transpose()).tolist())
@@ -223,15 +248,17 @@ def dataframe_parse(filename):
         final_output = [[m, n[0], n[-3], n[-2], n[-1]] for m, n in [[n, list(j)] for n, j in final_df.iterrows()]]
 
 
-        print(final_output)
+        logger.info("Cumulative list for cumulative column graph is calculated")
 
 
 
         total_members_list = sorted(df['Author'].dropna().unique())
+
         max_date = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='ignore').max()
         min_date = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='ignore').min()
 
         date_diff = max_date - min_date
+
 
         total = [('days', date_diff.days),
                  ('messages', int(df.count().Author)),
@@ -241,26 +268,27 @@ def dataframe_parse(filename):
                  ('letters', int(df['Letter_Count'].sum()))
                  ]
 
-        print (total,"inside total")
+        logger.info("Total data of the group calculated ! ")
+
         word_list = pd.Series(' '.join(df.loc[~(
             df['Message'].str.contains('<Media.* | omitted>.$', regex=True))].Message).lower().split()).value_counts()[:10]
 
         date_group = df.groupby('Date')
 
-        print ("before most")
+
 
         try:
-            print ("try")
-            most = [('texts sent', author_value_counts.idxmax(), int(author_value_counts.max())),
-                ('emoji sent', sent_emoji.idxmax(), int(sent_emoji.max())),
-                ('media shared', author_media_messages_value_counts.idxmax(), int(author_media_messages_value_counts.max())),
-                ('Used Word', word_list.idxmax(), int(word_list.max())),
-                ('Used Emoji', emoji_list[0][0], int(emoji_list[0][1])),
-                ('Texted Day', date_group.Message.count().idxmax(), int(date_group.Message.count().max()))
+
+            most = [('texts sent by ', author_value_counts.idxmax(), int(author_value_counts.max())),
+                ('emoji sent by', sent_emoji.idxmax(), int(sent_emoji.max())),
+                ('media shared by ', author_media_messages_value_counts.idxmax(), int(author_media_messages_value_counts.max())),
+                ('Used Word is ', word_list.idxmax(), int(word_list.max())),
+                ('Used Emoji is ', emoji_list[0][0], int(emoji_list[0][1])),
+                ('Texted Day is ', date_group.Message.count().idxmax(), int(date_group.Message.count().max()))
                 ]
-            print (most,"most")
+            logger.info("Most values of the group calculated ! ")
         except:
-            print ("except")
+            logger.warning("Error in calculating 'Most Values'!!")
             try:
                 most = [('texts sent', author_value_counts.idxmax(), int(author_value_counts.max())),
                     ('emoji sent', sent_emoji.idxmax(), int(sent_emoji.max())),
@@ -270,7 +298,9 @@ def dataframe_parse(filename):
                     ('Used Emoji', "",0),
                     ('Texted Day', date_group.Message.count().idxmax(), int(date_group.Message.count().max()))
                     ]
+                logger.warning("Emoji count is zero in the group!")
             except:
+
                 try:
 
                     most = [('texts sent', author_value_counts.idxmax(), int(author_value_counts.max())),
@@ -279,6 +309,7 @@ def dataframe_parse(filename):
                             ('Used Word', word_list.idxmax(), int(word_list.max())),
                             ('Used Emoji', emoji_list[0][0], int(emoji_list[0][1])),
                             ('Texted Day', date_group.Message.count().idxmax(), int(date_group.Message.count().max()))]
+                    logger.warning("Media count is zero in the group!")
                 except:
                     most = [('texts sent', author_value_counts.idxmax(), int(author_value_counts.max())),
                             ('emoji sent', sent_emoji.idxmax(), int(sent_emoji.max())),
@@ -286,18 +317,21 @@ def dataframe_parse(filename):
                             ('Used Word', word_list.idxmax(), int(word_list.max())),
                             ('Used Emoji', "",0),
                             ('Texted Day', date_group.Message.count().idxmax(), int(date_group.Message.count().max()))]
+                    logger.warning("Media and Emoji count are zero in the group!")
                 else:
                     pass
             else:
                 pass
         
         else:
-            print (most,"most")
+            logger.info("Exited after calculating 'Most Values' of the group ! ")
 
 
         sent_emoji = [(m, n) for m, n in sent_emoji.sort_values(ascending=False).items()]
 
         word_list = [(m, n) for m, n in word_list.items()]
+
+        logger.info("Top 10 Emoji List and Word list are created!")
 
         long_day_list = df.loc[df['Date'] == date_group.Message.count().idxmax(), ['Author', 'Message']]
 
@@ -305,7 +339,7 @@ def dataframe_parse(filename):
 
         longest_msg_count, longest_msg = int(df['Word_Count'].max()),\
                                          df.iloc[df.Word_Count.idxmax()][['Message', 'Author','Date']]
-
+        logger.info("Calculating all the time related info of the group!")
         time_group = pd.to_datetime(df['Time']).apply(lambda s: str(s.hour))
 
         time_group = [n for n in time_group.value_counts()[:10].items()]
@@ -317,12 +351,12 @@ def dataframe_parse(filename):
         cal_group = pd.to_datetime(df['Date'])
 
         cal_group = [n for n in cal_group.value_counts()[:50].items()]
-        print (cal_group)
+        logger.info("Calculated all the time related info of the group!")
 
-        return max_date,min_date,emoji_list,word_list,emoji_stacked_data,sent_emoji,final_output,total_members_list,total,\
+        return max_date,min_date,emoji_list,word_list,emoji_stacked_data,final_output,total_members_list,total,\
                most,longest_msg_count,str(longest_msg.Author),time_group,year_group,cal_group
     else:
-        print ("Invalid file")
+        logger.error( "%s is an Invalid File!!",filename)
         return None
 
 

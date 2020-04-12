@@ -4,9 +4,42 @@
 <form method="POST" action="" enctype="multipart/form-data">
     {{form.hidden_tag()}}
 
-   <div class="form-group">
-        {{form.chat_file.label(class="form-group")}}{{form.chat_file(class="form-control-file")}}<br>
+    {% with messages = get_flashed_messages(with_categories=true)%}
+        {% if messages %}
+        {% for error,mess in messages%}
 
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>{{error}}</strong>  {{ mess }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+   <div class="form-group">
+       {% for error in form.chat_file.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>{{error}}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+                {% endfor %}
+
+        {{form.chat_file.label(class="form-group")}}{{form.chat_file(class="form-control-file")}}<br>
+       {% for error in form.recaptcha.errors %}
+       <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Oho!!</strong>Seems you are a Robot. No? Confirm by checking the below box.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+       {% endfor %}
+
+        {{form.recaptcha}}
     <div class="form-group">{{form.submit(class="btn btn-primary")}}</div>
 </div>
     </form>
