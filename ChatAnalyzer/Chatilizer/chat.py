@@ -5,6 +5,7 @@ from collections import Counter
 import numpy
 import logging
 
+
 logging.basicConfig(handlers = [logging.FileHandler('logfile.log', 'w', 'utf-8')],
            format = '%(levelname)s: %(message)s',
                     datefmt = '%m-%d %H:%M',
@@ -15,12 +16,12 @@ logging.basicConfig(handlers = [logging.FileHandler('logfile.log', 'w', 'utf-8')
 logger = logging.getLogger()
 
 
-def startsWithDateTime(s):
-
-    pattern = '^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)(\d{2}|\d{4}), (([0-9]|)[0-9]):([0-9][0-9]) ([a|p]m) -'
-    result = re.match(pattern, s)
+def startsWithDateTime(s, date_pattern):
+    result = re.match(date_pattern, s)
+    # print (result,s)
     if result:
         return True
+
     return False
 
 def  tosplitauthor(s):
@@ -47,6 +48,9 @@ def startsWithAuthor(s):
     result = re.match(pattern, s)
     if result:
         return True
+    else:
+        if s.count(':') == 1 and s.count("changed the subject")==0 :
+            return True
     return False
 
 
@@ -70,35 +74,51 @@ def getDataPoint(line):
     return date, time, author, message
 
 def dataframe_parse(filename):
-    parsedData = []  # List to keep track of data so it can be used by a Pandas dataframe
+    data_frame_data = {'dd_pattern': [
+        '^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)(\d{2}|\d{4}), (([0-9]|)[0-9]):([0-9][0-9])(\s*)(([a|p]m)*|([A|P]M)*)*(\s*)-',
+        []],
+                       'mm_pattern': [
+                           '^(((0)[0-9]|[0-9])|((1)[0-2]))(\/)(([0-2][0-9]|(3)[0-1])|[1-9])(\/)(\d{2}|\d{4}), (([0-9]|)[0-9]):([0-9][0-9])(\s*)(([a|p]m)*|([A|P]M)*)*(\s*)-',
+                           []]}
+
     conversationPath = filename
-    logger.info("%s is the file name passed",filename)
-    with open(conversationPath, encoding="utf-8") as fp:
-        fp.readline()  # Skipping first line of the file (usually contains information about end-to-end encryption)
 
-        messageBuffer = []  # Buffer to capture intermediate output for multi-line messages
-        date, time, author = None, None, None  # Intermediate variables to keep track of the current message being processed
+    logger.info("%s is the file name passed", filename)
+    for date_pattern in data_frame_data.values():
+        with open(conversationPath, encoding="utf-8") as fp:
+            fp.readline()  # Skipping first line of the file (usually contains information about end-to-end encryption)
 
-        while True:
-            line = fp.readline()
-            if not line:  # Stop reading further if end of file has been reached
-                parsedData.append([date, time, author, ' '.join(messageBuffer)])
-                break
-            # print (line)
-            line = line.strip()  # Guarding against erroneous leading and trailing whitespaces
-            if startsWithDateTime(
-                    line):  # If a line starts with a Date Time pattern, then this indicates the beginning of a new message
-                if len(messageBuffer) > 0:  # Check if the message buffer contains characters from previous iterations
-                    # print (messageBuffer)
-                    parsedData.append([date, time, author,
-                                       ' '.join(messageBuffer)])  # Save the tokens from the previous message in parsedData
-                messageBuffer.clear()  # Clear the message buffer so that it can be used for the next message
-                date, time, author, message = getDataPoint(line)  # Identify and extract tokens from the line
-                messageBuffer.append(message)  # Append message to buffer
+            messageBuffer = []  # Buffer to capture intermediate output for multi-line messages
+            date, time, author = None, None, None  # Intermediate variables to keep track of the current message being processed
 
-            else:
-                messageBuffer.append(
-                    line)  # If a line doesn't start with a Date Time pattern, then it is part of a multi-line message. So, just append to buffer
+            while True:
+                line = fp.readline()
+                # print (line)
+                if not line:  # Stop reading further if end of file has been reached
+                    date_pattern[1].append([date, time, author, ' '.join(messageBuffer)])
+                    break
+                # print (line)
+                line = line.strip()  # Guarding against erroneous leading and trailing whitespaces
+
+                if startsWithDateTime(line, date_pattern[0]):  # If a line starts with a Date Time pattern, then this indicates the beginning of a new message
+                    if len(messageBuffer) > 0:  # Check if the message buffer contains characters from previous iterations
+                        # print (messageBuffer)
+                        date_pattern[1].append([date, time, author, ' '.join(messageBuffer)])  # Save the tokens from the previous message in parsedData
+                    messageBuffer.clear()  # Clear the message buffer so that it can be used for the next message
+                    date, time, author, message = getDataPoint(line)  # Identify and extract tokens from the line
+                    # print (date, time, author, message)
+                    messageBuffer.append(message)  # Append message to buffer
+
+                else:
+                    messageBuffer.append(line)  # If a line doesn't start with a Date Time pattern, then it is part of a multi-line message. So, just append to buffer
+
+    if len(data_frame_data['dd_pattern'][1]) > len(data_frame_data['mm_pattern'][1]):
+        parsedData = data_frame_data['dd_pattern'][1]
+    else:
+        parsedData = data_frame_data['mm_pattern'][1]
+
+
+
 
     logger.info("Parsed the file completely!")
 
@@ -127,7 +147,9 @@ def dataframe_parse(filename):
 
         logger.info("Emojis are separated from Messages")
 
-        df['Word_Count'] = df['Message'].apply(lambda s: len([w for w in s.split(' ') if w not in string.punctuation]))
+        df['Word_Count'] = df['Message'].apply(lambda s: len([w for w in s.split(' ') if w not in string.punctuation
+                                                              and emoji.emoji_count(w)==0]))
+
 
         logger.info("Word count column created")
 
@@ -141,7 +163,7 @@ def dataframe_parse(filename):
 
         df['Changed_Author'] = df.loc[
             (df['Author'].isnull()) & (df['Message'].str.contains('changed|deleted', regex=True))].Message.apply(
-            lambda s: re.sub(r' (changed|deleted).*$', '', s) if re.sub(r' (changed|deleted).*$','',s)!= 'You' else numpy.NaN)
+            lambda s: re.sub(r' (changed|deleted).*$', '', s) if re.sub(r' (changed|deleted).*$','',s)!= 'You' and re.sub(r' (changed|deleted).*$','',s).count('security code')!=1 else numpy.NaN)
 
         logger.info("Group name Changed/deleted Authors column created")
 
@@ -254,6 +276,7 @@ def dataframe_parse(filename):
 
         total_members_list = sorted(df['Author'].dropna().unique())
 
+
         max_date = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='ignore').max()
         min_date = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='ignore').min()
 
@@ -271,7 +294,8 @@ def dataframe_parse(filename):
         logger.info("Total data of the group calculated ! ")
 
         word_list = pd.Series(' '.join(df.loc[~(
-            df['Message'].str.contains('<Media.* | omitted>.$', regex=True))].Message).lower().split()).value_counts()[:10]
+            df['Message'].str.contains('<Media.* | omitted>.$', regex=True))
+                                       & (df['Message'].apply(lambda s: [w for w in s.split(' ') if emoji.emoji_count(w)==0]))].Message).lower().split()).value_counts()[:10]
 
         date_group = df.groupby('Date')
 
@@ -344,13 +368,25 @@ def dataframe_parse(filename):
 
         time_group = [n for n in time_group.value_counts()[:10].items()]
 
-        year_group = pd.to_datetime(df['Date']).apply(lambda s: str(s.year) + ' ' + str(s.month_name()))
+        format_type = ["%d/%m/%Y", "%m/%d/%Y", "%d/%m/%y", "%m/%d/%y"]
+
+        for ft in format_type:
+            try:
+                dt_group = pd.to_datetime(df['Date'], format=ft, errors='raise')
+            except:
+                logger.warning("Date Format failed %s", ft)
+            else:
+                logger.info("Date Format used %s", ft)
+
+        # year_group = pd.to_datetime(df['Date']).apply(lambda s: str(s.year)+' ' +str(s.month_name()))
+        year_group = dt_group.apply(lambda s: str(s.year) + ' ' + str(s.month_name()))
 
         year_group = [n for n in year_group.value_counts()[:10].items()]
 
-        cal_group = pd.to_datetime(df['Date'])
+        # cal_group = pd.to_datetime(df['Date'],format=("%d/%m/%Y"),errors='ignore')
 
-        cal_group = [n for n in cal_group.value_counts()[:50].items()]
+        cal_group = [n for n in dt_group.value_counts()[:50].items()]
+
         logger.info("Calculated all the time related info of the group!")
 
         return max_date,min_date,emoji_list,word_list,emoji_stacked_data,final_output,total_members_list,total,\

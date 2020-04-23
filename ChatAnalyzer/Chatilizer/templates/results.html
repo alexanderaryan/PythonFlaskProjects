@@ -1,6 +1,6 @@
 {%extends "base.html"%}
 {%block content%}
-
+<div class="container">
    <aside>
       <div id="sidebar" class="nav-collapse ">
         <!-- sidebar menu start-->
@@ -9,7 +9,7 @@
           <h5 class="centered">{{filename}}</h5>
           <li class="mt">
             <a class="active">
-              <i class="fa fa-dashboard"></i>
+              <i class="fa fa-snowflake-o"></i>
               <span>{{total_members | length }} In this Group </span>
               </a>
           </li>
@@ -32,7 +32,20 @@
     <!--main content start-->
     <section id="main-content">
       <section class="wrapper">
+
+
         <br>
+                                               <br>
+            <div class="card" >
+  <div class="card-body">
+
+    <p class="card-text">    <h1>Let us sum up everything. Look before you leap!! 😜</h1>
+
+</p>
+
+  </div>
+</div>
+
         <div class="row">
 
           {%for key,value in total %}
@@ -51,7 +64,24 @@
 
 
           <div class="col-lg-12 main-chart">
+                                           <br>
+            <div class="card ">
+  <div class="card-body">
+
+    <p class="card-text">        <h1>All right!! How about a graph now!! 📊
+                  <br>Who are the most garrulous members? 🗣️
+                  <br>Who is the creep that shares more media?! 🤳🏼
+                  <br>Who loves Emojis than words? 🕴🏻
+                  <br>Who is the Logophile of the group? 🙇🏼 <br>
+              </h1>
+
+</p>
+
+  </div>
+</div>
+
             <!--CUSTOM CHART START -->
+
             <div class="border-head">
               <h3>CUMULATIVE RESULTS IN GRAPH</h3>
             </div>
@@ -64,7 +94,22 @@
     </div>
 <div id="chart_div"></div>
 
-<br>
+              <br>
+                                               <br>
+            <div class="card ">
+  <div class="card-body">
+
+    <p class="card-text"><h1>Ok!! Let us Dig Deeper..... 🔍
+                  <br>🏎️ Who comes first in the race? 🏍️
+                  <br>What is the most used Word/Emoji? 🤔
+                  <br>Day that had a very loooooooonnnnnnnnggggggg Squabble? 🤼
+                  <br>Who sent that longest Essay? 👺 <br>
+              </h1>
+</p>
+
+  </div>
+</div>
+
             <div class="row">
             {%for header,value,count in most %}
             <div class="col-md-4 col-sm-4 mb">
@@ -93,7 +138,7 @@
 
                       <div class="row">
 
-            <div class="col-md-12 col-sm-12 mb">
+            <div class="col-md-12 col-sm-12 col-xs-12 mb">
                 <div class="darkblue-panel pn">
 
            <div class="darkblue-header">
@@ -103,7 +148,7 @@
                   <h1><b>{{longest_msg_Author}}</b></h1>
                   <footer>
                     <div class="pull-mid">
-                      <h5><i class="fa fa-long-arrow-right "></i> {{longest_msg_count }}</h5>
+                      <h5><i class="fa fa-long-arrow-right "></i> {{longest_msg_count }} words!</h5>
                     </div>
                   </footer>
                 </div>
@@ -111,24 +156,90 @@
               </div>
 
 </div>
-<div class="col-mg-12">
-  <div id="wordpie" style="width: 1000px; height: 500px;"></div>
+
+                                                     <br>
+            <div class="card ">
+  <div class="card-body">
+
+    <p class="card-text"><h1>Alright!! Analytics won't get completed without graphs.
+      Here's my favorite, the Pie!! 🥧 </h1>
+</p>
+
+  </div>
 </div>
-            <div class="col-mg-12">
-    <div id="piechart" style="width: 1000px; height: 500px;"></div>
-            </div>
-            <div class="col-mg-12">
-    <div id = "stackedcolumn" style = "width: 1000px; height: 800px;"></div>
-            </div>
-            <div class="col-mg-12">
-    <div id="timechart" style="width: 1000px; height: 500px;"></div>
-            </div>
-            <div class="col-mg-12">
-    <div id="yearchart" style="width: 1000px; height: 500px;"></div>
-            </div>
-        <div class="col-mg-12">
-            <div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
-        </div>
+
+
+
+  <div id="wordpie" ></div>
+
+
+
+    <div id="piechart" ></div>
+
+              <br>
+            <div class="card ">
+  <div class="card-body">
+
+    <p class="card-text"><h1>Hmmm..... Love to see who is always happy, sad, angry ?? Let us dig their Emoticons Baby...🔍
+              <br>I brought you a stacked graph!! Find it out. 🧘 </h1></p>
+
+  </div>
+</div>
+
+    <div id = "stackedcolumn" style = "height: 800px;"></div>
+
+                         <br>
+            <div class="card ">
+  <div class="card-body">
+
+    <p class="card-text"><h1>Well... Well... Well.. We missed something? Don't we.. It started from Big Bang... Yes.. <b>The Time 🕒 </b>
+              <br>We aren't giving much deserved notice to it?
+                  <br>Don't you wanna know when to message this group to get instant replies? 😎
+            <br>  See the Bar to find whenever this group is Chatty! Thank me later! ❤️ </h1></p>
+
+  </div>
+</div>
+
+
+
+
+    <div id="timechart" ></div>
+
+                                       <br>
+            <div class="card ">
+  <div class="card-body">
+
+    <p class="card-text">       <h1>Ooops.. I went too deep. Let us zoom out.🔍
+                  <br>Everything has a season. Let us find the Talkative season of the group!! 🌦️🍃🍂⛈☀️️
+              </h1>
+</p>
+
+  </div>
+</div>
+
+
+
+    <div id="yearchart" style="height: 500px;"></div>
+
+
+                                                     <br>
+            <div class="card ">
+  <div class="card-body">
+
+    <p class="card-text"><h1>Finally! Google has a calendar Chart. Why should we miss that!?
+                  <br>I plotted 50 long days of the group. 📅.
+      <br> Too Small in your mobile?? Please rotate your device. 🔄
+              </h1>
+</p>
+
+  </div>
+</div>
+
+
+
+
+            <div id="calendar_basic" style = "width: 100%;"></div>
+
 
 
         </div>
@@ -139,21 +250,21 @@
     </section>
     <!--main content end-->
     <!--footer start-->
-    <footer class="site-footer">
-      <div class="text-center">
-        <p>
-          &copy; Copyrights <strong>Chatilytikz</strong>. All Rights Reserved
-        </p>
-        <div class="credits">
-
-          Created by Alex. Contact e-mail: alextechie2020@gmail.com
-        </div>
-
-    </footer>
-    <!--footer end-->
-  </section>
 
 
 
+<script>
 
+    $(document).ready(function() {
+
+   $(".logo").after('<div class="nav notify-row" id="top_menu"> \
+   <div class="title" style="color:white"><h1>{{filename}}</h1></div> \
+   <hr class="hr-success" /> \
+   <p style="color: green;font-size: x-large;place-self: center;border: 2px solid white;padding: 0px 8px;"> <b>{{max_date}} </b></p> <h1> | </h1> <p style="color: green;border: 2px solid white;padding: 0px 8px;place-self: center;font-size: x-large;"><b>{{min_date}}</b></p></div>');
+});
+
+</script>
+
+
+</div>
 {% endblock %}

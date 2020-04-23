@@ -11,7 +11,7 @@ class TinderBot():
         prefs = {"profile.default_content_setting_values.notifications": 2}
 
         chrome_options.add_experimental_option("prefs", prefs)
-        self.driver = webdriver.Chrome("D:\Localgit\chromedriver.exe", chrome_options=chrome_options)
+        self.driver = webdriver.Chrome("D:\Softwares\chromedriver.exe", chrome_options=chrome_options)
 
     def login(self):
         self.driver.get('https://tinder.com')
@@ -19,9 +19,11 @@ class TinderBot():
 
         sleep(10)
 
-        fb_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div/div/div[3]/div[2]/button')
+        #fb_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div/div/div[3]/div[2]/button')
+        fb_btn = self.driver.find_element_by_xpath('// *[ @ id = "modal-manager"] / div / div / div / div / div[3] / span / div[2] / button')
         fb_btn.click()
-
+        #// *[ @ id = "modal-manager"] / div / div / div / div / div[3] / span / div[2] / button
+        #'//*[@id="content"]/div/_div[1] / div / div / main / div / div[2] / div[2] / div / div / span / div[2] / button'
         # switch to login popup
         base_window = self.driver.window_handles[0]
         self.driver.switch_to_window(self.driver.window_handles[1])

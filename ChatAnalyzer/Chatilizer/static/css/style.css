@@ -278,7 +278,10 @@ ul.top-menu > li > .logout {
 .nav-collapse.collapse {
     display: inline;
 }
+.nav{
+display: flex;
 
+}
 ul.sidebar-menu , ul.sidebar-menu li ul.sub{
     margin: -2px 0 0;
     padding: 0;
@@ -419,9 +422,43 @@ ul.sidebar-menu li a.active i {
     border-bottom: 1px solid #393d46;
 }
 
+
+
+
+.container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 100% !important;
+}
+
+.container {
+    width: 100% !important;
+    padding: 0px !important;
+    margin-right: auto;
+    margin-left: auto;
+}
+.alert-info {
+    color: white;
+    background-color: green;
+    border-color: black;
+}
+#howto{
+     width: 100% !important;
+    padding-top: 50px !important;
+
+}
+#how_to_pic{
+    height: fit-content;
+    align-self: center;
+}
+
+.card {
+height:auto !important;
+color: white;
+background: #1dc3b4 !important
+}
+
 .wrapper {
     display: inline-block;
-    margin-top: 60px;
+    margin-top: 90px;
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 15px;
@@ -931,6 +968,7 @@ PANELS CONFIGURATIONS
 .pn {
 	height: 150px;
 	box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
+	border-bottom-left-radius: 50%;
 }
 
 
@@ -968,10 +1006,12 @@ PANELS CONFIGURATIONS
 
 .darkblue-panel {
 	text-align: center;
-	background: #444c57;
+	background: green;
+    color: white;
+    border-bottom-left-radius: 0%;
 }
 .darkblue-panel .darkblue-header {
-	background: transparent;
+	background: black;
 	padding: 3px;
 	margin-bottom: 15px;
 }
@@ -985,6 +1025,8 @@ PANELS CONFIGURATIONS
 }
 .darkblue-panel footer {
 	color: white;
+	padding: 1px;
+	background: black;
 }
 .darkblue-panel footer h5 {
 	margin-left:10px;
@@ -995,10 +1037,11 @@ PANELS CONFIGURATIONS
 /*Green Panel*/
 .green-panel {
 	text-align: center;
-	background: #4ECDC4;
+	background: green;
+    color: white;
 }
 .green-panel .green-header {
-	background: #43b1a9;
+	background: black;
 	padding: 3px;
 	margin-bottom: 15px;
 }
