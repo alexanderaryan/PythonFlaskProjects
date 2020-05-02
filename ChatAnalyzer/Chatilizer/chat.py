@@ -277,11 +277,41 @@ def dataframe_parse(filename):
         total_members_list = sorted(df['Author'].dropna().unique())
 
 
-        max_date = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='ignore').max()
-        min_date = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='ignore').min()
+        time_group = pd.to_datetime(df['Time']).apply(lambda s: str(s.hour))
+
+        time_group = [n for n in time_group.value_counts()[:10].items()]
+
+        format_type = ["%d/%m/%Y", "%m/%d/%Y", "%d/%m/%y", "%m/%d/%y"]
+
+        for ft in format_type:
+            try:
+                dt_group = pd.to_datetime(df['Date'], format=ft, errors='raise')
+            except:
+                logger.warning("Date Format failed %s", ft)
+            else:
+                logger.info("Date Format used %s", ft)
+
+
+        #max_date = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='ignore').max()
+        #min_date = pd.to_datetime(df['Date'] + ' ' + df['Time'], errors='ignore').min()
+        max_date = dt_group.max().date()
+        min_date = dt_group.min().date()
+
 
         date_diff = max_date - min_date
 
+        try:
+            max_date = str(max_date) + ' ' + df['Time'][df['Time'].last_valid_index()]
+        except:
+            logger.error("Cannot find maximun time of the chat")
+        else:
+            pass
+        try:
+            min_date = str(min_date) + ' ' + df['Time'][0]
+        except:
+            logger.error("Cannot find the minimum time of the chat")
+        else:
+            pass
 
         total = [('days', date_diff.days),
                  ('messages', int(df.count().Author)),
@@ -364,19 +394,7 @@ def dataframe_parse(filename):
         longest_msg_count, longest_msg = int(df['Word_Count'].max()),\
                                          df.iloc[df.Word_Count.idxmax()][['Message', 'Author','Date']]
         logger.info("Calculating all the time related info of the group!")
-        time_group = pd.to_datetime(df['Time']).apply(lambda s: str(s.hour))
 
-        time_group = [n for n in time_group.value_counts()[:10].items()]
-
-        format_type = ["%d/%m/%Y", "%m/%d/%Y", "%d/%m/%y", "%m/%d/%y"]
-
-        for ft in format_type:
-            try:
-                dt_group = pd.to_datetime(df['Date'], format=ft, errors='raise')
-            except:
-                logger.warning("Date Format failed %s", ft)
-            else:
-                logger.info("Date Format used %s", ft)
 
         # year_group = pd.to_datetime(df['Date']).apply(lambda s: str(s.year)+' ' +str(s.month_name()))
         year_group = dt_group.apply(lambda s: str(s.year) + ' ' + str(s.month_name()))
@@ -389,8 +407,29 @@ def dataframe_parse(filename):
 
         logger.info("Calculated all the time related info of the group!")
 
+        times_calculator = {1: 'Once', 2: 'Twice', 3: 'Thrice'}
+        changed_auth = [(name, times_calculator.setdefault(count, str(count) + ' times')) for name, count in
+                        df.groupby(df['Changed_Author']).count()['Message'].iteritems()]
+        left_people = [(name, times_calculator.setdefault(count, str(count) + ' times')) for name, count in
+                       df.groupby(df['Left_People']).count()['Message'].iteritems()]
+        removed_people = [(name, times_calculator.setdefault(count, str(count) + ' times')) for name, count in
+                          df.groupby(df['Removed_Author']).count()['Message'].iteritems()]
+        added_people = [(name, times_calculator.setdefault(count, str(count) + ' times')) for name, count in
+                        df.groupby(df['Added_Author']).count()['Message'].iteritems()]
+
+
+
+        logger.info("Events of the group calculated")
+
+
+        #print (changed_auth,'Change')
+        #print(removed_people, 'removed')
+        #print(left_people, 'left')
+        #print(added_people, 'add')
+
         return max_date,min_date,emoji_list,word_list,emoji_stacked_data,final_output,total_members_list,total,\
-               most,longest_msg_count,str(longest_msg.Author),time_group,year_group,cal_group
+               most,longest_msg_count,str(longest_msg.Author),time_group,year_group,cal_group,changed_auth,left_people,\
+               removed_people, added_people
     else:
         logger.error( "%s is an Invalid File!!",filename)
         return None

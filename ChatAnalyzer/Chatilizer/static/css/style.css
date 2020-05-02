@@ -494,9 +494,10 @@ a.logo span {
 }
 
 .notify-row {
-    float: left;
+    float: inherit;
     margin-top: 15px;
     margin-left: 92px;
+    justify-content: center;
 }
 
 .notify-row .notification span.label {
@@ -811,6 +812,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 .ds h4 {
 	font-size: 14px;
 	font-weight: 700;
+	border-bottom: 1px solid #979797;
 }
 
 .ds i {
@@ -818,15 +820,13 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 }
 
 .ds .desc {
-	border-bottom: 1px dotted #979797;
+	border-bottom: 1px solid green;
 	display: inline-block;
 	padding: 15px 0;
 	width: 100%;
 }
 
-.ds .desc:hover {
-	background: #ffffff;
-}
+
 
 .ds .thumb {
 	width: 30px;
@@ -836,12 +836,18 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 }
 
 .ds .details {
-	width: 170px;
+	width: 100%;
 	float: left;
 }
 
 .ds > .desc p {
 	font-size: 11px;
+	border-bottom: 1px dotted #979797;
+
+}
+
+.ds > .desc p:hover {
+	background: #ffffff;;
 }
 
 .ds p > muted {
@@ -849,11 +855,16 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 	text-transform: uppercase;
 	font-style: italic;
 	color: #666666
+
+
 }
 
 .ds a {
 	color: #4ECDC4;
+
 }
+
+
 
 /* MAIN CHART CONFIGURATION */
 .main-chart {
