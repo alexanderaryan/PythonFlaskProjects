@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title> பூப்புனித நீராட்டு விழா </title>
+    <link rel = "icon" type = "image/jpeg" href = "/static/Images/Logo.jpeg">
+    <!-- For the bootstrap cdn and basic bootstrap js !-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+    <!-- For google charts-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">    </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+
+    <!-- For data tables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+
+     <!-- Custom styles for this template -->
+  <link href="/static/css/home.css" rel="stylesheet">
+
+</head>
+<body>
+
+
+
+
+<div class="fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark mx-background-top-linear">
+    <div class="container">
+      <a class="navbar-brand" rel="nofollow" href="{{url_for('index')}}" style="text-transform: uppercase;"> அருணா & சுவேதா பூப்புனித நீராட்டு விழா </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+
+        <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item active">
+            <a class="nav-link" href="{{url_for('index')}}">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+
+
+
+
+
+
+<!--nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="navbar-nav" >
+        <div class="row">
+            <div class="col-md-auto">
+        <a class="nav-item nav-link" href="#"><img src="/static/Images/Logo.jpg" width="200" height="121"></a>
+                </div>
+            <div class="col-md-auto">
+        <h1 class="nav-item nav-link d-inline-block align-left" id="header">அருணா & சுவேதா </h1>
+        <br>
+        <h6 class="nav-item nav-link d-inline-block align-left" id="header_tag">பூப்புனித நீராட்டு விழா</h6>
+            </div>
+            <div class="col">
+       <div class="d-inline-block align-right" id="menu">
+           <a class="nav-item nav-link" href="#">About Page</a>
+           <a class="nav-item nav-link" href="#">Home</a>
+       </div>
+            </div>
+        </div>
+    </div>
+</nav!-->
+<hr class=" border-2" style="margin-bottom:0rem">
+
+{% block content%}
+{% endblock %}
+
+
+  <footer class="text-center text-white" style="background-color: #caced1;">
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: coral; font-size: 125%">
+      <a class="text-white" >அருணா & சுவேதா பூப்புனித நீராட்டு விழா </a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+
+
+<!-- End of .container -->
+
+
+    </body>
+</html>
