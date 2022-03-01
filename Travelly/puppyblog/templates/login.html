@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    <h1>Login Page!!</h1>
+
+        {% with messages = get_flashed_messages()%}
+        {% if messages %}
+        {% for mess in messages%}
+
+        {% if error %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{error}}</strong>  {{ mess }} Please register <a href={{url_for('users_blueprint.register')}}>here</a>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    {% else %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+       <strong></strong>{{ mess }} </a>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+{% endif %}
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    {% if flash%}
+    {% for mess in flash.items() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{mess[0] | capitalize }}!</strong>  {{ mess[1][0] }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+        {% endfor %}
+
+    {% endif %}
+
+    <form class="form-group" method="POST">
+        {{form. hidden_tag() }}
+        <div class="form-group">
+        {{form.email.label(class="form-group")}}{{form.email(class="form-control")}}<br>
+        </div>
+        <div class="form-group">
+        {{form.password.label(class="form-group")}}{{form.password(class="form-control")}}<br>
+        </div>
+        <div class="form-group">
+        {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+
+{% endblock %}
