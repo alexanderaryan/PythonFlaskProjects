@@ -1,0 +1,97 @@
+{% extends "base.html"%}
+{% block content %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Hope you have your own choices!! Good!</strong>  Please enter your dress details! I will give you the schedule!
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+<div class="container" align="center">
+   {% if date_flash%}
+    {% for mess,m in date_flash.items() %}
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>{{mess | capitalize }}!</strong> {{m[0]}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    {% if flash%}
+    {% for mess,m in flash.items() %}
+        {% for message_keys,message_values in m[0].items() %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>{{message_keys | capitalize }}!</strong> {{message_values[0]}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+        {% endfor %}
+
+    {% endif %}
+
+
+    <form  method="POST" name="theform">
+        {{form.hidden_tag()}}
+
+        <div class="row form-group">
+            <div class="col-6" >
+        <b>{{date_form.from_date.label}}
+            </div>
+            <div class="col-6">
+        {{date_form.to_date.label}}
+            </div>
+        </div>
+
+
+        <div class="row form-group">
+            <div class="col-6" >
+        {{date_form.from_date(onkeyup="checkform()")}}
+            </div>
+            <div class="col-6">
+        {{date_form.to_date(onkeyup="checkform()")}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3" style="text-align: end;">
+        {{date_form.weekends.label()}}
+            </div>
+            <div class="col-9" style="text-align: left;">
+        {%for x in date_form.weekends%}
+                {{x}}
+                {{x.label()}}
+                {% endfor %}
+
+</div>
+        </div>
+        <div class="table table-borderless" align="center">
+        <div class="row " align="center">
+        <div class="col-12 form-group attire-add" >
+            <label class="form-group" for="attires-0">Attires</label>
+        </div>
+            </div>
+
+        {% for sub in form.attires%}
+        <div class="row form-group attire-add" id="attire-add">
+            <div class="col-6">
+                {{sub.attire(class="form-control", onkeyup="checkform()")}}<button class="btn btn-success attire-add-plus "  type="button"><span class="fas fa-plus"></span></button>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="form-group">
+            {{form.submit(class="btn btn-primary",id="submitbutton")}}
+        </div>
+
+    </form>
+</div>
+</div>
+
+
+{% endblock %}

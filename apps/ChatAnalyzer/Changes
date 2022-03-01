@@ -1,0 +1,25 @@
+Trim unwanted space in source -- Done
+make empty emojis as null -- Done
+take source and start data analytics -- In Progress
+
+1. who sent how many messages -- Done
+2. who sent how many medias -- Done
+3. who sent how many emojis -- Done
+
+4. who changed group names -- Done
+5. Who added people to groups -- Done
+6. Who left the group -- Done
+
+7. Yearwise messages, emojis, medias
+8. monthwise messages, emojis, medias
+
+
+select * from chat where message is null;
+
+select count(*) from chat where source='Alex';
+select source,count(message) from chat where source in (select DISTINCT(source) from chat where source<>'') group by source;
+SELECT moment from chat where MOMENT> (select min(moment) from chat) order by moment;
+SELECT min(moment),SOURCE from chat where source<>'' order by moment;
+
+Select source,message,count(message) from chat where message like '% changed%' or MESSAGE like '% left' or MESSAGE like '% added%' GROUP by source,MESSAGE;
+

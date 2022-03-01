@@ -1,0 +1,51 @@
+{% extends "basic.html" %}
+{% block content %}
+<hr class=" border-2" style="margin-bottom:3rem">
+<div class="container">
+    <!--input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.."--!>
+
+  <div class="table-responsive" >
+  <table class="table table-striped" id="sortTable">
+
+  <thead>
+    <tr>
+      {% for col_no in range(header|length) %}
+      <th scope="col" class="thead-dark">
+        {{ header[col_no] }}
+      </th>
+      {% endfor %}
+    </tr>
+  </thead>
+     <tbody>
+
+     {% for values in data%}
+     <tr>
+     {% for value in range(values|length) %}
+
+      <td>{{ values[value] }}</td>
+
+    {% endfor %}
+       </tr>
+    {% endfor %}
+  </table>
+</div>
+
+</div>
+
+<script>
+
+
+$(document).ready(function() {
+
+    $('#sortTable').DataTable( {
+        "lengthMenu": [ 10, 50, 100, 500, 1000  ],
+
+    language: { url: '//cdn.datatables.net/plug-ins/1.11.4/i18n/ta.json'}
+    } );
+} );
+
+
+</script>>
+
+
+{% endblock %}

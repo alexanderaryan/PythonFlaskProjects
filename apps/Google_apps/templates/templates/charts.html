@@ -1,0 +1,269 @@
+{% extends "basic.html" %}
+{% block content %}
+
+<!--p>{{values}}</p!-->
+
+  <hr>
+
+
+
+
+<div class="container">
+  <div class="row">
+      <div class="btn-group " role="group" aria-label="Button group with nested dropdown">
+        <button type="button" class="btn btn-secondary " id="oorbtn">ஊர்</button>
+        <button type="button" class="btn btn-secondary " id="namebtn">பெயர்</button>
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              அளவு
+            <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <li><a href="#" data-value="action" id="lrgbtn">அதிகமாக</a></li>
+              <li><a href="#" data-value="another action" id="smlbtn">குறைவாக</a></li>
+            </ul>
+          </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div id="oorchart" style="width: 900px; height: 500px;"></div>
+  </div>
+
+  <div class="row">
+    <div class="btn-group " role="group" aria-label="Button group with nested dropdown">
+      <button type="button" class="btn btn-secondary" id="oorcolchartbtn">வட்டம்</button>
+      <button type="button" class="btn btn-secondary" id="namecolchartbtn">நெடுவரிசை</button>
+    </div>
+  </div>
+  </div>
+  <br>
+
+<script type="text/javascript">
+
+      google.charts.load('current', {'packages':['corechart']});
+
+      let oorButtonClicked = false
+      let nameButtonClicked = false
+      let lrgButtonClicked = false
+      let smlButtonClicked = false
+
+      function Handler(chart){
+        google.charts.setOnLoadCallback(chart);
+      }
+
+      Handler(draw_name_l_Chart)
+
+      oorbtn.addEventListener('click',()=>{
+        oorButtonClicked = true
+        nameButtonClicked = false
+        if(oorButtonClicked && lrgButtonClicked) Handler(draw_oor_l_Chart)
+        if(oorButtonClicked && smlButtonClicked) Handler(draw_oor_s_Chart)
+      })
+
+      namebtn.addEventListener('click',()=>{
+        nameButtonClicked = true
+        oorButtonClicked = false
+        if(nameButtonClicked && lrgButtonClicked) Handler(draw_name_l_Chart)
+        if(nameButtonClicked && smlButtonClicked) Handler(draw_name_s_Chart)
+      })
+
+      lrgbtn.addEventListener('click',()=>{
+        lrgButtonClicked = true
+        smlButtonClicked = false
+        if(oorButtonClicked && lrgButtonClicked) Handler(draw_oor_l_Chart)
+        if(nameButtonClicked && lrgButtonClicked) Handler(draw_name_l_Chart)
+      })
+      smlbtn.addEventListener('click',()=>{
+        smlButtonClicked = true
+        lrgButtonClicked = false
+        if(oorButtonClicked && smlButtonClicked) Handler(draw_oor_s_Chart)
+        if(nameButtonClicked && smlButtonClicked) Handler(draw_name_s_Chart)
+      })
+
+
+      function draw_oor_l_Chart() {
+
+        let data = new google.visualization.DataTable();
+        data.addColumn('string', 'ஊர்');
+        data.addColumn('number', 'மொய்');
+        data.addRows([
+          {% if moi_data_l %}
+          {% for v in moi_data_l %}
+          {% if moi_data_l.index(v) == (moi_data_l | length)-1 %}
+          ['{{v[0]}}',{{v[1]}}]
+          {% else %}
+          ['{{v[0]}}',{{v[1]}}],
+          {% endif %}
+          {% endfor %}
+          {% else %}
+          ['',0]
+          {% endif %}
+        ]);
+
+        var chart = new google.visualization.PieChart(document.getElementById('oorchart'));
+        var options = {
+          title: 'மொய் அதிகமாக முதல் 10 ஊர்கள்'
+        };
+
+        chart.draw(data, options);
+
+        document.getElementById('oorcolchartbtn').addEventListener('click', function () {
+          var chart = new google.visualization.PieChart(document.getElementById('oorchart'));
+          var options = {
+            title: 'மொய் அதிகமாக முதல் 10 ஊர்கள்'
+          };
+          chart.draw(data, options);
+        }, false);
+
+    document.getElementById('namecolchartbtn').addEventListener('click', function () {
+        var chart = new google.visualization.ColumnChart(document.getElementById('oorchart'));
+        var options = {
+          title: 'மொய் அதிகமாக முதல் 10 ஊர்கள்'
+        };
+        chart.draw(data, options);
+    }, false);
+      }
+
+
+
+      function draw_oor_s_Chart() {
+
+        let data = new google.visualization.DataTable();
+        data.addColumn('string', 'ஊர்');
+        data.addColumn('number', 'மொய்');
+        data.addRows([
+          {% if moi_data_s %}
+          {% for v in moi_data_s %}
+          {% if moi_data_s.index(v) == (moi_data_s | length)-1 %}
+          ['{{v[0]}}',{{v[1]}}]
+          {% else %}
+          ['{{v[0]}}',{{v[1]}}],
+          {% endif %}
+          {% endfor %}
+          {% else %}
+          ['',0]
+          {% endif %}
+        ]);
+
+        var chart = new google.visualization.PieChart(document.getElementById('oorchart'));
+        var options = {
+          title: 'மொய் குறைவாக முதல் 10 ஊர்கள்'
+        };
+
+        chart.draw(data, options);
+
+        document.getElementById('oorcolchartbtn').addEventListener('click', function () {
+            var chart = new google.visualization.PieChart(document.getElementById('oorchart'));
+            var options = {
+              title: 'மொய் குறைவாக முதல் 10 ஊர்கள்'
+            };
+        chart.draw(data, options);
+        }, false);
+
+        document.getElementById('namecolchartbtn').addEventListener('click', function () {
+          var chart = new google.visualization.ColumnChart(document.getElementById('oorchart'));
+          var options = {
+            title: 'மொய் குறைவாக முதல் 10 ஊர்கள்'
+          };
+          chart.draw(data, options);
+        }, false);
+      }
+
+
+
+      function draw_name_l_Chart() {
+        let data = new google.visualization.DataTable();
+        data.addColumn('string', 'ஊர்');
+        data.addColumn('number', 'மொய்');
+        data.addRows([
+          {% if moi_data_by_name_l %}
+          {% for v in moi_data_by_name_l %}
+          {% if moi_data_by_name_l.index(v) == (moi_data_by_name_l | length)-1 %}
+          ['{{v[0]}}',{{v[1]}}]
+          {% else %}
+          ['{{v[0]}}',{{v[1]}}],
+          {% endif %}
+          {% endfor %}
+          {% else %}
+          ['',0]
+          {% endif %}
+        ]);
+
+        var chart = new google.visualization.PieChart(document.getElementById('oorchart'));
+        var options = {
+          title: 'மொய் அதிகமாக முதல் 10 ஆட்கள்'
+        };
+        chart.draw(data, options);
+
+        document.getElementById('oorcolchartbtn').addEventListener('click', function () {
+          var chart = new google.visualization.PieChart(document.getElementById('oorchart'));
+          var options = {
+            title: 'மொய் அதிகமாக முதல் 10 ஆட்கள்'
+          };
+          chart.draw(data, options);
+        }, false);
+
+        document.getElementById('namecolchartbtn').addEventListener('click', function () {
+          var chart = new google.visualization.ColumnChart(document.getElementById('oorchart'));
+          var options = {
+            title: 'மொய் அதிகமாக முதல் 10 ஆட்கள்'
+          };
+          chart.draw(data, options);
+        }, false);
+      }
+
+
+
+      function draw_name_s_Chart() {
+        let data = new google.visualization.DataTable();
+        data.addColumn('string', 'ஊர்');
+        data.addColumn('number', 'மொய்');
+        data.addRows([
+          {% if moi_data_by_name_s %}
+          {% for v in moi_data_by_name_s %}
+          {% if moi_data_by_name_s.index(v) == (moi_data_by_name_s | length)-1 %}
+          ['{{v[0]}}',{{v[1]}}]
+          {% else %}
+          ['{{v[0]}}',{{v[1]}}],
+          {% endif %}
+          {% endfor %}
+          {% else %}
+          ['',0]
+          {% endif %}
+        ]);
+
+        var chart = new google.visualization.PieChart(document.getElementById('oorchart'));
+        var options = {
+          title: 'மொய் குறைவாக முதல் 10 ஆட்கள் '
+        };
+
+        chart.draw(data, options);
+
+        document.getElementById('oorcolchartbtn').addEventListener('click', function () {
+          var chart = new google.visualization.PieChart(document.getElementById('oorchart'));
+          var options = {
+            title: 'மொய் குறைவாக முதல் 10 ஆட்கள் '
+          };
+          chart.draw(data, options);
+        }, false);
+      document.getElementById('namecolchartbtn').addEventListener('click', function () {
+        var chart = new google.visualization.ColumnChart(document.getElementById('oorchart'));
+        var options = {
+          title: 'மொய் குறைவாக முதல் 10 ஆட்கள் '
+        };
+        chart.draw(data, options);
+        }, false);
+      }
+
+$(".dropdown-menu li a").click(function(){
+  $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+  $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+});
+
+</script>
+
+
+
+{% endblock %}
