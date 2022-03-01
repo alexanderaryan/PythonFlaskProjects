@@ -1,0 +1,57 @@
+{% extends "base.html"%}
+{% block content%}
+
+<div class="container">
+    <h3 style="font-style: italic;color: #4578a4;">Developed this tiny web app to create dress schedule for lazy like me!!</h3>
+
+    <ul class="list-group"><h3 style="font-style: italic;color: #2c9843;">Have a peek at below images to use this!<br>
+    </h3>
+        <h4 style="font-style: italic;color: #2c9843;">
+    If you want to create pairs before scheduling then choose Male option!<br>
+    If you are Sure with your pair of clothes then choose Female option!</h4>
+
+
+        <li class="list-group-item"><figure>
+  <img class="tour" src="/static/images/Home.jpeg" alt="Trulli" style="width:100%">
+            <figcaption><h4>Home Page. Click on the pic.</h4></figcaption>
+</figure></li>
+
+
+  <li class="list-group-item"><figure>
+  <img class="tour" src="/static/images/Maleform.jpeg" alt="Trulli" style="width:100%">
+      <figcaption><h4>Male Form Page. Fill color,pattern and brand of attires.</h4></figcaption>
+</figure>
+</li>
+  <li class="list-group-item"><figure>
+  <img class="tour" src="/static/images/Femaleform.jpeg" alt="Trulli" style="width:100%">
+      <figcaption><h4>Female Form Page. Fill out your favorite attires and choose your weekends and schedule dates.</h4></figcaption>
+</figure></li>
+
+        <li class="list-group-item">
+            <figure>
+  <img class="tour" src="/static/images/Shuffled.jpeg" alt="Trulli" style="width:100%">
+                <figcaption><h4 >Option page for Male form. Extra form for Male route to choose weekends, schedule dates and also to <b>remove combo you dislike.</h4></figcaption>
+</figure>
+
+
+        </li>
+        <li class="list-group-item">
+            <figure>
+  <img class="tour" src="/static/images/Result.jpeg" alt="Trulli" style="width:100%">
+                <figcaption><h4>Result with Calendar. Google calendar option is coming soon........!!</h4></figcaption>
+</figure>
+        </li>
+
+
+
+
+</ul>
+
+
+
+
+<a href="{{url_for('index')}}" class="btn btn-primary">Go to home</a>
+
+</div>
+
+{% endblock %}

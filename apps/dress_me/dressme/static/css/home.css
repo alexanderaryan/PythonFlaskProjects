@@ -1,0 +1,72 @@
+body{
+background-color: whitesmoke;
+}
+
+img{
+border-radius: 50%;
+}
+img.tour{
+border-radius: 0%;
+}
+.align-items-center{
+text-align: center;
+}
+
+.title-tag{
+color: black;
+text-align: center;
+}
+#defaultCheck {
+    position: relative;
+    display: flex;
+    padding-left: 35%;
+}
+
+h4{
+font-style: italic;
+color: #2c9843;
+text-align: center;
+}
+
+.table td, .table th {
+    padding: 1%;
+    padding-left: 7%;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.attire-add{
+    justify-content: center;
+}
+
+
+
+
+
+.Days{
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-left: 0;
+    margin-right: .75rem;
+}
+.container{
+    border-style: inset;
+}
+.table-dark {
+    color: honeydew;
+    background-color: darkgreen;
+}
+
+.navbar{
+
+    background-color: #4578a4 !important;
+    border: 12px #2c9843;
+    border-bottom-style: inset;
+    border-top-style: outset;
+}
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+    font-family: cursive;
+}

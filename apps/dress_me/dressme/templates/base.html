@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DressMe</title>
+    <link rel = "icon" type = "image/jpeg" href = "/static/Images/Logo.jpg">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+          <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-light bg-primary">
+    <div class="navbar-nav" >
+    <div class="row">
+    <div class="col-3">
+        <a class="nav-item nav-link d-inline-block" href="{{url_for('index')}}"><img src="/static/Images/Logo.jpg" width="100" height="100"></a>
+    </div>
+    <div class="col-8">
+        <h1 class="nav-item nav-link d-inline-block " id="header">A simple Web application to schedule your everyday wear!! </h1>
+                </div>
+        <div class="col-1">
+            <a class="nav-item nav-link d-inline-block " id="header" href="{{url_for('tour')}}">Take a tour! </a>
+                </div>
+    </div>
+        </div>
+</nav>
+
+
+{% block content %}
+
+
+{% endblock %}
+<script>
+ $(function(){
+
+    var date = new Date();
+    var current_year = date.getFullYear();
+    var current_month = date.getMonth();
+    var current_date = date.getDate();
+
+    $("#from_date").datepicker({
+
+               minDate: 0 ,
+               onSelect: function(selected){
+               var from = new Date(Date.parse($(this).datepicker('getDate')));
+               from.setDate(from.getDate() + 1);
+               $("#to_date").datepicker("option","minDate",from);
+               },
+                dateFormat:"dd-mm-yy",
+    });
+    $("#from_date").attr("placeholder","dd-mm-yyyy");
+
+    $("#to_date").datepicker({
+            dateFormat:"dd-mm-yy",
+            minDate: 1,
+            onSelect: function(selected){
+               var to = new Date(Date.parse($(this).datepicker('getDate')));
+               to.setDate(to.getDate() - 1)
+               $("#from_date").datepicker("option","maxDate",to);
+               }
+    });
+    $("#to_date").attr("placeholder","dd-mm-yyyy");
+
+
+    var s=0;
+    var p=0;
+    var a=0;
+
+
+   $('.pant-add').click(function(){
+        p++;
+        $('#pants-add').after('<div class="row form-group" id="pants-add'+p+'"><div class="col-3" ><input class="form-control"  onkeyup="checkform()" name="attires-'+p+'-pants" type="text" ></div><div class="col-3" ><input class="form-control" name="attires-'+p+'-pants_pattern" onkeyup="checkform()" type="text" value=""></div><div class="col-3" ><input class="form-control" name="attires-'+p+'-pants_brand" onkeyup="checkform()" type="text" value=""></div><button class="btn btn-danger remove " type="button"><span class="fas fa-minus"></span></button></div>');
+        checkform();
+});
+$(this).on('click','.remove',function(){
+       var target_input = $(this).parent();
+       target_input.remove();
+
+});
+
+$('.shirt-add').click(function(){
+       s++;
+
+    $('#shirt-add').after('<div class="row form-group" id="shirt-add'+s+'"><div class="col-3" ><input class="form-control"  name="attires-'+s+'-shirt" onkeyup="checkform()" type="text" value=""></div><div class="col-3" ><input class="form-control" name="attires-'+s+'-shirt_pattern" onkeyup="checkform()" type="text" value=""></div><div class="col-3" ><input class="form-control" name="attires-'+s+'-shirt_brand" onkeyup="checkform()" type="text" value=""></div><button class="btn btn-danger remove " onclick="checkform()" type="button"><span class="fas fa-minus"></span></button></div>');
+     checkform();
+    });
+$(this).on('click','.remove',function(){
+
+       var target_input = $(this).parent();
+
+       target_input.remove();
+
+});
+
+$('.attire-add-plus').click(function(){
+       s++;
+
+    $('#attire-add').after('<div class="row form-group attire-add" id="attires-'+s+'-attire"><div class="col-6" ><input class="form-control" onkeyup="checkform()" id="attires-'+s+'-attire" name="attires-'+s+'-attire" type="text"><button class="btn btn-danger remove" type="button"><span class="fas fa-minus" onclick="checkform()" ></span></button></div></div>');
+    checkform();
+    });
+$(this).on('click','.remove',function(){
+       var target_input = $(this).parent();
+       target_input.remove();
+       checkform();
+});
+
+ });
+
+ function checkform() {
+
+    var f = document.forms["theform"].elements;
+    var cansubmit = true;
+    debugger;
+    checked = 0;
+    unchecked = 0;
+    for (var i = 1; i < f.length; i++) {
+
+        if (f[i].value.length == 0 && f[i].type == 'text')
+            cansubmit = false;
+
+
+    }
+
+    document.getElementById('submitbutton').disabled = !cansubmit;
+}
+
+
+function checkedform() {
+
+    var f = document.forms["theform"].elements;
+    var cansubmit = true;
+    debugger;
+    checked = 0;
+    box = 0;
+    unchecked = 0;
+    for (var i = 1; i < f.length; i++) {
+
+        if (f[i].type == 'checkbox' && f[i].name == 'attire' ){
+            box += 1;
+            if (f[i].checked)
+                checked += 1;
+
+           }
+    }
+    if (box < 1 || checked == box )
+            cansubmit = false;
+
+    document.getElementById('submitingbutton').disabled = !cansubmit;
+}
+
+
+
+
+
+
+window.onload = checkedform;
+
+
+
+
+window.onload = checkform;
+
+
+
+/* $('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+});*/
+
+$(function () {
+  $('[data-toggle="popover"]').popover()
+});
+</script>
+
+</body>
+</html>
