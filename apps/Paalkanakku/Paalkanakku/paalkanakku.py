@@ -1,0 +1,3 @@
+import gspread
+
+gspread.authorize()
