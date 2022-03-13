@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% with messages = get_flashed_messages()%}
+        {% if messages %}
+        {% for mess in messages%}
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{error}}</strong>  {{ mess }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+<div class="jumbotron">
+<h1>Welcome to MilkyLedger Company</h1>
+    <p>Lorem Ipsum, Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem
+        Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum </p>
+
+</div>
+
+{% endblock %}
