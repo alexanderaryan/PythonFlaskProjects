@@ -1,18 +1,81 @@
+import os
+from flask import Flask, redirect, render_template, url_for
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_login import LoginManager
+
+
 import gspread
+try:
+    from Paalkanakku.errors_pages.handlers import error_pages
+    #from Paalkanakku.config import cred_filename, client_secrets, google_blueprint
+except:
+    from Paalkanakku.Paalkanakku.config import cred_filename, client_secrets
+    from Paalkanakku.Paalkanakku.errors_pages.handlers import error_pages
+    #from Paalkanakku.Paalkanakku.config import google_blueprint
+
+
+app = Flask(__name__)
+
+
+############################
+###DATABASE Setup
+###########################
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir,'data.sqlite')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+Migrate(app, db)
+
+app.secret_key = 'super secret key'
+########################################
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'users.login'
+
+
+try:
+    from Paalkanakku.customers.views import customer
+    from Paalkanakku.users.views import users
+    from Paalkanakku.core.views import core
+except:
+    from Paalkanakku.Paalkanakku.customers.views import customer
+    from Paalkanakku.Paalkanakku.users.views import users
+    from Paalkanakku.Paalkanakku.core.views import core
+
+
+app.register_blueprint(core)
+app.register_blueprint(users)
+app.register_blueprint(customer)
+app.register_blueprint(error_pages)
+#app.register_blueprint(google_blueprint, url_prefix="/login")
+#gcc = gspread.oauth(credentials_filename=cred_filename)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""import gspread
 
 
 cred_filename = "/home/alexanders/Documents/Python/Local_Copy/Localgit/Google/google_apps/MoiKanakku/Moikanakku" \
                 "/moikanakku-341816-5b7d7ef75ff9.json"
 file_name = "Aruna Swetha Sadangu"
 
-card = {
-    "படங்கள்": ["/static/Images/20201004_144328.jpg", "இங்கே தொட்டால் பூப்புனித நீராட்டு விழாவன்று "
-                                                   "எடுக்கப்பட்ட சில புகைப்படங்களை காணலாம் !", "images"],
-    "மொய் நோட்டு": ["/static/Images/card_img/Moi.png", "இங்கே தொட்டால் மொய் நோட்டு அட்டவணையை  "
-                                                       "முழுதாக காணலாம் !", "ledger"],
-    "விளக்கப்படம்": ["/static/Images/card_img/charts.jpg", "இங்கே மொய் கணக்குகளை விளக்கும் "
-                                                        "வண்ணமயமான விளக்கப்படங்கள் உள்ளன!", "charts"]
-    }
 
 gc = gspread.service_account(filename=cred_filename)
 
@@ -21,4 +84,4 @@ gc = gspread.service_account(filename=cred_filename)
 #sheet = client.open("Aruna Swetha Sadangu").sheet1
 #total_rows = str(sheet.row_count)
 
-#data = sheet.get('A1:H'+total_rows)
+#data = sheet.get('A1:H'+total_rows)"""
