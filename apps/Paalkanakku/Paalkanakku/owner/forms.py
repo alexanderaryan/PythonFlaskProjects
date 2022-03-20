@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, BooleanField, \
+    SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Email, EqualTo
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
@@ -7,21 +8,27 @@ from flask_wtf.file import FileField, FileAllowed
 
 from flask_login import current_user
 try:
-    from Paalkanakku.models import User
+    from Paalkanakku.models import CowOwner
 except:
-    from Paalkanakku.Paalkanakku.models import User
+    from Paalkanakku.Paalkanakku.models import CowOwner
 
 
 class AddCustForm(FlaskForm):
 
     place = StringField('Place', validators=[DataRequired()])
-    name = StringField('name', validators=[DataRequired()])
-    cows = IntegerField('Cows',validators=[DataRequired()])
-    milker = StringField('Milker', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
+    cows = IntegerField('Number of Cows',validators=[DataRequired()])
+    milker_id = SelectMultipleField('Milker',validators=None)
+    submit = SubmitField('Add')
 
-    submit = SubmitField('Log In')
 
+class DeleteCustForm(FlaskForm):
 
+    checkbox = BooleanField("Delete")
+    #checkbox = SelectField(u'Delete',choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
+    submit = SubmitField('Delete')
+
+"""
 class RegistrationForm(FlaskForm):
     email = StringField('Email',validators=[DataRequired(),Email()])
     username = StringField('Username',validators=[DataRequired()])
@@ -59,3 +66,4 @@ class UpdateUserForm(FlaskForm):
     def check_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError("Entered username is taken by someone!")
+"""

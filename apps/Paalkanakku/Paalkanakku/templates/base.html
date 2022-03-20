@@ -12,6 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
+    <!-- For datatables !-->
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+
 
 </head>
 <body>
@@ -25,20 +29,61 @@
 
         {% if current_user.is_authenticated %}
 
+      <!--li class="nav-link">
+        <a href="{{url_for('customer.list_cust')}}">Customers</a>
+      </li!-->
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle"
+                    type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Customers
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{url_for('owner.add_own')}}">Add</a>
+                <!--a class="dropdown-item" href="{{url_for('owner.remove_own')}}">Remove</a!-->
+                <a class="dropdown-item" href="{{url_for('owner.list_own')}}">View</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle"
+                    type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Milkers
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{url_for('milker.add_milker')}}">Add</a>
+                <!--a class="dropdown-item" href="{{url_for('milker.remove_milker')}}">Remove</a!-->
+                <a class="dropdown-item" href="{{url_for('milker.list_milker')}}">View</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle"
+                    type="button" id="custdropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    MilkLedger
+            </button>
+            <div class="dropdown-menu" aria-labelledby="custdropdownMenuButton">
+                <a class="dropdown-item" href="{{url_for('milk.add_daily_data')}}">Add</a>
+                <!--a class="dropdown-item" href="{{url_for('customer.remove_cust')}}">Remove</a!-->
+                <a class="dropdown-item" href="{{url_for('customer.list_cust')}}">View</a>
+            </div>
+        </div>
+
       <li class="nav-link">
+        <a href="#">Tally</a>
+      </li>
+
+        <li class="nav-link">
         <a href="{{url_for('users.logout')}}">Log out</a>
       </li>
       <li class="nav-link">
         <a href="{{url_for('users.account')}}">Account</a>
-      </li>
-      <li class="nav-link">
-        <a href="{{url_for('customer.list_cust')}}">Customers</a>
-      </li>
-      <li class="nav-link">
-        <a href="#">Add</a>
-      </li>
-      <li class="nav-link">
-        <a href="#">Tally</a>
       </li>
         {% else %}
       <li class="nav-link">

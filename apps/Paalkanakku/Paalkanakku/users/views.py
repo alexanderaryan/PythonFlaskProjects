@@ -8,8 +8,6 @@ except:
     from Paalkanakku.Paalkanakku import app, db
     from Paalkanakku.Paalkanakku.models import User,GoogleData
     from Paalkanakku.Paalkanakku.users.forms import RegistrationForm, UpdateUserForm, LoginForm
-    from Paalkanakku.Paalkanakku.users.forms import RegistrationForm, UpdateUserForm, LoginForm
-    from Paalkanakku.Paalkanakku.users.picture_handler import add_profile_pic
     from Paalkanakku.Paalkanakku.users.picture_handler import add_profile_pic
     #from Paalkanakku.Paalkanakku.config import google
 
@@ -68,7 +66,6 @@ def login():
             if next_page is None or not next_page[0] == '/':
                 next_page = url_for('core.index')
             return redirect(next_page)
-
 
     return render_template('login.html',form=form,flash=form.errors,error=error)
 

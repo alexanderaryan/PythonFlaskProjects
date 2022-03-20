@@ -4,12 +4,12 @@ customer = Blueprint('customer',__name__)
 
 
 @customer.route('/add')
-def index():
-    return render_template('index.html')
+def add_cust():
+    return render_template('info.html')
 
 
 @customer.route('/remove')
-def info():
+def remove_cust():
     return render_template('info.html')
 
 
