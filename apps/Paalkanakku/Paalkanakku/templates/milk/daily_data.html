@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% with messages = get_flashed_messages()%}
+        {% if messages %}
+        {% for mess in messages%}
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{error}}</strong>  {{ mess }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+<div class="container" align="center">
+<form method="POST">
+    {{form.hidden_tag()}}
+    <div class="row">
+      <div class="col-sm"></div>
+        <div class="col-sm">{{form.milked_date.label}}</div>
+        <div class="col-sm"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm"></div>
+        <div class="col-sm">{{form.milked_date}}</div>
+        <div class="col-sm"></div>
+    </div>
+    <div class="table-responsive" >
+  <table class="table table-striped" id="sortTable">
+
+  <thead>
+    <tr>
+      {% for col_no in range(header|length) %}
+      <th scope="col" class="thead-dark">
+        {{ header[col_no] }}
+      </th>
+      {% endfor %}
+    </tr>
+  </thead>
+     <tbody>
+
+     {% for values in customer_set%}
+     <tr>
+        <td>{{ values[1] }}</td>
+         <td>{{ values[2] }}</td>
+         <td>{{ form.milker }}</td>
+         <td>{{ form.milked_time }}</td>
+         <td>{{ form.litre }}</td>
+         <td>{{ form.ml }}</td>
+         <!--td>{{ values.owner_id }}</td!-->
+       </tr>
+    {% endfor %}
+  </table>
+</div>
+{{form.submit()}} <a href="{{ url_for('core.index') }}" class="btn btn-secondary">Cancel</a>
+</form>
+</div>
+</div>
+
+
+{% endblock %}

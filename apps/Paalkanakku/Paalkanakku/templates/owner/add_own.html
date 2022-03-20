@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% with messages = get_flashed_messages()%}
+        {% if messages %}
+        {% for mess in messages%}
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{error}}</strong>  {{ mess }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+<div class="container" align="center">
+<form method="POST">
+    {{form.hidden_tag()}}
+    <div class="form-group">
+    {{form.name.label}}
+    </div>
+    <div class="form-group">
+    {{form.name}}<br>
+    </div>
+    <div class="form-group">
+    {{form.place.label}}
+    </div>
+    <div class="form-group">
+        {{form.place}}<br>
+    </div>
+
+    <div class="form-group">
+    {{form.cows.label}}
+    </div>
+    <div class="form-group">
+        {{form.cows}}<br>
+    </div>
+
+    <div class="form-group">
+    {{form.milker_id.label}}
+    </div>
+    <div class="form-group">
+        {{form.milker_id}}<br>
+    </div>
+
+    <div class="form-group">
+    {{form.submit}}<a href="{{ url_for('core.index') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+</div>
+</div>
+
+
+{% endblock %}

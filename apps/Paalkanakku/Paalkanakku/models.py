@@ -4,7 +4,7 @@ except:
     from Paalkanakku.Paalkanakku import db,login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-import datetime
+from datetime import datetime
 
 
 @login_manager.user_loader
@@ -54,7 +54,7 @@ class GoogleData(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     sheet_name = db.Column(db.String(64), primary_key=True, unique=True, nullable=False)
     sheet_link = db.Column(db.Text, unique=True, nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __init__(self, user_id, sheet_name, sheet_link):
         self.user_id = user_id
@@ -63,3 +63,109 @@ class GoogleData(db.Model):
 
     def __repr__(self):
         return f"Google Sheet Name : {self.sheet_name}"
+
+
+class Milkers(db.Model):
+
+    __tablename__ = 'milkers'
+
+    milker_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False,index=True)
+    place = db.Column(db.String(64), nullable=False,index=True)
+    bike = db.Column(db.String(64), nullable=True)
+    salary = db.Column(db.Float, nullable=False)
+    #owner_id = db.Column(db.Integer, db.ForeignKey('owners.owner_id'), nullable=True)
+    owner = db.relationship('CowOwner', backref='milker', lazy='dynamic')
+    #milk = db.relationship('Milk', backref='owner', lazy=True)
+
+    def __init__(self, name, place, bike, salary):
+        self.name = name
+        self.place = place
+        self.bike = bike
+        self.salary = salary
+
+    def __repr__(self):
+        return f"Milker {self.name} {self.milker_id} from {self.place}"
+
+    def milker_customers(self):
+        return self.owner.all()
+
+
+
+class CowOwner(db.Model, UserMixin):
+
+    __tablename__ = 'owners'
+
+    id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer,index=True)
+    name = db.Column(db.String(64),index=True)
+    place = db.Column(db.String(64),index=True)
+    cows = db.Column(db.Integer)
+    milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False)
+    #own_cows = db.relationship('Cows', backref='owner', lazy='dynamic')
+    #milk = db.relationship('Milk', backref='owner', lazy=True)
+    # milker = db.relationship('Milkers', backref='owner', lazy='dynamic')
+
+    def __init__(self, owner_id, name, place, num_cows,milker_id):
+        self.owner_id=owner_id
+        self.name = name
+        self.place = place
+        self.cows = num_cows
+        self.milker_id = milker_id
+
+    def __repr__(self):
+        return f"Owner {self.name} place {self.place} num_cows {self.cows} milker {self.milker_id}"
+
+    def cows_and_owners(self):
+        return self.own_cows
+
+
+class Milk(db.Model):
+
+    __tablename__ = "milk"
+
+    event_id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer,nullable=False)
+    # name = db.Column(db.Integer, nullable=False)
+    # place = db.Column(db.Integer, nullable=False)
+    milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False,index=True)
+    milked_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    milked_time = db.Column(db.String(4),nullable=False)
+    litre = db.Column(db.Integer, nullable=False)
+    ml = db.Column(db.Integer, nullable=False)
+
+    def __init__(self,owner_id,milker,milked_date,milked_time,litre,ml):
+        self.owner_id=owner_id
+        #self.name=name
+        #self.place=place
+        self.milker_idr=milker
+        self.milked_date=milked_date
+        self.milked_time=milked_time
+        self.litre=litre
+        self.ml=ml
+
+    def __repr__(self):
+        return f"Date: {self.milked_date}"
+
+
+
+
+class Cows(db.Model):
+
+    __tablename__ = 'cows'
+
+    cow_id = db.Column(db.Integer, primary_key=True)
+    breed = db.Column(db.String(64))
+    owner_id = db.Column(db.Integer, db.ForeignKey('owners.owner_id'), nullable=False)
+    average = db.Column(db.Float, nullable=True)
+    milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False)
+    cows = db.relationship('Milkers', backref='milkers', lazy=True)
+
+    def __init__(self, breed, owner_id, milker_id):
+        self.breed = breed
+        self.owner_id = owner_id
+        self.milker_id = milker_id
+
+    def __repr__(self):
+        return f"{self.owners.name} is the owner of Cows : {self.cows}"
+

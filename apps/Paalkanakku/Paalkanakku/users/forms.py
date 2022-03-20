@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
+from flask_wtf.recaptcha import RecaptchaField
 
 from flask_login import current_user
 try:
@@ -14,7 +15,7 @@ class LoginForm(FlaskForm):
 
     email = StringField('Email', validators=[DataRequired(),Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-
+    recaptcha = RecaptchaField()
     submit = SubmitField('Log In')
 
 
@@ -39,8 +40,13 @@ class UpdateUserForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     username = StringField('Username', validators=[DataRequired()])
 
-    picture = FileField('Update Profile Picture.The format can be uploaded is .jpg,.jpeg,.png',
-                        validators=[FileAllowed(['jpg', 'jpeg', 'png'])])
+    picture = FileField('Update Profile Picture',
+                        validators=[FileAllowed(
+                            ['jpg', 'jpeg', 'png'],
+                            "The format can be uploaded is .jpg,.jpeg,.png"
+                            )]
+                        )
+    pic = FileField()
     submit = SubmitField("Update!")
 
     def check_email(self, field):
