@@ -4,4 +4,17 @@ apps/Paalkanakku/Paalkanakku/client_secret_367285454255-v4g22iac4c6tlu0c2n5btlp7
 apps/Paalkanakku/Paalkanakku/static/
 apps/Paalkanakku/__pycache__/
 apps/Paalkanakku/Paalkanakku/__pycache__/
+apps/Paalkanakku/Paalkanakku/client_secret_367285454255-n45ttmrb1hne9b9j4jm0ftbq6ku21qsk.apps.googleusercontent.com.json
+apps/Paalkanakku/Paalkanakku/client_secrets.json
+apps/Paalkanakku/Paalkanakku/core/__pycache__/
+apps/Paalkanakku/Paalkanakku/customers/__pycache__/
+apps/Paalkanakku/Paalkanakku/data.sqlite
+apps/Paalkanakku/Paalkanakku/errors_pages/__pycache__/
+apps/Paalkanakku/Paalkanakku/migrations/
+apps/Paalkanakku/Paalkanakku/users/__pycache__/
+apps/Paalkanakku/Paalkanakku/milkdata/__pycache__
+apps/Paalkanakku/Paalkanakku/milkers/__pycache__
+apps/Paalkanakku/Paalkanakku/owner/__pycache__
+apps/Paalkanakku/migrations
+apps/Paalkanakku/.idea
 

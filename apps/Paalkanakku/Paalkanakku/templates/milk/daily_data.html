@@ -47,8 +47,9 @@
 
      {% for values in customer_set%}
      <tr>
-        <td>{{ values[1] }}</td>
-         <td>{{ values[2] }}</td>
+         <td>{{form.owner_id(value=values[0],readonly=True)}}</td>
+        <td>{{form.name(value=values[1],readonly=True)}}</td>
+         <td>{{form.place(value=values[2],readonly=True)}}</td>
          <td>{{ form.milker }}</td>
          <td>{{ form.milked_time }}</td>
          <td>{{ form.litre }}</td>
@@ -60,6 +61,9 @@
 </div>
 {{form.submit()}} <a href="{{ url_for('core.index') }}" class="btn btn-secondary">Cancel</a>
 </form>
+    {% if form.errors %}
+    {{ form.errors }}
+{% endif %}
 </div>
 </div>
 
