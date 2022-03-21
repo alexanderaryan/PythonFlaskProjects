@@ -20,11 +20,13 @@ class AddDailyData(FlaskForm):
     milked_date = DateField('Date',validators=[DataRequired()])
     milked_time = SelectField('AM/PM',choices=[('am','AM'),('pm','PM')])
     litre = IntegerField('Litre',
-                         validators=[DataRequired(),NumberRange(min=0, max=99, message='Max 3 digits')],
-                         default=0)
+                         validators=[NumberRange(min=0, max=99, message='Max 3 digits')],
+                         default=0
+                          )
     ml = IntegerField('MilliLitre',
-                      validators=[DataRequired(), NumberRange(min=0, max=999, message='Max 3 digits')],
-                      default=0)
+                      validators=[NumberRange(min=0, max=999, message='Max 3 digits')],
+                      default=0
+                      )
     submit = SubmitField('Add')
 
 

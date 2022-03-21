@@ -1,3 +1,4 @@
+from sqlalchemy import UniqueConstraint
 try:
     from Paalkanakku import db, login_manager
 except:
@@ -65,7 +66,7 @@ class GoogleData(db.Model):
         return f"Google Sheet Name : {self.sheet_name}"
 
 
-class Milkers(db.Model):
+class Milkers(db.Model,UserMixin):
 
     __tablename__ = 'milkers'
 
@@ -89,7 +90,6 @@ class Milkers(db.Model):
 
     def milker_customers(self):
         return self.owner.all()
-
 
 
 class CowOwner(db.Model, UserMixin):
@@ -124,21 +124,24 @@ class Milk(db.Model):
 
     __tablename__ = "milk"
 
-    event_id = db.Column(db.Integer, primary_key=True)
+    event_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    #id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer,nullable=False)
-    # name = db.Column(db.Integer, nullable=False)
-    # place = db.Column(db.Integer, nullable=False)
     milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False,index=True)
     milked_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     milked_time = db.Column(db.String(4),nullable=False)
     litre = db.Column(db.Integer, nullable=False)
     ml = db.Column(db.Integer, nullable=False)
 
+    __table_args__ = (UniqueConstraint('owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
+                     )
+
     def __init__(self,owner_id,milker,milked_date,milked_time,litre,ml):
+
         self.owner_id=owner_id
         #self.name=name
         #self.place=place
-        self.milker_idr=milker
+        self.milker_id=milker
         self.milked_date=milked_date
         self.milked_time=milked_time
         self.litre=litre

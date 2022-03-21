@@ -1,11 +1,11 @@
 try:
     from Paalkanakku import app, db
-    from Paalkanakku.models import Milkers, CowOwner
+    from Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.milkdata.forms import AddDailyData
 
 except:
     from Paalkanakku.Paalkanakku import app, db
-    from Paalkanakku.Paalkanakku.models import Milkers, CowOwner
+    from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData
 
 from flask import render_template, url_for, flash, redirect, request, Blueprint
@@ -30,9 +30,23 @@ def add_daily_data():
     form.milker.choices = milkers
 
     #print (customer_set,milkers)
-    #print (form.form_errors)
+    print(form.form_errors)
+    print(form.data, "data of form")
+
+    print (form.validate_on_submit())
     if form.validate_on_submit():
-        pass
+        milk_data=Milk(
+            owner_id=form.owner_id.data,
+            milker=form.milker.data,
+            milked_date=form.milked_date.data,
+            milked_time=form.milked_time.data,
+            litre=form.litre.data,
+            ml=form.ml.data
+        )
+        db.session.add(milk_data)
+        print ("committing")
+        db.session.commit()
+        print("committed")
 
     header = [form.name.label, form.place.label,form.milker.label,form.milked_time.label,form.litre.label,form.ml.label]
 
