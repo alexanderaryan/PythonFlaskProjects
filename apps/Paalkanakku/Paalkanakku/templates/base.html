@@ -104,5 +104,20 @@
     </div>
 
 
+<script>
+
+
+polls = document.querySelectorAll('[id ^= "daily_data-"]');
+
+Array.prototype.forEach.call(polls, callback);
+
+function callback(element, iterator) {
+    console.log(element.id);
+    document.getElementById(element.id).setAttribute("name",element.id);
+}
+
+
+</script>
+
 </body>
 </html>

@@ -20,7 +20,7 @@
 
 <div class="container" align="center">
 <form method="POST">
-    {{form.hidden_tag()}}
+{{form.hidden_tag()}}
     <div class="row">
       <div class="col-sm"></div>
         <div class="col-sm">{{form.milked_date.label}}</div>
@@ -45,17 +45,21 @@
   </thead>
      <tbody>
 
-     {% for values in customer_set%}
+     {% for daily_data in form.daily_data %}
+
+        {% for values in customer_set%}
+        {% set looping = loop.index-1 %}
+
      <tr>
-         <td>{{form.owner_id(value=values[0],readonly=True)}}</td>
-        <td>{{form.name(value=values[1],readonly=True)}}</td>
-         <td>{{form.place(value=values[2],readonly=True)}}</td>
-         <td>{{ form.milker }}</td>
-         <td>{{ form.milked_time }}</td>
-         <td>{{ form.litre }}</td>
-         <td>{{ form.ml }}</td>
-         <!--td>{{ values.owner_id }}</td!-->
+         <td>{{daily_data.owner_id(value=values[0],readonly=True,id="daily_data-"+ (looping | string) +"-owner_id")}}</td>
+         <td>{{daily_data.cust_name(value=values[1],readonly=True,id="daily_data-"+ (looping | string) +"-cust_name")}}</td>
+         <td>{{daily_data.place(value=values[2],readonly=True,id="daily_data-"+ (looping | string) +"-place")}}</td>
+         <td>{{ daily_data.milker(id="daily_data-"+ (looping | string) +"-milker") }}</td>
+         <td>{{ daily_data.milked_time(id="daily_data-"+ (looping | string) +"-milked_time") }}</td>
+         <td>{{ daily_data.litre(id="daily_data-"+ (looping | string) +"-litre") }}</td>
+         <td>{{ daily_data.ml(id="daily_data-"+ (looping | string) +"-ml") }}</td>
        </tr>
+    {% endfor %}
     {% endfor %}
   </table>
 </div>
