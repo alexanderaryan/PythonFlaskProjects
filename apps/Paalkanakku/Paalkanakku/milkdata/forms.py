@@ -1,23 +1,29 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, \
-    BooleanField, SelectMultipleField, FloatField, SelectField, DateField
+    BooleanField, SelectMultipleField, FloatField, SelectField, DateField, FieldList, FormField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
 from wtforms import ValidationError
 
 from flask_login import current_user
 try:
-    from Paalkanakku.models import CowOwner
+    from Paalkanakku.models import Milkers
 except:
-    from Paalkanakku.Paalkanakku.models import CowOwner
+    from Paalkanakku.Paalkanakku.models import Milkers
 
 
-class AddDailyData(FlaskForm):
+class DailyData(FlaskForm):
+
+    class Meta:
+        csrf = False
+
+    milker_data = Milkers.query.all()
+    milker_ids = [milker.milker_id for milker in milker_data]
+    milkers = [(milker.milker_id, milker.name) for milker in milker_data]
 
     owner_id=IntegerField('CustomerId', validators=[DataRequired()])
-    name = StringField('Name')
-    place = StringField('Place')
-    milker = SelectField('Milker', validators=[DataRequired()])
-    milked_date = DateField('Date',validators=[DataRequired()])
+    cust_name = StringField('Name', validators=[DataRequired()])
+    place = StringField('Place', validators=[DataRequired()])
+    milker = SelectField('Milker', validators=[DataRequired()],choices=milkers)
     milked_time = SelectField('AM/PM',choices=[('am','AM'),('pm','PM')])
     litre = IntegerField('Litre',
                          validators=[NumberRange(min=0, max=99, message='Max 3 digits')],
@@ -27,6 +33,15 @@ class AddDailyData(FlaskForm):
                       validators=[NumberRange(min=0, max=999, message='Max 3 digits')],
                       default=0
                       )
+
+
+class AddDailyData(FlaskForm):
+
+    milked_date = DateField('Date', validators=[DataRequired()])
+    daily_data = FieldList(FormField(DailyData),
+                           min_entries=1,
+                           max_entries=100)
+    
     submit = SubmitField('Add')
 
 

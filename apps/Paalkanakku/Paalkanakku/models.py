@@ -120,20 +120,20 @@ class CowOwner(db.Model, UserMixin):
         return self.own_cows
 
 
-class Milk(db.Model):
+class Milk(db.Model,UserMixin):
 
     __tablename__ = "milk"
 
-    event_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    event_id = db.Column(db.Integer, primary_key=True, autoincrement=True,index=True)
     #id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer,nullable=False)
-    milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False,index=True)
+    milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False, index=True)
     milked_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     milked_time = db.Column(db.String(4),nullable=False)
     litre = db.Column(db.Integer, nullable=False)
     ml = db.Column(db.Integer, nullable=False)
 
-    __table_args__ = (UniqueConstraint('owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
+    __table_args__ = (UniqueConstraint('event_id','owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
                      )
 
     def __init__(self,owner_id,milker,milked_date,milked_time,litre,ml):

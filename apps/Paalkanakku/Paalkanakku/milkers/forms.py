@@ -12,10 +12,10 @@ except:
 
 class AddMilkForm(FlaskForm):
 
-    owner_id=IntegerField('CustomerId', validators=[DataRequired()])
+    #owner_id=IntegerField('CustomerId', validators=[DataRequired()])
     name = StringField('Name', validators=[DataRequired()])
     place = StringField('Place', validators=[DataRequired()])
-    Milker = StringField('MilkerId', validators=[DataRequired()])
+    #Milker = StringField('MilkerId', validators=[DataRequired()])
     salary = FloatField('Salary', validators=[DataRequired()])
     bike = StringField('Bike', validators=[DataRequired()])
     #owner_id = SelectField('CustomerId', choices='', validators=[])
