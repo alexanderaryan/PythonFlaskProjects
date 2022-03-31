@@ -103,7 +103,7 @@ class CowOwner(db.Model, UserMixin):
     cows = db.Column(db.Integer)
     milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False)
     #own_cows = db.relationship('Cows', backref='owner', lazy='dynamic')
-    #milk = db.relationship('Milk', backref='owner', lazy=True)
+    milk = db.relationship('Milk', backref='owner', lazy=True)
     # milker = db.relationship('Milkers', backref='owner', lazy='dynamic')
 
     def __init__(self, owner_id, name, place, num_cows,milker_id):
@@ -117,7 +117,7 @@ class CowOwner(db.Model, UserMixin):
         return f"Owner {self.name} place {self.place} num_cows {self.cows} milker {self.milker_id}"
 
     def cows_and_owners(self):
-        return self.own_cows
+        return self.milk.all()
 
 
 class Milk(db.Model,UserMixin):
@@ -126,7 +126,7 @@ class Milk(db.Model,UserMixin):
 
     event_id = db.Column(db.Integer, primary_key=True, autoincrement=True,index=True)
     #id = db.Column(db.Integer, primary_key=True)
-    owner_id = db.Column(db.Integer,nullable=False)
+    owner_id = db.Column(db.Integer,db.ForeignKey('owners.owner_id'),nullable=False)
     milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False, index=True)
     milked_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     milked_time = db.Column(db.String(4),nullable=False)
@@ -150,8 +150,8 @@ class Milk(db.Model,UserMixin):
     def __repr__(self):
         return f"Date: {self.milked_date}"
 
-
-
+    def owner_details(self):
+        return CowOwner.query.filter(CowOwner.owner_id==self.owner_id).first()
 
 class Cows(db.Model):
 

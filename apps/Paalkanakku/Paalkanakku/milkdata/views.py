@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from Paalkanakku.milkdata.forms import AddDailyData, DailyData
+
 try:
     from Paalkanakku import app, db
     from Paalkanakku.models import Milkers, CowOwner, Milk
-
+    from Paalkanakku.milkdata.forms import AddDailyData, DailyData
 except:
     from Paalkanakku.Paalkanakku import app, db
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
@@ -22,8 +22,9 @@ def milk_data_check(date):
     #today = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
 
     #milk_data = Milk.query.filter(Milk.milked_date.in_(datetime.today())).first()
-    milk_data = Milk.query.with_entities(Milk.milked_date).first()
-    milk_data = (Milk.query.filter(Milk.milked_date == day).first())
+    #milk_data = Milk.query.with_entities(Milk.milked_date).first()
+    milk_data = Milk.query.filter(Milk.milked_date == day).all()
+    print ("sd",milk_data)
     return milk_data
 
 
@@ -40,6 +41,9 @@ def add_daily_data():
     print(form.daily_data, "Printing form")
     print (customer_set)
 
+    milk_data_for_today = milk_data_check(datetime.date(datetime.today()))
+    print ("buddhgsd",milk_data_for_today)
+
     #print (customer_set,milkers)
     print(form.form_errors)
     print(form.data, "data of form")
@@ -47,7 +51,8 @@ def add_daily_data():
     print (form.validate_on_submit())
     if form.validate_on_submit():
         print ("inside form",milk_data_check(form.milked_date.data))
-        if not milk_data_check(form.milked_date.data):
+        milk_data = milk_data_check(form.milked_date.data)
+        if not milk_data:
             print (form.daily_data.data)
             print (type(form.milked_date.data))
             for each_cust in form.daily_data:
@@ -65,9 +70,18 @@ def add_daily_data():
             print("committed")
             return redirect(url_for('milk.add_daily_data'))
         else:
-            print (form.data, "hello")
-            for field,data in form.data.items():
-                print (field,data,type(data))
+            print ("Hello",form.data)
+            for each in form.daily_data:
+                for m in milk_data:
+                    # print ('N',n.milker_id,n.owner_id,n.milked_time,n.litre,n.ml,n.milked_date)
+                    if m.owner_id == each.owner_id.data:
+                        m.milker=each.milker.data
+                        m.milked_time = each.milked_time.data
+                        m.litre = each.litre.data
+                        m.ml = each.ml.data
+                        print ("m",m)
+                        db.session.add(m)
+                    db.session.commit()
             return redirect(url_for('milk.add_daily_data'))
 
     daily_data_form = DailyData()
@@ -77,9 +91,12 @@ def add_daily_data():
                    daily_data_form.ml.label]
     header = milk_header
 
+
+
     return render_template('milk/daily_data.html',
                            form=form,
                            header=header,
+                           milk_data_for_today=milk_data_for_today,
                            customer_set=customer_set,
                            flash=flash)
 
