@@ -28,7 +28,11 @@
     </div>
     <div class="row">
       <div class="col-sm"></div>
-        <div class="col-sm">{{form.milked_date}}</div>
+        {% if modified_day=="None" %}
+        <div class="col-sm">{{form.milked_date(value=day,onchange="handler(event);")}}</div>
+        {% else %}
+        <div class="col-sm">{{form.milked_date(value=modified_day,onchange="handler(event);")}}</div>
+        {% endif %}
         <div class="col-sm"></div>
     </div>
     <div class="table-responsive" >
@@ -53,13 +57,30 @@
 
 
      <tr>
-         <td>{{daily_data.owner_id(value=values.owner_id,readonly=True,id="daily_data-"+ (looping | string) +"-owner_id")}}</td>
-         <td>{{daily_data.cust_name(value=values.owner_details().name,readonly=True,id="daily_data-"+ (looping | string) +"-cust_name")}}</td>
-         <td>{{daily_data.place(value=values.owner_details().place,readonly=True,id="daily_data-"+ (looping | string) +"-place")}}</td>
-         <td>{{ daily_data.milker(value=values.milker_id,id="daily_data-"+ (looping | string) +"-milker") }}</td>
-         <td>{{ daily_data.milked_time(value=values.miled_time,id="daily_data-"+ (looping | string) +"-milked_time") }}</td>
-         <td>{{ daily_data.litre(value=values.litre,id="daily_data-"+ (looping | string) +"-litre") }}</td>
-         <td>{{ daily_data.ml(value=values.ml,id="daily_data-"+ (looping | string) +"-ml") }}</td>
+         <td>{{daily_data.owner_id(value=values.owner_id,readonly=True,
+             id="daily_data-"+ (looping | string) +"-owner_id")}}
+         </td>
+         <td>{{daily_data.cust_name(value=values.owner_details().name,
+             readonly=True,
+             id="daily_data-"+ (looping | string) +"-cust_name")}}
+         </td>
+         <td>{{daily_data.place(value=values.owner_details().place,
+             readonly=True,
+             id="daily_data-"+ (looping | string) +"-place")}}
+         </td>
+         <td>{{ daily_data.milker(option=values.milker_id,
+             id="daily_data-"+ (looping | string) +"-milker") }}
+         </td>
+         <td>{{ daily_data.milked_time(value=values.milked_time,
+             id="daily_data-"+ (looping | string) +"-milked_time")}}
+         </td>
+
+         <td>{{ daily_data.litre(value=values.litre,
+             id="daily_data-"+ (looping | string) +"-litre") }}
+         </td>
+         <td>{{ daily_data.ml(value=values.ml,
+             id="daily_data-"+ (looping | string) +"-ml") }}
+         </td>
        </tr>
     {% endfor %}
     {% endfor %}

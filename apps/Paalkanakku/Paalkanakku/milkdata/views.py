@@ -28,12 +28,13 @@ def milk_data_check(date):
     return milk_data
 
 
-@milk.route('/daily',methods=["GET","POST"])
+@milk.route('/daily/<modified_day>',methods=["GET","POST"])
 @login_required
-def add_daily_data():
+def add_daily_data(modified_day=None):
 
     form = AddDailyData()
 
+    print ("Modified_day",modified_day,type(modified_day))
     customer_set =  (CowOwner.query.with_entities(CowOwner.owner_id,CowOwner.name,CowOwner.place).\
            filter(CowOwner.milker_id.in_(DailyData.milker_ids)).group_by(CowOwner.place,CowOwner.owner_id,CowOwner.name).\
            order_by(CowOwner.place,CowOwner.name).all())
@@ -41,8 +42,16 @@ def add_daily_data():
     print(form.daily_data, "Printing form")
     print (customer_set)
 
-    milk_data_for_today = milk_data_check(datetime.date(datetime.today()))
+    if modified_day == "None":
+        day = datetime.date(datetime.today())
+        return redirect(url_for('milk.add_daily_data', modified_day=day))
+    else:
+        day = datetime.strptime(modified_day, '%Y-%m-%d').date()
+
+    milk_data_for_today = milk_data_check(day)
     print ("buddhgsd",milk_data_for_today)
+    for n in milk_data_for_today:
+        print("milker", n.milker_id)
 
     #print (customer_set,milkers)
     print(form.form_errors)
@@ -68,33 +77,39 @@ def add_daily_data():
             print ("committing")
             db.session.commit()
             print("committed")
-            return redirect(url_for('milk.add_daily_data'))
+            return redirect(url_for('milk.add_daily_data',modified_day=form.milked_date.data))
         else:
             print ("Hello",form.data)
             for each in form.daily_data:
                 for m in milk_data:
                     # print ('N',n.milker_id,n.owner_id,n.milked_time,n.litre,n.ml,n.milked_date)
                     if m.owner_id == each.owner_id.data:
-                        m.milker=each.milker.data
+                        print ("rim",each.milked_time.data)
+                        print (each.milker.data)
+                        m.milker_id=each.milker.data
                         m.milked_time = each.milked_time.data
                         m.litre = each.litre.data
                         m.ml = each.ml.data
                         print ("m",m)
                         db.session.add(m)
                     db.session.commit()
-            return redirect(url_for('milk.add_daily_data'))
+            print (form.milked_date.data)
+            return redirect(url_for('milk.add_daily_data',modified_day=form.milked_date.data))
 
     daily_data_form = DailyData()
-    milk_header = [daily_data_form.owner_id.label,daily_data_form.cust_name.label, daily_data_form.place.label, daily_data_form.milker.label,
+    milk_header = [daily_data_form.owner_id.label,
+                   daily_data_form.cust_name.label,
+                   daily_data_form.place.label,
+                   daily_data_form.milker.label,
                    daily_data_form.milked_time.label,
                    daily_data_form.litre.label,
                    daily_data_form.ml.label]
     header = milk_header
-
-
-
+    print ("days",modified_day,day)
     return render_template('milk/daily_data.html',
                            form=form,
+                           day=day,
+                           modified_day = modified_day,
                            header=header,
                            milk_data_for_today=milk_data_for_today,
                            customer_set=customer_set,
