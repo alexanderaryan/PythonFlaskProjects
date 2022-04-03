@@ -1,4 +1,5 @@
 from sqlalchemy import UniqueConstraint
+#from sqlalchemy.orm import validates
 try:
     from Paalkanakku import db, login_manager
 except:
@@ -152,6 +153,41 @@ class Milk(db.Model,UserMixin):
 
     def owner_details(self):
         return CowOwner.query.filter(CowOwner.owner_id==self.owner_id).first()
+
+
+
+"""class Ledger(db.Model,UserMixin):
+
+    __tablename__ = "ledger"
+
+    event_id = db.Column(db.Integer, primary_key=True, autoincrement=True,index=True)
+    #id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer,db.ForeignKey('owners.owner_id'),nullable=False)
+    milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False, index=True)
+    milked_month = db.Column(db.String(10), nullable=False)
+    milked_year = db.Column(db.Integer, nullable=False)
+    milked_time = db.Column(db.String(4),nullable=False)
+    litre = db.Column(db.Float, nullable=False)
+
+    __table_args__ = (UniqueConstraint('event_id','owner_id', 'milker_id','milked_year','milked_month', name='_daily_milk_data'),
+                     )
+
+    def __init__(self,owner_id,milker,milked_month,milked_year,milked_time,litre):
+
+        self.owner_id=owner_id
+        self.milker_id=milker
+        self.milked_month=milked_month
+        self.milked_year=milked_year
+        self.milked_time=milked_time
+        self.litre=litre
+
+    def __repr__(self):
+        return f"Litre: {self.litre}"
+
+    def ledger_details(self):
+        return CowOwner.query.filter(CowOwner.owner_id == self.owner_id).first()
+"""
+
 
 class Cows(db.Model):
 

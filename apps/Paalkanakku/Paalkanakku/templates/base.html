@@ -72,7 +72,7 @@
             <div class="dropdown-menu" aria-labelledby="custdropdownMenuButton">
                 <a class="dropdown-item" href="{{url_for('milk.add_daily_data',modified_day="None")}}">Add</a>
                 <!--a class="dropdown-item" href="{{url_for('customer.remove_cust')}}">Remove</a!-->
-                <a class="dropdown-item" href="{{url_for('customer.list_cust')}}">View</a>
+                <a class="dropdown-item" href="{{url_for('milk.milk_ledger_view',month="None")}}">View</a>
             </div>
         </div>
 
@@ -107,23 +107,6 @@
 
 <script>
 
-milker_id = document.querySelectorAll('[id $= "milker"]');
-Array.prototype.forEach.call(milker_id, milker_id_change);
-
-function milker_id_change(element, iterator) {
-    console.log(element.attributes.option.nodeValue);
-    console.log(element.attributes.option);
-    $(element).val(element.attributes.option.nodeValue);
-}
-
-
-milked_time = document.querySelectorAll('[id $= "milked_time"]');
-Array.prototype.forEach.call(milked_time, milked_time_change);
-
-function milked_time_change(element, iterator) {
-    console.log(element.attributes.value.nodeValue);
-    $(element).val(element.attributes.value.nodeValue);
-}
 
 polls = document.querySelectorAll('[id ^= "daily_data-"]');
 Array.prototype.forEach.call(polls, callback);
@@ -140,6 +123,25 @@ function handler(e){
   location.href = "{{url_for('milk.add_daily_data', modified_day = 'date')}}".replace('date',date);
 
   //location.href = Flask.url_for('milk.add_daily_data'', {modified_day: e.target.value});
+}
+
+
+milker_id = document.querySelectorAll('[id $= "milker"]');
+Array.prototype.forEach.call(milker_id, milker_id_change);
+
+function milker_id_change(element, iterator) {
+    console.log(element.attributes.option.nodeValue);
+    console.log(element.attributes.option);
+    $(element).val(element.attributes.option.nodeValue);
+}
+
+
+milked_time = document.querySelectorAll('[id $= "milked_time"]');
+Array.prototype.forEach.call(milked_time, milked_time_change);
+
+function milked_time_change(element, iterator) {
+    console.log(element.attributes.option.nodeValue);
+    $(element).val(element.attributes.option.nodeValue);
 }
 
 </script>

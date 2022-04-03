@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% with messages = get_flashed_messages()%}
+        {% if messages %}
+        {% for mess in messages%}
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{error}}</strong>  {{ mess }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+<div class="container" align="center">
+<form method="POST">
+{{form.hidden_tag()}}
+    {{form.month.label}}
+    {% set mon_val = (month.year | string) + "-" + ('%02d' % month.month) %}
+    {% if modified_day=="None" %}
+        <div class="col-sm">{{form.milked_date(id="milkmonth",value=mon_val)}}</div>
+    {% else %}
+        <div class="col-sm">{{form.month(id="milkmonth",value=mon_val)}}</div>
+    {% endif %}
+
+    {{form.submit()}} <a href="{{ url_for('core.index') }}" class="btn btn-secondary">Cancel</a>
+</form>
+    {% if form.errors %}
+    {{ form.errors }}
+{% endif %}
+</div>
+</div>
+
+<script>
+    document.getElementById('milkmonth').setAttribute("min","2022-01");
+</script>
+
+{% endblock %}

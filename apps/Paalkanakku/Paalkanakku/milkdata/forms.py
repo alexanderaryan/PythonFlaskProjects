@@ -1,12 +1,17 @@
+import datetime
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, \
-    BooleanField, SelectMultipleField, FloatField, SelectField, DateField, FieldList, FormField
+    BooleanField, SelectMultipleField, FloatField, SelectField, DateField, FieldList, FormField,\
+    MonthField
+from wtforms import DecimalRangeField,DateField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
 from wtforms import ValidationError
 
 from flask_login import current_user
+from Paalkanakku.models import Milkers
 try:
-    from Paalkanakku.models import Milkers
+    pass
 except:
     from Paalkanakku.Paalkanakku.models import Milkers
 
@@ -44,4 +49,9 @@ class AddDailyData(FlaskForm):
     
     submit = SubmitField('Add')
 
+
+class LedgerView(FlaskForm):
+
+    month = MonthField('Month', validators=[DataRequired()])
+    submit = SubmitField('Ok', validators=[DataRequired()])
 
