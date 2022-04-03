@@ -49,14 +49,14 @@ app.config['RECAPTCHA_PUBLIC_KEY'] = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 app.config['RECAPTCHA_PRIVATE_KEY'] = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
 app.config['RECAPTCHA_OPTIONS']= {'theme':'dark'}
 
-
+from Paalkanakku.milkdata.views import milk
 try:
     from Paalkanakku.customers.views import customer
     from Paalkanakku.users.views import users
     from Paalkanakku.core.views import core
     from Paalkanakku.owner.views import owner
     from Paalkanakku.milkers.views import milker
-    from Paalkanakku.milkdata.views import milk
+
 
 except:
     from Paalkanakku.Paalkanakku.customers.views import customer
@@ -64,7 +64,7 @@ except:
     from Paalkanakku.Paalkanakku.core.views import core
     from Paalkanakku.Paalkanakku.milkers.views import milker
     from Paalkanakku.Paalkanakku.owner.views import owner
-    from Paalkanakku.Paalkanakku.milkdata.views import milk
+
 
 
 

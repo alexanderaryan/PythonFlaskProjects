@@ -71,7 +71,7 @@
          <td>{{ daily_data.milker(option=values.milker_id,
              id="daily_data-"+ (looping | string) +"-milker") }}
          </td>
-         <td>{{ daily_data.milked_time(value=values.milked_time,
+         <td>{{ daily_data.milked_time(option=values.milked_time,
              id="daily_data-"+ (looping | string) +"-milked_time")}}
          </td>
 
@@ -95,8 +95,12 @@
          <td>{{daily_data.owner_id(value=values[0],readonly=True,id="daily_data-"+ (looping | string) +"-owner_id")}}</td>
          <td>{{daily_data.cust_name(value=values[1],readonly=True,id="daily_data-"+ (looping | string) +"-cust_name")}}</td>
          <td>{{daily_data.place(value=values[2],readonly=True,id="daily_data-"+ (looping | string) +"-place")}}</td>
-         <td>{{ daily_data.milker(id="daily_data-"+ (looping | string) +"-milker") }}</td>
-         <td>{{ daily_data.milked_time(id="daily_data-"+ (looping | string) +"-milked_time") }}</td>
+         <td>{{ daily_data.milker(option="1",
+             id="daily_data-"+ (looping | string) +"-milker")
+             }}</td>
+         <td>{{ daily_data.milked_time(option="am",
+             id="daily_data-"+ (looping | string) +"-milked_time"
+             ) }}</td>
          <td>{{ daily_data.litre(id="daily_data-"+ (looping | string) +"-litre") }}</td>
          <td>{{ daily_data.ml(id="daily_data-"+ (looping | string) +"-ml") }}</td>
        </tr>
