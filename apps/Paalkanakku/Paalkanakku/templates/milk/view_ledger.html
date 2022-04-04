@@ -29,6 +29,54 @@
 
     {{form.submit()}} <a href="{{ url_for('core.index') }}" class="btn btn-secondary">Cancel</a>
 </form>
+    <div class="table-responsive" >
+  <table class="table table-striped" id="sortTable">
+
+  <thead>
+    <tr>
+      <th scope="col" class="thead-dark">
+        Place
+      </th>
+        <th scope="col" class="thead-dark">
+        Name
+      </th>
+          <th scope="col" class="thead-dark">
+        AM
+      </th>
+          <th scope="col" class="thead-dark">
+        PM
+      </th>
+          <th scope="col" class="thead-dark">
+        Total
+      </th>
+          <th scope="col" class="thead-dark">
+        Price
+      </th>
+
+    </tr>
+  </thead>
+     <tbody>
+     {% for data in monthly_ledger%}
+     <tr>
+         <td>{{data[1]}}</td>
+         <td>{{data[2]}}</td>
+         {% if data[4] == 'am' %}
+            {% set am_milk = data[3] %}
+            {% set pm_milk = 00 %}
+         {% elif data[4] == 'pm'%}
+            {% set am_milk = 00 %}
+            {% set pm_milk = data[3] %}
+         {% endif %}
+         <td>{{am_milk}}</td>
+         <td>{{pm_milk}}</td>
+
+         {% set milk = am_milk + pm_milk %}
+         <td>{{milk}}</td>
+         <td>{{milk*10}}</td>
+    {% endfor %}
+     </tbody>
+  </table>
+
     {% if form.errors %}
     {{ form.errors }}
 {% endif %}

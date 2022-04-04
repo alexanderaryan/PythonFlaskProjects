@@ -3,7 +3,7 @@ import datetime
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, \
     BooleanField, SelectMultipleField, FloatField, SelectField, DateField, FieldList, FormField,\
-    MonthField
+    MonthField, RadioField
 from wtforms import DecimalRangeField,DateField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
 from wtforms import ValidationError
@@ -29,7 +29,7 @@ class DailyData(FlaskForm):
     cust_name = StringField('Name', validators=[DataRequired()])
     place = StringField('Place', validators=[DataRequired()])
     milker = SelectField('Milker', validators=[DataRequired()],choices=milkers)
-    milked_time = SelectField('AM/PM',choices=[('am','AM'),('pm','PM')])
+    #milked_time = RadioField('AM/PM',choices=[('am','AM'),('pm','PM')])
     litre = IntegerField('Litre',
                          validators=[NumberRange(min=0, max=99, message='Max 3 digits')],
                          default=0
@@ -43,6 +43,7 @@ class DailyData(FlaskForm):
 class AddDailyData(FlaskForm):
 
     milked_date = DateField('Date', validators=[DataRequired()])
+    milked_time = RadioField('Time', choices=[('am', 'AM'), ('pm', 'PM')],default="am")
     daily_data = FieldList(FormField(DailyData),
                            min_entries=1,
                            max_entries=100)
