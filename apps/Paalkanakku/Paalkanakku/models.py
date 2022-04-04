@@ -132,7 +132,7 @@ class Milk(db.Model,UserMixin):
     milked_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     milked_time = db.Column(db.String(4),nullable=False)
     litre = db.Column(db.Integer, nullable=False)
-    ml = db.Column(db.Integer, nullable=False)
+    ml = db.Column(db.Float, nullable=False)
 
     __table_args__ = (UniqueConstraint('event_id','owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
                      )
@@ -146,7 +146,7 @@ class Milk(db.Model,UserMixin):
         self.milked_date=milked_date
         self.milked_time=milked_time
         self.litre=litre
-        self.ml=ml
+        self.ml=ml/100
 
     def __repr__(self):
         return f"Date: {self.milked_date}"

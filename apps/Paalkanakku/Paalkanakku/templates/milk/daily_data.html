@@ -31,7 +31,11 @@
         {% if modified_day=="None" %}
         <div class="col-sm">{{form.milked_date(value=day,onchange="handler(event);")}}</div>
         {% else %}
-        <div class="col-sm">{{form.milked_date(value=modified_day,onchange="handler(event);")}}</div>
+        <div class="col-sm">{{form.milked_date(value=modified_day,onchange="handler(event);")}}
+        {{ form.milked_time.label}}
+            {% for time in form.milked_time %}{{ time(onchange="handler(event);")}} {{time.label}} {% endfor %}
+        </div>
+
         {% endif %}
         <div class="col-sm"></div>
     </div>
@@ -71,9 +75,6 @@
          <td>{{ daily_data.milker(option=values.milker_id,
              id="daily_data-"+ (looping | string) +"-milker") }}
          </td>
-         <td>{{ daily_data.milked_time(option=values.milked_time,
-             id="daily_data-"+ (looping | string) +"-milked_time")}}
-         </td>
 
          <td>{{ daily_data.litre(value=values.litre,
              id="daily_data-"+ (looping | string) +"-litre") }}
@@ -98,9 +99,6 @@
          <td>{{ daily_data.milker(option="1",
              id="daily_data-"+ (looping | string) +"-milker")
              }}</td>
-         <td>{{ daily_data.milked_time(option="am",
-             id="daily_data-"+ (looping | string) +"-milked_time"
-             ) }}</td>
          <td>{{ daily_data.litre(id="daily_data-"+ (looping | string) +"-litre") }}</td>
          <td>{{ daily_data.ml(id="daily_data-"+ (looping | string) +"-ml") }}</td>
        </tr>

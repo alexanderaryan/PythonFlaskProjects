@@ -70,7 +70,7 @@
                     MilkLedger
             </button>
             <div class="dropdown-menu" aria-labelledby="custdropdownMenuButton">
-                <a class="dropdown-item" href="{{url_for('milk.add_daily_data',modified_day="None")}}">Add</a>
+                <a class="dropdown-item" href="{{url_for('milk.add_daily_data',modified_day="None", milked_time="None")}}">Add</a>
                 <!--a class="dropdown-item" href="{{url_for('customer.remove_cust')}}">Remove</a!-->
                 <a class="dropdown-item" href="{{url_for('milk.milk_ledger_view',month="None")}}">View</a>
             </div>
@@ -117,11 +117,14 @@ function callback(element, iterator) {
 }
 
 function handler(e){
-  date=e.target.value
+  //time = document.getElementsByName("milked_time");
+  time = document.querySelector('input[name="milked_time"]:checked').value;
 
-  //$.post({{url_for('milk.add_daily_data', modified_day = date)}});
-  location.href = "{{url_for('milk.add_daily_data', modified_day = 'date')}}".replace('date',date);
-
+  console.log(time);
+  date=document.getElementById("milked_date").value;
+  console.log(date);
+  debugger;
+  location.href = "{{url_for('milk.add_daily_data', modified_day = 'date',milked_time='mt')}}".replace('date',date).replace('mt',time);
   //location.href = Flask.url_for('milk.add_daily_data'', {modified_day: e.target.value});
 }
 
@@ -136,12 +139,16 @@ function milker_id_change(element, iterator) {
 }
 
 
-milked_time = document.querySelectorAll('[id $= "milked_time"]');
+milked_time = document.querySelectorAll('[name ^= "milked_time"]');
 Array.prototype.forEach.call(milked_time, milked_time_change);
 
 function milked_time_change(element, iterator) {
-    console.log(element.attributes.option.nodeValue);
-    $(element).val(element.attributes.option.nodeValue);
+    var host = window.location.href;
+    console.log(window.location.href,window.location.href.slice(-2));
+    if (host.slice(-2) == "pm" ){
+        document.getElementById('milked_time-1').checked = true;
+    }
+    //debugger;
 }
 
 </script>
