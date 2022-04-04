@@ -113,7 +113,7 @@ def add_daily_data(modified_day=None,milked_time=None):
                 db.session.add(milk_data)
             print ("committing")
             db.session.commit()
-            print("committed and ")
+            print("committed")
             return redirect(url_for('milk.add_daily_data',modified_day=form.milked_date.data,milked_time=form.milked_time.data))
         else:
             print ("Hello",form.data)
