@@ -1,15 +1,16 @@
 from datetime import datetime, timedelta
 from sqlalchemy import func
 
-from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView
+
 try:
     from Paalkanakku import app, db
     from Paalkanakku.models import Milkers, CowOwner, Milk
-
+    from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView
 except:
     from Paalkanakku.Paalkanakku import app, db
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData, DailyData
+
 
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
@@ -26,7 +27,7 @@ def milk_data_check(date,milked_time):
 
     #milk_data = Milk.query.filter(Milk.milked_date.in_(datetime.today())).first()
     #milk_data = Milk.query.with_entities(Milk.milked_date).first()
-    milk_data = Milk.query.filter(Milk.milked_date == day).filter(Milk.milked_time == milked_time).all()
+    milk_data = Milk.query.filter(Milk.milked_date == day).all()
     print ("sd",milk_data)
     return milk_data
 
@@ -36,7 +37,7 @@ def whole_month_data(month):
 
     first_day_of_month = datetime.combine(month,datetime.min.time())
     nxt_mnth = first_day_of_month.replace(day=28) + timedelta(days=4)
-    print (nxt_mnth.day)
+    print ("dat",nxt_mnth.day)
     last_day_of_month = nxt_mnth - timedelta(days=nxt_mnth.day)
     print (last_day_of_month)
     print ("after",last_day_of_month,first_day_of_month)
@@ -44,16 +45,27 @@ def whole_month_data(month):
 
     #milk_data = Milk.query.filter(Milk.milked_date.in_(datetime.today())).first()
     #milk_data = Milk.query.with_entities(Milk.milked_date).first()
-    milk_data = Milk.query.filter(Milk.milked_date.between(first_day_of_month,last_day_of_month)).all()
-    milk_data = Milk.query.with_entities(Milk.owner_id,CowOwner.place,CowOwner.name,
-                                  (func.sum(Milk.litre)+func.sum(Milk.ml)).label('Total'),
-                                  Milk.milked_time).\
-        join(CowOwner).\
+    milk_data = Milk.query.with_entities(Milk.owner_id,
+                                         (func.sum(Milk.am_litre)).label('AM_Total'),
+                                         (func.sum(Milk.pm_litre)).label('PM_Total')).\
+        filter(Milk.milked_date.between(first_day_of_month,last_day_of_month)).\
+        group_by(Milk.owner_id).\
+        all()
+    print ("Jerr upi gp",milk_data)
+
+    milk_data = Milk.query.with_entities(Milk.owner_id,
+                                  (func.sum(Milk.am_litre)).label('AM_Total'),
+                                (func.sum(Milk.pm_litre)).label('PM_Total')).\
         filter(Milk.milked_date.between( first_day_of_month,last_day_of_month)).\
-        group_by(Milk.owner_id,Milk.milked_time).\
+        group_by(Milk.owner_id).\
         order_by(Milk.owner_id).all()
-    print (milk_data)
+
     return milk_data
+
+
+customer_set =  (CowOwner.query.with_entities(CowOwner.owner_id,CowOwner.name,CowOwner.place).\
+           filter(CowOwner.milker_id.in_(DailyData.milker_ids)).group_by(CowOwner.place,CowOwner.owner_id,CowOwner.name).\
+           order_by(CowOwner.place,CowOwner.name).all())
 
 
 @milk.route('/daily/<modified_day>/<milked_time>',methods=["GET","POST"])
@@ -63,9 +75,6 @@ def add_daily_data(modified_day=None,milked_time=None):
     form = AddDailyData()
 
     print ("Modified_day",modified_day,type(modified_day))
-    customer_set =  (CowOwner.query.with_entities(CowOwner.owner_id,CowOwner.name,CowOwner.place).\
-           filter(CowOwner.milker_id.in_(DailyData.milker_ids)).group_by(CowOwner.place,CowOwner.owner_id,CowOwner.name).\
-           order_by(CowOwner.place,CowOwner.name).all())
 
     print(form.daily_data, "Printing form")
     print (customer_set)
@@ -124,10 +133,12 @@ def add_daily_data(modified_day=None,milked_time=None):
                         print ("rim",form.milked_time.data)
                         print (each.milker.data)
                         m.milker_id=each.milker.data
-                        m.milked_time = form.milked_time.data
-                        m.litre = each.litre.data
-                        m.ml = each.ml.data
-                        print ("m",m)
+                        if form.milked_time.data == "am":
+                            m.am_litre = Milk.litre_conv(m,each.litre.data,each.ml.data)
+                        else:
+                            m.pm_litre = Milk.litre_conv(m,each.litre.data, each.ml.data)
+                        print("m", each.ml.data)
+                        print ("m",m.am_litre)
                         db.session.add(m)
                     db.session.commit()
             print (form.milked_date.data)
@@ -141,13 +152,16 @@ def add_daily_data(modified_day=None,milked_time=None):
                    daily_data_form.litre.label,
                    daily_data_form.ml.label]
     header = milk_header
-    print ("days",modified_day,day)
+    print ("days",modified_day,day,milk_data_for_today,milked_time)
+    for n in milk_data_for_today:
+        print (n.milker_id,n.owner_id,n.am_litre,n.pm_litre)
     return render_template('milk/daily_data.html',
                            form=form,
                            day=day,
                            modified_day = modified_day,
                            header=header,
                            milk_data_for_today=milk_data_for_today,
+                           milked_time=milked_time,
                            customer_set=customer_set,
                            flash=flash)
 
@@ -159,7 +173,8 @@ def milk_ledger_view(month=None):
     form = LedgerView()
 
     if month=="None":
-        month = today_date
+        month = today_date.replace(day=1)
+        print ("Here is te month",month)
         return redirect(url_for('milk.milk_ledger_view', month=month))
     else:
         month = datetime.strptime(month, '%Y-%m-%d').date()
@@ -175,4 +190,5 @@ def milk_ledger_view(month=None):
     return render_template('milk/view_ledger.html',
                            form=form,
                            month=month,
-                           monthly_ledger=monthly_ledger)
+                           monthly_ledger=monthly_ledger,
+                           customer_set=customer_set)

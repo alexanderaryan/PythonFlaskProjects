@@ -54,11 +54,10 @@
      <tbody>
 
      {% if milk_data_for_today%}
+
      {% for daily_data in form.daily_data %}
-
         {% for values in milk_data_for_today %}
-        {% set looping = loop.index-1 %}
-
+            {% set looping = loop.index-1 %}
 
      <tr>
          <td>{{daily_data.owner_id(value=values.owner_id,readonly=True,
@@ -75,13 +74,33 @@
          <td>{{ daily_data.milker(option=values.milker_id,
              id="daily_data-"+ (looping | string) +"-milker") }}
          </td>
-
-         <td>{{ daily_data.litre(value=values.litre,
+        {% if milked_time == "am" %}
+         <td>{{ daily_data.litre(value=((values.am_litre | string).split('.')[0] | int),
              id="daily_data-"+ (looping | string) +"-litre") }}
          </td>
-         <td>{{ daily_data.ml(value=values.ml,
-             id="daily_data-"+ (looping | string) +"-ml") }}
+             {% if values.am_litre != None %}
+             <td>{{ daily_data.ml(value=((values.am_litre | string).split('.')[1] | int),
+                 id="daily_data-"+ (looping | string) +"-ml") }}
+             </td>
+             {% else %}
+             <td>{{ daily_data.ml(value=((values.am_litre | string).split('.') | int),
+                 id="daily_data-"+ (looping | string) +"-ml") }}
+             </td>
+             {% endif %}
+         {% else %}
+         <td>{{ daily_data.litre(value=((values.pm_litre | string).split('.')[0] | int),
+             id="daily_data-"+ (looping | string) +"-litre") }}
          </td>
+             {% if values.pm_litre != None %}
+             <td>{{ daily_data.ml(value=((values.pm_litre | string).split('.')[1] | int),
+                 id="daily_data-"+ (looping | string) +"-ml") }}
+             </td>
+            {% else %}
+            <td>{{ daily_data.ml(value=((values.pm_litre | string).split('.') | int),
+                 id="daily_data-"+ (looping | string) +"-ml") }}
+             </td>
+            {% endif %}
+         {% endif %}
        </tr>
     {% endfor %}
     {% endfor %}

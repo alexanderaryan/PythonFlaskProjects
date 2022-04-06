@@ -130,9 +130,8 @@ class Milk(db.Model,UserMixin):
     owner_id = db.Column(db.Integer,db.ForeignKey('owners.owner_id'),nullable=False)
     milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False, index=True)
     milked_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    milked_time = db.Column(db.String(4),nullable=False)
-    litre = db.Column(db.Integer, nullable=False)
-    ml = db.Column(db.Float, nullable=False)
+    am_litre = db.Column(db.Float, nullable=True)
+    pm_litre = db.Column(db.Float, nullable=True)
 
     __table_args__ = (UniqueConstraint('event_id','owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
                      )
@@ -144,12 +143,17 @@ class Milk(db.Model,UserMixin):
         #self.place=place
         self.milker_id=milker
         self.milked_date=milked_date
-        self.milked_time=milked_time
-        self.litre=litre
-        self.ml=ml/100
+
+        if milked_time == "am":
+            self.am_litre = self.litre_conv(litre,ml)
+        else:
+            self.pm_litre = self.litre_conv(litre,ml)
 
     def __repr__(self):
         return f"Date: {self.milked_date}"
+
+    def litre_conv(self, l, ml):
+        return float(str(l) + '.' + str(ml))
 
     def owner_details(self):
         return CowOwner.query.filter(CowOwner.owner_id==self.owner_id).first()
