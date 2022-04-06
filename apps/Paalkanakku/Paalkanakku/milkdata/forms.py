@@ -9,9 +9,9 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
 from wtforms import ValidationError
 
 from flask_login import current_user
-from Paalkanakku.models import Milkers
+
 try:
-    pass
+    from Paalkanakku.models import Milkers
 except:
     from Paalkanakku.Paalkanakku.models import Milkers
 

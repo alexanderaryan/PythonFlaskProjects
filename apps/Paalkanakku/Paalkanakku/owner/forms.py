@@ -18,7 +18,7 @@ class AddCustForm(FlaskForm):
     place = StringField('Place', validators=[DataRequired()])
     name = StringField('Name', validators=[DataRequired()])
     cows = IntegerField('Number of Cows',validators=[DataRequired()])
-    milker_id = SelectMultipleField('Milker',validators=None)
+    milker_id = SelectMultipleField('Milker',validators=[DataRequired()])
     submit = SubmitField('Add')
 
 

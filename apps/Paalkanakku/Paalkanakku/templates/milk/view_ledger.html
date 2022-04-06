@@ -56,24 +56,29 @@
     </tr>
   </thead>
      <tbody>
+
      {% for data in monthly_ledger%}
+     {% for cust in customer_set %}
+     {% if cust[0]==data[0]%}
      <tr>
-         <td>{{data[1]}}</td>
-         <td>{{data[2]}}</td>
-         {% if data[4] == 'am' %}
+         <td>{{cust[2]}}</td>
+         <td>{{cust[1]}}</td>
+         <!--{% if data[4] == 'am' %}
             {% set am_milk = data[3] %}
             {% set pm_milk = 00 %}
          {% elif data[4] == 'pm'%}
             {% set am_milk = 00 %}
             {% set pm_milk = data[3] %}
-         {% endif %}
-         <td>{{am_milk}}</td>
-         <td>{{pm_milk}}</td>
+         {% endif %}-->
+         <td>{{"%.3f"| format(data[1])}}</td>
+         <td>{{"%.3f"| format(data[2])}}</td>
 
-         {% set milk = am_milk + pm_milk %}
-         <td>{{milk}}</td>
-         <td>{{milk*10}}</td>
-    {% endfor %}
+         {% set milk = data[1] + data[2] %}
+         <td>{{"%.3f"| format(milk)}}</td>
+         <td>{{"%.2f"| format(milk*10)}}</td>
+        {% endif %}
+         {% endfor %}
+     {% endfor %}
      </tbody>
   </table>
 
