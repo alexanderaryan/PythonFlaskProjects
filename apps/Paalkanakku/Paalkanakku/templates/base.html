@@ -134,6 +134,8 @@ Array.prototype.forEach.call(milker_id, milker_id_change);
 
 function milker_id_change(element, iterator) {
     console.log(element.attributes.option.nodeValue);
+    console.log(element.attributes);
+    debugger;
     console.log(element.attributes.option);
     $(element).val(element.attributes.option.nodeValue);
 }

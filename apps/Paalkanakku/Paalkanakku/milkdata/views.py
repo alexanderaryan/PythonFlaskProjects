@@ -1,11 +1,11 @@
 from datetime import datetime, timedelta
 from sqlalchemy import func
 
-
+from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView
 try:
     from Paalkanakku import app, db
     from Paalkanakku.models import Milkers, CowOwner, Milk
-    from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView
+
 except:
     from Paalkanakku.Paalkanakku import app, db
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
@@ -27,7 +27,10 @@ def milk_data_check(date,milked_time):
 
     #milk_data = Milk.query.filter(Milk.milked_date.in_(datetime.today())).first()
     #milk_data = Milk.query.with_entities(Milk.milked_date).first()
-    milk_data = Milk.query.filter(Milk.milked_date == day).all()
+    if milked_time == "am":
+        milk_data = Milk.query.filter(Milk.milked_date == day).filter(Milk.am_litre != None).all()
+    else:
+        milk_data = Milk.query.filter(Milk.milked_date == day).filter(Milk.pm_litre!=None).all()
     print ("sd",milk_data)
     return milk_data
 
@@ -45,27 +48,41 @@ def whole_month_data(month):
 
     #milk_data = Milk.query.filter(Milk.milked_date.in_(datetime.today())).first()
     #milk_data = Milk.query.with_entities(Milk.milked_date).first()
-    milk_data = Milk.query.with_entities(Milk.owner_id,
-                                         (func.sum(Milk.am_litre)).label('AM_Total'),
-                                         (func.sum(Milk.pm_litre)).label('PM_Total')).\
-        filter(Milk.milked_date.between(first_day_of_month,last_day_of_month)).\
-        group_by(Milk.owner_id).\
-        all()
-    print ("Jerr upi gp",milk_data)
+    # milk_data = Milk.query.with_entities(Milk.owner_id,
+    #                                      func.coalesce(func.sum(Milk.am_litre),0.0).label('AM_Total'),
+    #                                      func.coalesce(func.sum(Milk.pm_litre),0.0).label('PM_Total')).\
+    #     filter(Milk.milked_date.between(first_day_of_month,last_day_of_month)).\
+    #     group_by(Milk.owner_id).\
+    #     all()
+    # print ("Jerr upi gp",milk_data)
 
     milk_data = Milk.query.with_entities(Milk.owner_id,
-                                  (func.sum(Milk.am_litre)).label('AM_Total'),
-                                (func.sum(Milk.pm_litre)).label('PM_Total')).\
+                                         func.coalesce(func.sum(Milk.am_litre), 0.0).label('AM_Total'),
+                                         func.coalesce(func.sum(Milk.pm_litre), 0.0).label('PM_Total')).\
         filter(Milk.milked_date.between( first_day_of_month,last_day_of_month)).\
         group_by(Milk.owner_id).\
         order_by(Milk.owner_id).all()
 
     return milk_data
 
+def milker_set():
+    """To return the milker table"""
 
-customer_set =  (CowOwner.query.with_entities(CowOwner.owner_id,CowOwner.name,CowOwner.place).\
-           filter(CowOwner.milker_id.in_(DailyData.milker_ids)).group_by(CowOwner.place,CowOwner.owner_id,CowOwner.name).\
+    milker_data = Milkers.query.all()
+    milker_ids = [milker.milker_id for milker in milker_data]
+    milkers = [(milker.milker_id, milker.name) for milker in milker_data]
+
+    return milkers,milker_ids
+
+def customer_set():
+    """
+    To give the set of customers added in the Owners Table
+    """
+    milker_ids = milker_set()[1]
+    customer_set =  (CowOwner.query.with_entities(CowOwner.owner_id,CowOwner.name,CowOwner.place).\
+           filter(CowOwner.milker_id.in_(milker_ids)).group_by(CowOwner.place,CowOwner.owner_id,CowOwner.name).\
            order_by(CowOwner.place,CowOwner.name).all())
+    return customer_set
 
 
 @milk.route('/daily/<modified_day>/<milked_time>',methods=["GET","POST"])
@@ -73,11 +90,11 @@ customer_set =  (CowOwner.query.with_entities(CowOwner.owner_id,CowOwner.name,Co
 def add_daily_data(modified_day=None,milked_time=None):
 
     form = AddDailyData()
-
+    form.daily_data[0].milker.choices=milker_set()[0]
     print ("Modified_day",modified_day,type(modified_day))
 
     print(form.daily_data, "Printing form")
-    print (customer_set)
+    customers = customer_set()
 
     if modified_day == "None":
         day = today_date
@@ -95,7 +112,7 @@ def add_daily_data(modified_day=None,milked_time=None):
         milk_data_for_today = milk_data_check(day, "am")
         print("Form not ", milk_data_for_today)
     print ("buddhgsd",milk_data_for_today)
-    print("Length",len(customer_set),len(milk_data_for_today))
+    print("Length",len(customers),len(milk_data_for_today))
     for n in milk_data_for_today:
         print("milker", n.milker_id)
 
@@ -162,7 +179,7 @@ def add_daily_data(modified_day=None,milked_time=None):
                            header=header,
                            milk_data_for_today=milk_data_for_today,
                            milked_time=milked_time,
-                           customer_set=customer_set,
+                           customer_set=customers,
                            flash=flash)
 
 
@@ -191,4 +208,4 @@ def milk_ledger_view(month=None):
                            form=form,
                            month=month,
                            monthly_ledger=monthly_ledger,
-                           customer_set=customer_set)
+                           customer_set=customer_set())
