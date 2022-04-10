@@ -127,9 +127,9 @@ def list_own():
     if form.validate_on_submit():
         owner_id_del = form.checkbox.raw_data
         if owner_id_del:
-            print (f"Owner Id's to delete {owner_id_del}")
+            print (f"Owner Id's to update {owner_id_del}")
             if len(owner_id_del)>5:
-                flash("Please do not delete more than 5 Customers at a time",category='error')
+                flash("Please do not update more than 5 Customers at a time",category='error')
                 return redirect(url_for('owner.list_own'))
             else:
                 try:
@@ -137,30 +137,58 @@ def list_own():
                     owner_id = [int(ids.split(':')[1]) for ids in owner_id_del]
                     #print(id)
                     #print(owner_id)
-                    total_del = CowOwner.query.filter(CowOwner.owner_id.in_(owner_id), CowOwner.id.in_(id)).all()
-                    print(total_del)
+                    total_del = CowOwner.query.filter(CowOwner.owner_id.in_(owner_id), CowOwner.id.in_(id))
+                    print("outside",total_del.all())
                 except:
-                    flash("Not able to delete some customers. Try one by one!",category='error')
+                    flash("Not able to update some customers. Try one by one!",category='error')
                 else:
-                    if len(total_del) == len(owner_id_del) :
-                        owners = ",".join([owner.name for owner in total_del])
-                        #CowOwner.query.filter(CowOwner.owner_id.in_(owner_id_del)).delete()
-                        CowOwner.query.filter(CowOwner.owner_id.in_(owner_id), CowOwner.id.in_(id)).delete()
-                        try:
-                            print("Trying to commit")
-                            db.session.commit()
-                        except:
-                            print("Failed to Delete. RollingBack!")
-                            db.session.rollback()
-                            flash("Error in Deleting Owner!.Reach Admin",category='error')
+                    if len(total_del.all()) == len(owner_id_del):
+                        owners_active = ",".join([owner.name for owner in total_del if owner.active])
+                        owners_inactive = ",".join([owner.name for owner in total_del if not owner.active])
+                        for o in total_del:
+                            print ("Inside",total_del.all())
+                            if o.active is True:
+                                print (total_del.filter(CowOwner.id == o.id).all())
+                                total_del.filter(CowOwner.id == o.id).\
+                                    update({"active": False})
+                                print ("tue",o.active,o.name)
+                                try:
+                                    print("Trying to commit")
+                                    db.session.commit()
+                                except:
+                                    print(f"Failed to Delete {o.name}. RollingBack!")
+                                    db.session.rollback()
+                                    flash("Error in Deleting Owner!.Reach Admin", category='error')
+                            else:
+                                print("false",total_del.filter(CowOwner.id == o.id).all())
+                                total_del.filter(CowOwner.id == o.id).\
+                                    update({"active": True})
+                                print ("False",o.active,o.name)
+                                try:
+                                    print("Trying to commit")
+                                    db.session.commit()
+                                except:
+                                    print(f"Failed to Delete {o.name}. RollingBack!")
+                                    db.session.rollback()
+                                    flash("Error in Deleting Owner!.Reach Admin", category='error')
+
+                        print(owners_active, "gh", owners_inactive)
+                        active = f"Owners {owners_active} Deactivated Successfully!"
+                        inactive = f"Owners {owners_inactive} Activated Successfully!"
+                        if owners_active and not owners_inactive:
+                            flash(active)
+                        elif owners_inactive and not owners_active:
+                            flash(inactive)
                         else:
-                            flash(f"Owners {owners} is Successfully deleted!")
-                            return redirect(url_for('owner.list_own'))
-                    return redirect(url_for('owner.list_own'))
+                            flash(active), flash(inactive)
 
+                        return redirect(url_for('owner.list_own'))
 
-    owner_list = CowOwner.query.all()
-    header = ['', 'CustomerId', 'Name', 'Place', 'Number of Cows','Milker']
+    for error,message in form.errors.items():
+        flash(f"{error.capitalize()} : {message[0]}", category='error')
+
+    owner_list = CowOwner.query.order_by(CowOwner.owner_id).all()
+    header = ['', 'CustomerId', 'Name', 'Place', 'Number of Cows','Milker','Active']
     return render_template('owner/list_own.html',
                            header=header,
                            owner_list=owner_list,

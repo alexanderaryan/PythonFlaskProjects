@@ -76,8 +76,10 @@ class Milkers(db.Model,UserMixin):
     place = db.Column(db.String(64), nullable=False,index=True)
     bike = db.Column(db.String(64), nullable=True)
     salary = db.Column(db.Float, nullable=False)
+    active = db.Column(db.Boolean, unique=False, default=True)
     #owner_id = db.Column(db.Integer, db.ForeignKey('owners.owner_id'), nullable=True)
     owner = db.relationship('CowOwner', backref='milker', lazy='dynamic')
+
     #milk = db.relationship('Milk', backref='owner', lazy=True)
 
     def __init__(self, name, place, bike, salary):
@@ -86,8 +88,9 @@ class Milkers(db.Model,UserMixin):
         self.bike = bike
         self.salary = salary
 
+
     def __repr__(self):
-        return f"Milker {self.name} {self.milker_id} from {self.place}"
+        return f"Milker {self.name} {self.milker_id} from {self.place} is {self.active}"
 
     def milker_customers(self):
         return self.owner.all()
@@ -103,6 +106,7 @@ class CowOwner(db.Model, UserMixin):
     place = db.Column(db.String(64),index=True)
     cows = db.Column(db.Integer)
     milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False)
+    active = db.Column(db.Boolean, unique=False, default=True)
     #own_cows = db.relationship('Cows', backref='owner', lazy='dynamic')
     milk = db.relationship('Milk', backref='owner', lazy=True)
     # milker = db.relationship('Milkers', backref='owner', lazy='dynamic')
@@ -130,20 +134,21 @@ class Milk(db.Model,UserMixin):
     owner_id = db.Column(db.Integer,db.ForeignKey('owners.owner_id'),nullable=False)
     milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False, index=True)
     milked_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    am_litre = db.Column(db.Float, nullable=True)
-    pm_litre = db.Column(db.Float, nullable=True)
+    am_litre = db.Column(db.Float, nullable=True, default=0)
+    pm_litre = db.Column(db.Float, nullable=True, default=0)
+    price =  db.Column(db.Float, nullable=False)
 
     __table_args__ = (UniqueConstraint('event_id','owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
                      )
 
-    def __init__(self,owner_id,milker,milked_date,milked_time,litre,ml):
+    def __init__(self,owner_id,milker,milked_date,milked_time,litre,ml,price):
 
         self.owner_id=owner_id
         #self.name=name
         #self.place=place
         self.milker_id=milker
         self.milked_date=milked_date
-
+        self.price = price
         if milked_time == "am":
             self.am_litre = self.litre_conv(litre,ml)
         else:
@@ -157,7 +162,6 @@ class Milk(db.Model,UserMixin):
 
     def owner_details(self):
         return CowOwner.query.filter(CowOwner.owner_id==self.owner_id).first()
-
 
 
 """class Ledger(db.Model,UserMixin):

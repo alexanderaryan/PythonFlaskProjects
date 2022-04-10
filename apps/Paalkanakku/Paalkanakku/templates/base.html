@@ -113,6 +113,7 @@ Array.prototype.forEach.call(polls, callback);
 
 function callback(element, iterator) {
     //console.log(element.id);
+    debugger;
     document.getElementById(element.id).setAttribute("name",element.id);
 }
 
