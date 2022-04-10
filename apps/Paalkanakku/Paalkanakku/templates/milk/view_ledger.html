@@ -47,10 +47,16 @@
         PM
       </th>
           <th scope="col" class="thead-dark">
-        Total
+        Total Litre
+      </th>
+        <th scope="col" class="thead-dark">
+        AM Price
+      </th>
+        <th scope="col" class="thead-dark">
+        PM Price
       </th>
           <th scope="col" class="thead-dark">
-        Price
+        Total Price
       </th>
 
     </tr>
@@ -75,7 +81,10 @@
 
          {% set milk = data[1] + data[2] %}
          <td>{{"%.3f"| format(milk)}}</td>
-         <td>{{"%.2f"| format(milk*10)}}</td>
+         <td>{{"%.2f"| format(data[3])}}</td>
+         <td>{{"%.2f"| format(data[4])}}</td>
+
+         <td>{{"%.2f"| format(data[3]+data[4])}}</td>
         {% endif %}
          {% endfor %}
      {% endfor %}

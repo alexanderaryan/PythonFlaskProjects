@@ -12,8 +12,10 @@ from flask_login import current_user
 
 try:
     from Paalkanakku.models import Milkers
+    from Paalkanakku.milkers.forms import milker_data
 except:
     from Paalkanakku.Paalkanakku.models import Milkers
+    from Paalkanakku.Paalkanakku.milkers.forms import milker_data
 
 
 class DailyData(FlaskForm):
@@ -21,9 +23,7 @@ class DailyData(FlaskForm):
     class Meta:
         csrf = False
 
-    milker_data = Milkers.query.all()
-    milker_ids = [milker.milker_id for milker in milker_data]
-    milkers = [(milker.milker_id, milker.name) for milker in milker_data]
+    milkers=milker_data()[2]
 
     owner_id=IntegerField('CustomerId', validators=[DataRequired()])
     cust_name = StringField('Name', validators=[DataRequired()])
@@ -43,6 +43,8 @@ class DailyData(FlaskForm):
 class AddDailyData(FlaskForm):
 
     milked_date = DateField('Date', validators=[DataRequired()])
+    price = FloatField("Milk Rate",validators=[DataRequired(),
+                                               NumberRange(min=1, max=999,message='Price should be greater than 0')])
     milked_time = RadioField('Time', choices=[('am', 'AM'), ('pm', 'PM')],default="am")
     daily_data = FieldList(FormField(DailyData),
                            min_entries=1,

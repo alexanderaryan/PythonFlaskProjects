@@ -1,7 +1,7 @@
 try:
     from Paalkanakku import app, db
     from Paalkanakku.models import Milkers, CowOwner
-    from Paalkanakku.milkers.forms import AddMilkForm, DeleteMilkForm
+    from Paalkanakku.milkers.forms import AddMilkForm, DeleteMilkForm, milker_data
 
 except:
     from Paalkanakku.Paalkanakku import app, db
@@ -12,6 +12,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
 
 milker = Blueprint('milker', __name__)
+
 
 
 @milker.route('/add_ml', methods=['GET', 'POST'])
@@ -129,35 +130,52 @@ def list_milker():
     if form.validate_on_submit():
         milker_id_del = form.checkbox.raw_data
         if milker_id_del:
-            print (f"Milker Id's to delete {milker_id_del}")
+            print (f"Milker Id's to update {milker_id_del}")
             if len(milker_id_del)>5:
-                error.append("Please do not delete more than 5 Milkers at a time")
+                error.append("Please do not update more than 5 Milkers at a time")
                 return redirect(url_for('milker.list_milker'))
             else:
                 try:
-                    total_del = Milkers.query.filter(Milkers.milker_id.in_(milker_id_del)).all()
+                    total_sel_milker = Milkers.query.filter(Milkers.milker_id.in_(milker_id_del))
                 except:
-                    error("Not able to delete some Mikers. Try one by one!")
+                    error("Not able to deactivate some Mikers. Try one by one!")
                 else:
-                    if len(total_del) == len(milker_id_del):
-                        milkers = ",".join([owner.name for owner in total_del])
-                        Milkers.query.filter(Milkers.milker_id.in_(milker_id_del)).delete()
-                        try:
-                            print("Trying to commit")
-                            db.session.commit()
-                        except:
-                            print("Failed to Delete. RollingBack!")
-                            db.session.rollback()
-                            flash("Error in Deleting Milker!.Reach Admin")
-                        else:
-                            flash(f"Mikers {milkers} Deleted Successfully!")
-                            return redirect(url_for('milker.list_milker'))
-                    return redirect(url_for('milker.list_milker'))
+                    if len(total_sel_milker.all()) == len(milker_id_del):
+                        milker_active = ",".join([milker.name for milker in total_sel_milker if milker.active])
+                        milker_inactive = ",".join([milker.name for milker in total_sel_milker if not milker.active])
+                        for m in total_sel_milker:
+                            print (total_sel_milker.all())
+                            if m.active is True:
+                                total_sel_milker.filter(Milkers.milker_id==m.milker_id).\
+                                    update({"active": False})
+                                print ("tue",m.active,m.name)
+                                db.session.commit()
+                            else:
+                                total_sel_milker.filter(Milkers.milker_id==m.milker_id).\
+                                    update({"active": True})
+                                print ("False",m.active,m.name)
+                                db.session.commit()
+                                print("Committed")
 
-    milker_list = Milkers.query.all()
+                        print (milker_active,"gh",milker_inactive)
+                        active = f"Mikers {milker_active} Deactivated Successfully!"
+                        inactive = f"Mikers {milker_inactive} Activated Successfully!"
+                        if milker_active and not milker_inactive:
+                            flash(active)
+                        elif milker_inactive and not milker_active:
+                            flash(inactive)
+                        else:
+                            flash(active),flash(inactive)
+
+                        return redirect(url_for('milker.list_milker'))
+
+    for error,message in form.errors.items():
+        flash(f"{error.capitalize()} : {message[0]}", category='error')
+
+    milker_list = milker_data()[0]
     print (milker_list)
     #header = ['', 'MilkerId', 'Name', 'Place', 'Salary', 'Bike', 'OwnerId']
-    header = ['', 'MilkerId', 'Name', 'Place', 'Salary', 'Bike']
+    header = ['', 'MilkerId', 'Name', 'Place', 'Salary', 'Bike','Active']
     return render_template('milker/list_milker.html',
                            header=header,
                            milker_list=milker_list,
