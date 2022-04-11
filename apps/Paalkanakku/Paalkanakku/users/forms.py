@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import DataRequired, Email, EqualTo, Length
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
 from flask_wtf.recaptcha import RecaptchaField
@@ -13,17 +13,18 @@ except:
 
 class LoginForm(FlaskForm):
 
-    email = StringField('Email', validators=[DataRequired(),Email()])
+    email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     recaptcha = RecaptchaField()
     submit = SubmitField('Log In')
 
 
 class RegistrationForm(FlaskForm):
-    email = StringField('Email',validators=[DataRequired(),Email()])
-    username = StringField('Username',validators=[DataRequired()])
-    password = PasswordField('Password',validators=[DataRequired(),EqualTo('pass_confirm', message='Passwords Must Match')])
+    email = StringField('Email',validators=[DataRequired(),Email(), Length(min=1,max=50,message="Please Enter valid email")])
+    username = StringField('Username',validators=[DataRequired(), Length(min=5,max=15,message="Min 6 and max 15 characters allowed")])
+    password = PasswordField('Password',validators=[DataRequired(),Length(min=6,max=25,message="Min Length is 6"),EqualTo('pass_confirm', message='Passwords Must Match')])
     pass_confirm = PasswordField('Confirm Password', validators=[DataRequired()])
+    recaptcha = RecaptchaField()
     submit = SubmitField("Register!")
 
     def check_email(self, field):

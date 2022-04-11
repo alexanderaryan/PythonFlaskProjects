@@ -3,47 +3,140 @@
 {% block content %}
 
 
- {% for mess in flash.items() %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong>{{mess[0] | capitalize }}!</strong>  {{ mess[1][0] }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-    {% endfor %}
 
-<div class="jumbotron" align="center">
-<h1>Info about our Company</h1>
-<form method="POST">
-    {{form.hidden_tag()}}
-    <div class="form-group">
-    {{form.email.label}}
+    {% with messages = get_flashed_messages()%}
+        {% if messages %}
+        {% for mess in messages%}
+
+        {% if error %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{error}}</strong>  {{ mess }} Please register <a href={{url_for('users_blueprint.register')}}>here</a>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-    <div class="form-group">
-        {{form.email}}<br>
+
+    {% else %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+       <strong></strong>{{ mess }} </a>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-    <div class="form-group">
-    {{form.username.label}}
+{% endif %}
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    {% if flash%}
+    {% for mess in flash.items() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{mess[0] | capitalize }}!</strong>  {{ mess[1][0] }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-    <div class="form-group">
-        {{form.username}}<br>
+        {% endfor %}
+
+    {% endif %}
+
+
+<!--<div class="jumbotron" align="center">-->
+<!--<h1>Register New Admin!</h1>-->
+<!--<form class="form-group row" method="POST">-->
+<!--    {{form.hidden_tag()}}-->
+<!--    <div>-->
+<!--    {{form.email.label}}-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        {{form.email}}<br>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--    {{form.username.label}}-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        {{form.username}}<br>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--    {{form.password.label}}-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        {{form.password}}<br>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--    {{form.pass_confirm.label}}-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        {{form.pass_confirm}}<br>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--    {{form.submit}}-->
+<!--    </div>-->
+<!--</form>-->
+<!--</div>-->
+
+
+
+
+<section style="background-size: cover;background-repeat: no-repeat;background-image: url('https://images.unsplash.com/photo-1596733430284-f7437764b1a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');">
+    <div class="mask d-flex align-items-center h-100 ">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+
+              <form method="POST">
+                  {{form.hidden_tag()}}
+                  <div class="form-outline mb-4">
+                  {{form.username(class="form-control form-control-lg",id="form3Example3cg")}}
+                  <label class="form-label" for="form3Example3cg">{{form.username.label}}</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  {{form.email(class="form-control form-control-lg",id="form3Example1cg")}}
+                  <label class="form-label" for="form3Example1cg">{{form.email.label}}</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  {{form.password(id="form3Example4cg",class="form-control form-control-lg")}}
+                  <label class="form-label" for="form3Example4cg">{{form.password.label}}</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  {{form.pass_confirm(id="form3Example4cdg",class="form-control form-control-lg")}}
+                  <label class="form-label" for="form3Example4cdg">{{form.pass_confirm.label}}</label>
+                </div>
+                    <div class="form-outline mb-4">
+                    {{form.recaptcha.label}}
+                      {{form.recaptcha}}
+                </div>
+
+<!--                <div class="form-check d-flex justify-content-center mb-5">-->
+<!--                  <input-->
+<!--                    class="form-check-input me-2"-->
+<!--                    type="checkbox"-->
+<!--                    value=""-->
+<!--                    id="form2Example3cg"-->
+<!--                  />-->
+<!--                  <label class="form-check-label" for="form2Example3g">-->
+<!--                    I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>-->
+<!--                  </label>-->
+<!--                </div>-->
+
+                <div class="d-flex justify-content-center">
+                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body")}}
+                </div>
+                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="{{url_for('users.login')}}" class="fw-bold text-body"><u>Login here</u></a></p>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-    {{form.password.label}}
-    </div>
-    <div class="form-group">
-        {{form.password}}<br>
-    </div>
-    <div class="form-group">
-    {{form.pass_confirm.label}}
-    </div>
-    <div class="form-group">
-        {{form.pass_confirm}}<br>
-    </div>
-    <div class="form-group">
-    {{form.submit}}
-    </div>
-</form>
-</div>
+  </div>
+</section>
 
 {% endblock %}
