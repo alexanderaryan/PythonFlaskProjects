@@ -1,3 +1,4 @@
+from sqlalchemy import func
 try:
     from Paalkanakku import app, db
     from Paalkanakku.models import User, GoogleData
@@ -22,16 +23,20 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
+
         user = User(email=form.email.data,
                     username=form.username.data,
                     password=form.password.data
                     )
         db.session.add(user)
         try:
+            print ("re")
             db.session.commit()
         except:
+            print("red")
             db.session.rollback()
-            flash("Your email is already registered.Try Log in")
+            flash("Your email/username is already registered.Try Log in",category="error")
+            return render_template('register.html', form=form, flash=form.errors)
         else:
             flash("You are Successfully Registered!")
             return redirect(url_for('users.login'))
@@ -47,12 +52,18 @@ def login():
 
     if form.validate_on_submit():
 
-        user = User.query.filter_by(email=form.email.data).first()
-
+        user = User.query.filter(func.lower(User.email) == func.lower(form.email.data)).first()
+        username = User.query.filter(func.lower(User.username) ==func.lower(form.email.data)).first()
+        print ("hello1", user, username)
         try:
-            if user.check_password(form.password.data) and user is not None:
-                login_user(user)
+            if user:
+                if user.check_password(form.password.data):
+                    login_user(user)
+            elif username:
+                if username.check_password(form.password.data) and username is not None:
+                    login_user(username)
             else:
+                print("I came here3")
                 flash("Email or password is wrong")
                 return render_template('login.html', form=form)
         except:
