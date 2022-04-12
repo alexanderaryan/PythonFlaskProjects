@@ -22,28 +22,55 @@
 
 
 </head>
-<body>
-    <ul class="nav">
-      <li class="nav-link">
-        <a href="{{url_for('core.index')}}">Home</a>
-      </li>
-      <li class="nav-link">
-        <a href="{{url_for('core.info')}}">About</a>
-      </li>
+<body style = "background-color: lavender;">
 
-        {% if current_user.is_authenticated %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-lightheader black-bg">
+  <!-- Container wrapper -->
+  <div class="container">
+    <!-- Navbar brand -->
+    <a class="navbar-brand me-2 logo" href="{{url_for('core.index')}}"><b>Paal<span>Kanakku</span></b></a>
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarButtonsExample"
+      aria-controls="navbarButtonsExample"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+
+      <div class="top-menu">
+        <ul class="nav pull-right top-menu">
+          <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarButtonsExample">
+      <!-- Left links -->
+<!--      <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--        <li class="nav-item">-->
+<!--        <a href="{{url_for('core.info')}}">About</a>-->
+<!--        </li>-->
+<!--      </ul>-->
+      <!-- Left links -->
+      </div>
+
+
+          {% if current_user.is_authenticated %}
 
       <!--li class="nav-link">
         <a href="{{url_for('customer.list_cust')}}">Customers</a>
       </li!-->
 
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle"
+            <a class="btn btn-secondary dropdown-toggle"
                     type="button" id="dropdownMenuButton"
                     data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Customers
-            </button>
+            </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="{{url_for('owner.add_own')}}">Add</a>
                 <!--a class="dropdown-item" href="{{url_for('owner.remove_own')}}">Remove</a!-->
@@ -52,12 +79,12 @@
         </div>
 
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle"
+            <a class="btn btn-secondary dropdown-toggle"
                     type="button" id="dropdownMenuButton"
                     data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Milkers
-            </button>
+            </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="{{url_for('milker.add_milker')}}">Add</a>
                 <!--a class="dropdown-item" href="{{url_for('milker.remove_milker')}}">Remove</a!-->
@@ -66,22 +93,18 @@
         </div>
 
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle"
-                    type="button" id="custdropdownMenuButton"
+            <a class="btn btn-secondary dropdown-toggle me-3"
+                    type="button" id="dropdownMenuButton"
                     data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     MilkLedger
-            </button>
-            <div class="dropdown-menu" aria-labelledby="custdropdownMenuButton">
-                <a class="dropdown-item" href="{{url_for('milk.add_daily_data',modified_day="None", milked_time="None")}}">Add</a>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{url_for('milk.add_daily_data',modified_day='None', milked_time='None')}}">Add</a>
                 <!--a class="dropdown-item" href="{{url_for('customer.remove_cust')}}">Remove</a!-->
-                <a class="dropdown-item" href="{{url_for('milk.milk_ledger_view',month="None")}}">View</a>
+                <a class="dropdown-item" href="{{url_for('milk.milk_ledger_view',month='None' )}}">View</a>
             </div>
         </div>
-
-      <li class="nav-link">
-        <a href="#">Tally</a>
-      </li>
 
         <li class="nav-link">
         <a href="{{url_for('users.logout')}}">Log out</a>
@@ -93,21 +116,29 @@
       <li class="nav-link">
         <a href="{{url_for('users.login')}}">Log in</a>
       </li>
-      <li class="nav-link">
-        <a href="{{url_for('users.register')}}">Register</a>
-      </li>
+            <li class="nav-link">
+      <a type="button" class="btn btn-primary me-3" href="{{url_for('users.register')}}">
+          Register
+        </a>
+            </li>
     </ul>
 {% endif %}
 
-    <div class="container">
 
+      </div>
+    </div>
+    <!-- Collapsible wrapper -->
+  </div>
+  <!-- Container wrapper -->
+
+</nav>
+<!-- Navbar -->
+
+    <div class="container">
         {% block content%}
 
         {% endblock %}
-
     </div>
-
-
 <script>
 
 
@@ -158,6 +189,9 @@ function milked_time_change(element, iterator) {
 }
 
 </script>
+
+
+
 
 </body>
 </html>
