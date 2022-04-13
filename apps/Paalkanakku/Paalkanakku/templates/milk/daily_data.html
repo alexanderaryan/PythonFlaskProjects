@@ -28,63 +28,72 @@
 
     <div class="row" align="right">
       <div class="col-sm"></div>
-        <div class="col-sm">{{form.price.label}}</div>
-        <div class="col-sm">{{form.price(value=rate)}}</div>
+        <div class="form-outline mb-4">
+            {{form.price(value=rate, id="form3Example4cg",class="form-control form-control-lg",style="background-color: powderblue;")}}
+            <label class="form-label" for="form3Example4cg">{{form.price.label}}</label>
+        </div>
     </div>
-    <br>
 
-    <div class="row">
-      <div class="col-sm"></div>
-        <div class="col-sm">{{form.milked_date.label}}</div>
-        <div class="col-sm"></div>
-    </div>
-    <div class="row">
-      <div class="col-sm"></div>
+
+
+        <div class="form-outline mb-4 justify-content-center" >
+            <div class="row">
+                <div class="col-sm-4"></div>
         {% if modified_day=="None" %}
-        <div class="col-sm">{{form.milked_date(value=day,onchange="handler(event);")}}</div>
-        {% else %}
-        <div class="col-sm">{{form.milked_date(value=modified_day,onchange="handler(event);")}}
-        {{ form.milked_time.label}}
+                <div class="col-sm-4">
+        {{form.milked_date(class="form-control form-control-lg",
+            value=day,onchange="handler(event);")}}
+                </div>
+                {% else %}
+                <div class="col-sm-4">
+        {{form.milked_date(class="form-control form-control-lg",
+            value=modified_day,onchange="handler(event);")}}
+                </div>
+
+            <div class="col-sm-4 ">
             {% for time in form.milked_time %}{{ time(onchange="handler(event);")}} {{time.label}} {% endfor %}
+            </div>
+                            </div>
+        {% endif %}
         </div>
 
-        {% endif %}
-        <div class="col-sm"></div>
-    </div>
-    <div class="table-responsive" >
-  <table class="table table-striped" id="sortTable">
+    <div class="table-responsive fixed-table-body" >
+  <table class="table table-striped" id="sortTable" >
 
   <thead>
-    <tr>
+    <tr >
       {% for col_no in range(header|length) %}
-      <th scope="col" class="thead-dark">
+        {% if col_no == 0 %}
+        <th hidden scope="col" class="thead-dark" >
         {{ header[col_no] }}
       </th>
+        {% else %}
+      <th scope="col" class="thead-dark" >
+        {{ header[col_no] }}
+      </th>
+        {% endif %}
       {% endfor %}
     </tr>
   </thead>
-     <tbody>
-
-
+     <tbody >
      {% if milk_data_for_today%}
-
-
-
         {% for values in milk_data_for_today %}
             {% set looping = loop.index-1 %}
-
      <tr>
-         <td>{{form.daily_data[0].owner_id(value=values.owner_id,readonly=True,
+         <td hidden >{{form.daily_data[0].owner_id(value=values.owner_id,readonly=True,
              id="daily_data-"+ (looping | string) +"-owner_id")}}
          </td>
-         <td>{{form.daily_data[0].cust_name(value=values.owner_details().name,
-             readonly=True,
-             id="daily_data-"+ (looping | string) +"-cust_name")}}
-         </td>
+
          <td>{{form.daily_data[0].place(value=values.owner_details().place,
              readonly=True,
              id="daily_data-"+ (looping | string) +"-place")}}
          </td>
+
+         <td>{{form.daily_data[0].cust_name(value=values.owner_details().name,
+             readonly=True,
+             id="daily_data-"+ (looping | string) +"-cust_name")}}
+         </td >
+
          <td>{{ form.daily_data[0].milker(option=values.milker_id,
              id="daily_data-"+ (looping | string) +"-milker") }}
          </td>
@@ -128,8 +137,8 @@
 
      <tr>
          <td>{{form.daily_data[0].owner_id(value=values[0],readonly=True,id="daily_data-"+ (looping | string) +"-owner_id")}}</td>
-         <td>{{form.daily_data[0].cust_name(value=values[1],readonly=True,id="daily_data-"+ (looping | string) +"-cust_name")}}</td>
          <td>{{form.daily_data[0].place(value=values[2],readonly=True,id="daily_data-"+ (looping | string) +"-place")}}</td>
+         <td>{{form.daily_data[0].cust_name(value=values[1],readonly=True,id="daily_data-"+ (looping | string) +"-cust_name")}}</td>
          <td>{{ form.daily_data[0].milker(option="2",
              id="daily_data-"+ (looping | string) +"-milker")
              }}</td>
@@ -153,7 +162,5 @@
           </form>
       </div>
 </section>
-
-
 
 {% endblock %}

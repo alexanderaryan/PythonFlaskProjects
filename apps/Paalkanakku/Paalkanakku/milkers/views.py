@@ -49,6 +49,10 @@ def add_milker():
             flash(f"Milker {milker_data.name} is Successfully Added!")
             return redirect(url_for('milker.add_milker'))
 
+    for error,message in form.errors.items():
+        flash(f"{error.capitalize()} : {message[0]}", category='error')
+
+
     return render_template('milker/add_milker.html', form=form, flash=form.errors)
 
 """
@@ -175,7 +179,7 @@ def list_milker():
     milker_list = milker_data()[0]
     print (milker_list)
     #header = ['', 'MilkerId', 'Name', 'Place', 'Salary', 'Bike', 'OwnerId']
-    header = ['', 'MilkerId', 'Name', 'Place', 'Salary', 'Bike','Active']
+    header = ['✓', 'MilkerId', 'Name', 'Place', 'Salary', 'Bike','Active']
     return render_template('milker/list_milker.html',
                            header=header,
                            milker_list=milker_list,

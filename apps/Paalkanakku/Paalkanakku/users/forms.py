@@ -19,21 +19,22 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log In')
 
 
+def check_email(self, field):
+    if User.query.filter_by(email=field.data).first():
+        raise ValidationError("Your email has been registered Already!")
+
+def check_username(self, field):
+    if User.query.filter_by(username=field.data).first():
+        raise ValidationError("Entered username is taken by someone!")
+
 class RegistrationForm(FlaskForm):
-    email = StringField('Email',validators=[DataRequired(),Email(), Length(min=1,max=50,message="Please Enter valid email")])
-    username = StringField('Username',validators=[DataRequired(), Length(min=5,max=15,message="Min 6 and max 15 characters allowed")])
+    email = StringField('Email',validators=[DataRequired(),Email(),check_email, Length(min=1,max=50,message="Please Enter valid email")])
+    username = StringField('Username',validators=[DataRequired(),check_username, Length(min=5,max=15,message="Min 6 and max 15 characters allowed")])
     password = PasswordField('Password',validators=[DataRequired(),Length(min=6,max=25,message="Min Length is 6"),EqualTo('pass_confirm', message='Passwords Must Match')])
     pass_confirm = PasswordField('Confirm Password', validators=[DataRequired()])
     recaptcha = RecaptchaField()
     submit = SubmitField("Register!")
 
-    def check_email(self, field):
-        if User.query.filter_by(email=field.data).first():
-            raise ValidationError("Your email has been registered Already!")
-
-    def check_username(self, field):
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError("Entered username is taken by someone!")
 
 
 class UpdateUserForm(FlaskForm):

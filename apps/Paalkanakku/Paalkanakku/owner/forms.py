@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, BooleanField, \
     SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
 
@@ -15,9 +15,9 @@ except:
 
 class AddCustForm(FlaskForm):
 
-    place = StringField('Place', validators=[DataRequired()])
-    name = StringField('Name', validators=[DataRequired()])
-    cows = IntegerField('Number of Cows',validators=[DataRequired()])
+    place = StringField('Place', validators=[DataRequired(),Length(min=5,max=30,message="Max 30 characters")])
+    name = StringField('Name', validators=[DataRequired(),Length(min=5,max=30,message="Max 30 characters")])
+    cows = IntegerField('Number of Cows',validators=[DataRequired(),NumberRange(min=0, max=20,message='Max No.of Cows is 20')])
     milker_id = SelectMultipleField('Milker',validators=[DataRequired()])
     submit = SubmitField('Add')
 

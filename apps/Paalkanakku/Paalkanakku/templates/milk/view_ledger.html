@@ -29,16 +29,19 @@
         {{form.month.label(class="form-label")}}
         {% set mon_val = (month.year | string) + "-" + ('%02d' % month.month) %}
         {% if modified_day=="None" %}
-            <div class="col-sm">{{form.milked_date(class="form-control form-control-lg", id="milkmonth",value=mon_val)}}</div>
+            <div class="col-sm">{{form.milked_date(class="form-control form-control-lg", id="milkmonth",
+                value=mon_val,onchange="month_handler(event);")}}</div>
         {% else %}
-            <div class="col-sm">{{form.month(class="form-control form-control-lg", id="milkmonth",value=mon_val)}}</div>
+            <div class="col-sm">{{form.month(class="form-control form-control-lg", id="milkmonth",
+                value=mon_val,onchange="month_handler(event);")}}</div>
         {% endif %}
     </div>
-    <div class="d-flex justify-content-center">
-                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body")}}
-    </div><br>
+<!--    <div class="d-flex justify-content-center">-->
+<!--                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body")}}-->
+<!--    </div><br>-->
 
 </form>
+          {% if monthly_ledger %}
     <div class="table-responsive" >
   <table class="table table-striped" id="sortTable">
 
@@ -98,10 +101,15 @@
         {% endif %}
          {% endfor %}
      {% endfor %}
+
      </tbody>
   </table>
 
+
 </div>
+          {% else %}
+         <p style="text-align: center;">No data Found!</p>
+     {% endif %}
           <div class="d-flex justify-content-center">
     <a href="{{ url_for('core.index') }}" class="btn btn-secondary">Cancel</a>
                 </div>
