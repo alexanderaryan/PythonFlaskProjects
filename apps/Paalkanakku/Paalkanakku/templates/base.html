@@ -19,14 +19,12 @@
 
     <!--   Importing customized CSS -->
     <link href="/static/css/milk_common.css" rel="stylesheet">
-
-
 </head>
+
 <body style = "background-color: lavender;">
 
-
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-lightheader black-bg">
+<nav class="navbar navbar-inverse navbar-expand-lg navbar-lightheader black-bg">
   <!-- Container wrapper -->
   <div class="container">
     <!-- Navbar brand -->
@@ -134,6 +132,8 @@
 </nav>
 <!-- Navbar -->
 
+
+
     <div class="container">
         {% block content%}
 
@@ -147,7 +147,7 @@ Array.prototype.forEach.call(polls, callback);
 
 function callback(element, iterator) {
     //console.log(element.id);
-    debugger;
+    //debugger;
     document.getElementById(element.id).setAttribute("name",element.id);
 }
 
@@ -158,10 +158,23 @@ function handler(e){
   console.log(time);
   date=document.getElementById("milked_date").value;
   console.log(date);
-  debugger;
+  //debugger;
   location.href = "{{url_for('milk.add_daily_data', modified_day = 'date',milked_time='mt')}}".replace('date',date).replace('mt',time);
   //location.href = Flask.url_for('milk.add_daily_data'', {modified_day: e.target.value});
 }
+
+function month_handler(e){
+  //time = document.getElementsByName("milked_time");
+  //time = document.querySelector('input[name="milked_time"]:checked').value;
+
+  //console.log(time);
+  month=document.getElementById("milkmonth").value+'-01';
+  console.log(month);
+  ////debugger;
+  location.href = "{{url_for('milk.milk_ledger_view', month = 'month')}}".replace('month',month);
+  //location.href = Flask.url_for('milk.add_daily_data'', {modified_day: e.target.value});
+}
+
 
 
 milker_id = document.querySelectorAll('[id $= "milker"]');
@@ -170,10 +183,28 @@ Array.prototype.forEach.call(milker_id, milker_id_change);
 function milker_id_change(element, iterator) {
     console.log(element.attributes.option.nodeValue);
     console.log(element.attributes);
-    debugger;
+    //debugger;
     console.log(element.attributes.option);
     $(element).val(element.attributes.option.nodeValue);
 }
+
+ml_id = document.querySelectorAll('[id $= "-ml"]');
+Array.prototype.forEach.call(ml_id, ml_id_change);
+
+function ml_id_change(element, iterator) {
+    console.log(element.attributes.value.nodeValue);
+    console.log(pad(element.attributes.value.nodeValue,3));
+    function pad(num, size) {
+    num = num.toString();
+    console.log(num);
+    while (num.length < size) num = num+"0";
+    console.log(num);
+    return num;
+    }
+    //debugger;
+    $(element).val(pad(element.attributes.value.nodeValue,3));
+}
+
 
 
 milked_time = document.querySelectorAll('[name ^= "milked_time"]');
@@ -185,8 +216,9 @@ function milked_time_change(element, iterator) {
     if (host.slice(-2) == "pm" ){
         document.getElementById('milked_time-1').checked = true;
     }
-    //debugger;
+    ////debugger;
 }
+
 
 </script>
 

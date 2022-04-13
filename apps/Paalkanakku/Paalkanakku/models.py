@@ -158,6 +158,7 @@ class Milk(db.Model,UserMixin):
         return f"Date: {self.milked_date}"
 
     def litre_conv(self, l, ml):
+        """To merge the litre and milli litre to single column value"""
         return float(str(l) + '.' + str(ml))
 
     def owner_details(self):

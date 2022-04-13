@@ -108,7 +108,6 @@ def customer_set(active=False):
 @login_required
 def add_daily_data(modified_day=None,milked_time=None):
 
-
     form = AddDailyData()
 
     print (type(form.daily_data),len(form.daily_data))
@@ -129,6 +128,8 @@ def add_daily_data(modified_day=None,milked_time=None):
         print ("MilkedTime",milked_time)
         rate = price(day)
 
+
+
     if milked_time != "am":
         milk_data_for_today = milk_data_check(day,milked_time)
         print ("Form there",milked_time,milk_data_for_today)
@@ -138,7 +139,7 @@ def add_daily_data(modified_day=None,milked_time=None):
     print ("buddhgsd",milk_data_for_today)
 
     for n in milk_data_for_today:
-        print("milker", n.milker_id)
+        print("milker", n.milker_id,n.am_litre,n.pm_litre)
     if not milk_data_for_today:
         form.daily_data[0].milker.choices = milker_data(False)[2]
         print(milker_data(False)[2])
@@ -153,7 +154,7 @@ def add_daily_data(modified_day=None,milked_time=None):
 
     print(form.data, "data of form")
 
-    print (form.validate_on_submit())
+    print ("Form validation is ",form.validate_on_submit())
     if form.validate_on_submit():
         print ("inside form",milk_data_check(form.milked_date.data,form.milked_time.data))
         milk_data = milk_data_check(form.milked_date.data,form.milked_time.data)
@@ -198,10 +199,12 @@ def add_daily_data(modified_day=None,milked_time=None):
 
     for error,message in form.errors.items():
         flash(f"{error.capitalize()} : {message[0]}", category='error')
+
+
     daily_data_form = DailyData()
     milk_header = [daily_data_form.owner_id.label,
-                   daily_data_form.cust_name.label,
                    daily_data_form.place.label,
+                   daily_data_form.cust_name.label,
                    daily_data_form.milker.label,
                    daily_data_form.litre.label,
                    daily_data_form.ml.label]

@@ -188,7 +188,7 @@ def list_own():
         flash(f"{error.capitalize()} : {message[0]}", category='error')
 
     owner_list = CowOwner.query.order_by(CowOwner.owner_id).all()
-    header = ['', 'CustomerId', 'Name', 'Place', 'Number of Cows','Milker','Active']
+    header = ['✓', 'CustomerId', 'Name', 'Place', 'Number of Cows','Milker','Active']
     return render_template('owner/list_own.html',
                            header=header,
                            owner_list=owner_list,
