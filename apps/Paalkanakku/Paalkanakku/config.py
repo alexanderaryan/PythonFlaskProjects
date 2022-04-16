@@ -11,7 +11,7 @@ os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 
 cred_filename = '/home/alexanders/Documents/Python/GitPythonWork/apps/Paalkanakku/Paalkanakku/' \
-                'client_secret_367285454255-n45ttmrb1hne9b9j4jm0ftbq6ku21qsk.apps.googleusercontent.com.json'
+                'client_secret_367285454255-v4g22iac4c6tlu0c2n5btlp7aeh2nmqp.apps.googleusercontent.com.json'
 client_secrets = '/home/alexanders/Documents/Python/GitPythonWork/apps/Paalkanakku/Paalkanakku/' \
                 'client_secrets.json'
 
@@ -20,6 +20,7 @@ sheet_name = datetime.today().today().strftime("%B")
 
 with open(cred_filename,'r') as fp:
     google_data = json.load(fp)['web']
+
 
 
 google_blueprint = make_google_blueprint(client_id=google_data['client_id'],

@@ -1,8 +1,14 @@
-from Paalkanakku.Paalkanakku import gspread
-from Paalkanakku.Paalkanakku import cred_filename, gcc
-from Paalkanakku.Paalkanakku.config import book_name, sheet_name
+try:
+    from Paalkanakku import gspread
+    from Paalkanakku import cred_filename, gcc
+    from Paalkanakku.config import book_name, sheet_name
 
-#print (gcc.openall())
+except:
+    from Paalkanakku.Paalkanakku import gspread
+    from Paalkanakku.Paalkanakku import cred_filename, gcc
+    from Paalkanakku.Paalkanakku.config import book_name, sheet_name
+
+print (gcc.openall())
 
 try:
     workbook = gcc.open(book_name)
