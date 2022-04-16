@@ -25,7 +25,6 @@
               <h2 class="text-uppercase text-center mb-5">Add Milk Data</h2>
     {{form.hidden_tag()}}
 
-
     <div class="row" align="right">
       <div class="col-sm"></div>
         <div class="form-outline mb-4">
@@ -136,7 +135,7 @@
         {% set looping = loop.index-1 %}
 
      <tr>
-         <td>{{form.daily_data[0].owner_id(value=values[0],readonly=True,id="daily_data-"+ (looping | string) +"-owner_id")}}</td>
+         <td hidden>{{form.daily_data[0].owner_id(value=values[0],readonly=True,id="daily_data-"+ (looping | string) +"-owner_id")}}</td>
          <td>{{form.daily_data[0].place(value=values[2],readonly=True,id="daily_data-"+ (looping | string) +"-place")}}</td>
          <td>{{form.daily_data[0].cust_name(value=values[1],readonly=True,id="daily_data-"+ (looping | string) +"-cust_name")}}</td>
          <td>{{ form.daily_data[0].milker(option="2",

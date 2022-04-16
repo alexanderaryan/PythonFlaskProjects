@@ -6,10 +6,12 @@ try:
     from Paalkanakku import app, db
     from Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data
+    from Paalkanakku.milkdata import google_backup
 except:
     from Paalkanakku.Paalkanakku import app, db
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData, DailyData
+    from Paalkanakku.Paalkanakku.milkdata import google_backup
 
 
 from flask import render_template, url_for, flash, redirect, request, Blueprint
@@ -51,26 +53,31 @@ def price(date):
     return milk_data[0] if milk_data is not None else "0.00"
 
 
-def whole_month_data(month):
-    print("before",month)
+class whole_month_data():
 
-    first_day_of_month = datetime.combine(month,datetime.min.time())
-    nxt_mnth = first_day_of_month.replace(day=28) + timedelta(days=4)
-    print ("dat",nxt_mnth.day)
-    last_day_of_month = nxt_mnth - timedelta(days=nxt_mnth.day)
-    print (last_day_of_month)
-    print ("after",last_day_of_month,first_day_of_month)
+    def __init__(self,month):
+        print("before",month)
+        self.month = month
+        self.first_day_of_month = datetime.combine(self.month, datetime.min.time())
+        nxt_mnth = self.first_day_of_month.replace(day=28) + timedelta(days=4)
+        print("dat", nxt_mnth.day)
+        self.last_day_of_month = nxt_mnth - timedelta(days=nxt_mnth.day)
+        print(self.last_day_of_month)
+        print("after", self.last_day_of_month, self.first_day_of_month)
 
-    milk_data = Milk.query.with_entities(Milk.owner_id,
-                                         func.coalesce(func.sum(Milk.am_litre), 0.0).label('AM_Total'),
-                                         func.coalesce(func.sum(Milk.pm_litre), 0.0).label('PM_Total'),
-                    func.coalesce(func.sum(Milk.am_litre*Milk.price), 0.0).label('AM_Total_Price'),
-                func.coalesce(func.sum(Milk.pm_litre*Milk.price), 0.0).label('PM_Total_Price')).\
-        filter(Milk.milked_date.between( first_day_of_month,last_day_of_month)).\
-        group_by(Milk.owner_id).\
-        order_by(Milk.owner_id).all()
+    def ledger_calc(self):
+        """To return monthly legderdata"""
 
-    return milk_data
+        milk_data = Milk.query.with_entities(Milk.owner_id,
+                                             func.coalesce(func.sum(Milk.am_litre), 0.0).label('AM_Total'),
+                                             func.coalesce(func.sum(Milk.pm_litre), 0.0).label('PM_Total'),
+                        func.coalesce(func.sum(Milk.am_litre*Milk.price), 0.0).label('AM_Total_Price'),
+                    func.coalesce(func.sum(Milk.pm_litre*Milk.price), 0.0).label('PM_Total_Price')).\
+            filter(Milk.milked_date.between( self.first_day_of_month,self.last_day_of_month)).\
+            group_by(Milk.owner_id).\
+            order_by(Milk.owner_id).all()
+
+        return milk_data
 
 """def milker_set():
     
@@ -236,19 +243,30 @@ def milk_ledger_view(month=None):
 
     form = LedgerView()
 
-    if month=="None":
+    if month == "None":
         month = today_date.replace(day=1)
         print ("Here is te month",month)
         return redirect(url_for('milk.milk_ledger_view', month=month))
     else:
         month = datetime.strptime(month, '%Y-%m-%d').date()
 
-    monthly_ledger = whole_month_data(month)
+    ledger_obj= whole_month_data(month)
+    monthly_ledger = ledger_obj.ledger_calc()
+
+    print("mon", type(month))
+    print("data", monthly_ledger)
+
 
     if form.validate_on_submit():
         print (form.month.data)
-        monthly_ledger = whole_month_data(form.month.data)
-        print (monthly_ledger)
+
+        monthly_ledger = ledger_obj.ledger_calc()
+
+        print ("mon",form.month.data)
+        print ("data",monthly_ledger)
+        google_backup.add_data_to_google(date_object=month,
+                                         first=ledger_obj.first_day_of_month,
+                                         last=ledger_obj.last_day_of_month)
         return redirect(url_for("milk.milk_ledger_view", month=form.month.data))
 
     return render_template('milk/view_ledger.html',

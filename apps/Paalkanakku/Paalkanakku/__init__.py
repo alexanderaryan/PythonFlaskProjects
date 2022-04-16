@@ -68,8 +68,6 @@ except:
     from Paalkanakku.Paalkanakku.milkdata.views import milk
 
 
-
-
 app.register_blueprint(core)
 app.register_blueprint(users)
 app.register_blueprint(customer)
@@ -93,9 +91,7 @@ app.register_blueprint(error_pages)
 
 
 
-
 """import gspread
-
 
 cred_filename = "/home/alexanders/Documents/Python/Local_Copy/Localgit/Google/google_apps/MoiKanakku/Moikanakku" \
                 "/moikanakku-341816-5b7d7ef75ff9.json"

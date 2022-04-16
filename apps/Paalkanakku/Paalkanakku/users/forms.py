@@ -13,7 +13,7 @@ except:
 
 class LoginForm(FlaskForm):
 
-    email = StringField('Email', validators=[DataRequired()])
+    email = StringField('Email/Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     recaptcha = RecaptchaField()
     submit = SubmitField('Log In')
