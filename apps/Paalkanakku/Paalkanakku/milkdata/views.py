@@ -255,7 +255,11 @@ def milk_ledger_view(month=None):
 
     print("mon", type(month))
     print("data", monthly_ledger)
+    sheet_url = google_backup.spreadsheet_check(month.strftime("%Y")+"Paalkanakku").url
 
+    with open("/home/alexanders/Documents/Python/GitPythonWork/apps/Paalkanakku/Paalkanakku/config.py", 'w+', encoding='utf-8') as f:
+        for l in f.readlines():
+            print (l)
 
     if form.validate_on_submit():
         print (form.month.data)
@@ -264,13 +268,15 @@ def milk_ledger_view(month=None):
 
         print ("mon",form.month.data)
         print ("data",monthly_ledger)
-        google_backup.add_data_to_google(date_object=month,
+        mon = google_backup.add_data_to_google(date_object=month,
                                          first=ledger_obj.first_day_of_month,
                                          last=ledger_obj.last_day_of_month)
+        flash(f"The data is backed up for {mon}")
         return redirect(url_for("milk.milk_ledger_view", month=form.month.data))
 
     return render_template('milk/view_ledger.html',
                            form=form,
                            month=month,
                            monthly_ledger=monthly_ledger,
-                           customer_set=customer_set())
+                           customer_set=customer_set(),
+                           sheet_url=sheet_url)

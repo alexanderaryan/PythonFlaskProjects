@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 
+
 {% with messages = get_flashed_messages()%}
         {% if messages %}
         {% for mess in messages%}
 
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
       <strong>{{error}}</strong>  {{ mess }}
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -22,6 +23,11 @@
           <form class="card" method="POST" style="border-radius: 15px;">
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Milk Ledger</h2>
+
+                <div class="d-flex" style="justify-content: right;">
+           <a class="btn btn-success btn-lg text-body"  href={{sheet_url}}> Google Backup </a>
+    </div><br>
+
                 <br>
 {{form.hidden_tag()}}
 
