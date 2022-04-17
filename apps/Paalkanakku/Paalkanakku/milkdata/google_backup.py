@@ -1,9 +1,7 @@
 
 import gspread
-import os
 from datetime import datetime
-import inspect
-import json
+from flask_login import current_user
 
 try:
 
@@ -37,11 +35,14 @@ def spreadsheet_check(sheet_name):
             print (f"Sheet {sheet_name} Not found!")
             sh = gc.create(sheet_name)
             sheet_id = sh.id
-            sh.share('alextechie2020@gmail.com', perm_type='user', role='writer')
             print(f"Sheet {sheet_name} created")
+            sh.share('alextechie2020@gmail.com', perm_type='user', role='reader')
+            print(current_user.email)
+            sh.share(current_user.email, perm_type='user', role='reader')
             return sh
     else:
         sheet_id = sh.id
+
     return sh
 
 
@@ -121,6 +122,7 @@ def add_data_to_google(date_object, first, last):
     print (milk_data)
 
     worksheet.append_rows(milk_data)
+    return month
     # print("man eo",worksheet.range(1,1, worksheet.row_count, worksheet.col_count))
     #
     #

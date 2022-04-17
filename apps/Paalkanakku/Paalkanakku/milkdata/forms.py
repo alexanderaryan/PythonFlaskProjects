@@ -56,5 +56,5 @@ class AddDailyData(FlaskForm):
 class LedgerView(FlaskForm):
 
     month = MonthField('Month', validators=[DataRequired()])
-    submit = SubmitField('Backup', validators=[DataRequired()])
+    submit = SubmitField('Take Google Backup', validators=[DataRequired()])
 
