@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from sqlalchemy import func
-
+import yaml
 
 try:
     from Paalkanakku import app, db
@@ -21,6 +21,17 @@ milk = Blueprint('milk', __name__)
 
 today_date = datetime.date(datetime.today())
 
+
+def check_google_sheet():
+    with open("/home/alexanders/Documents/Python/GitPythonWork/apps/Paalkanakku/Paalkanakku/config.yaml") as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+        print(data)
+        if data['gsheet_url'] is not None:
+            print(data['gsheet_url'])
+            sheet_url = data['gsheet_url']
+            return sheet_url
+        else:
+            return False
 
 def milk_data_check(date,milked_time):
 
@@ -237,6 +248,8 @@ print (Milk.query.delete())
 db.session.commit()"""
 
 
+
+
 @milk.route('/ledger/<month>',methods=["GET","POST"])
 @login_required
 def milk_ledger_view(month=None):
@@ -255,17 +268,20 @@ def milk_ledger_view(month=None):
 
     print("mon", type(month))
     print("data", monthly_ledger)
-    sheet_url = google_backup.spreadsheet_check(month.strftime("%Y")+"Paalkanakku").url
-
-    with open("/home/alexanders/Documents/Python/GitPythonWork/apps/Paalkanakku/Paalkanakku/config.py", 'w+', encoding='utf-8') as f:
-        for l in f.readlines():
-            print (l)
+    #sheet_url = google_backup.spreadsheet_check(month.strftime("%Y")+"Paalkanakku").url
+    sheet_url = "dumm"
+    if check_google_sheet() is False:
+        sheet_url = google_backup.spreadsheet_check(month.strftime("%Y") + "Paalkanakku").url
+        yaml_data = {'gsheet_url' : sheet_url}
+        print ("Sheet Not found")
+        with open("/home/alexanders/Documents/Python/GitPythonWork/apps/Paalkanakku/Paalkanakku/config.yaml","w+") as w:
+            data = yaml.dump(yaml_data, w)
+    else:
+        sheet_url = check_google_sheet()
 
     if form.validate_on_submit():
         print (form.month.data)
-
         monthly_ledger = ledger_obj.ledger_calc()
-
         print ("mon",form.month.data)
         print ("data",monthly_ledger)
         mon = google_backup.add_data_to_google(date_object=month,
