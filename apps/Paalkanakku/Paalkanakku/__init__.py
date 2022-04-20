@@ -47,7 +47,7 @@ login_manager.login_view = 'users.login'
 
 
 app.config['RECAPTCHA_PUBLIC_KEY'] = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' #Key generated from google API. 1 Million hit per month
-app.config['RECAPTCHA_PRIVATE_KEY'] = '6LcDM4YfAAAAABUHmHnvUbpPxS7-rTJLlCDPsyR4'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe' #6LcDM4YfAAAAABUHmHnvUbpPxS7-rTJLlCDPsyR4
 app.config['RECAPTCHA_OPTIONS']= {'theme':'dark'}
 
 
