@@ -33,7 +33,7 @@ class AddMilkForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(),Length(min=5,max=30,message="Max 30 characters")])
     place = StringField('Place', validators=[DataRequired(),Length(min=5,max=30,message="Max 30 characters")])
     #Milker = StringField('MilkerId', validators=[DataRequired()])
-    salary = FloatField('Salary', validators=[DataRequired(),
+    salary = IntegerField('Salary', validators=[DataRequired(),
                                               NumberRange(min=0, max=30000,message='Salary should be less than 30k')])
     bike = StringField('Bike', validators=[DataRequired(),Length(min=0,max=15,message="Bike 15 characters")])
     #owner_id = SelectField('CustomerId', choices='', validators=[])
