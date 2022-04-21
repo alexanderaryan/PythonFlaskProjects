@@ -1,13 +1,13 @@
 from sqlalchemy import func
 try:
     from Paalkanakku import app, db
-    from Paalkanakku.models import User, GoogleData
+    from Paalkanakku.models import User
     from Paalkanakku.users.forms import RegistrationForm, UpdateUserForm, LoginForm
     from Paalkanakku.users.picture_handler import add_profile_pic
     #from Paalkanakku.config import google
 except:
     from Paalkanakku.Paalkanakku import app, db
-    from Paalkanakku.Paalkanakku.models import User,GoogleData
+    from Paalkanakku.Paalkanakku.models import User
     from Paalkanakku.Paalkanakku.users.forms import RegistrationForm, UpdateUserForm, LoginForm
     from Paalkanakku.Paalkanakku.users.picture_handler import add_profile_pic
     #from Paalkanakku.Paalkanakku.config import google
