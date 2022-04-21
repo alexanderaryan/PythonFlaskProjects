@@ -40,13 +40,14 @@
 <!--    </ul>-->
 <!--  </div>-->
   <a class="navbar-brand mx-lg-0 order-1 order-lg-2 me-2 logo" href="{{url_for('core.index')}}">
-    <img src="/static/images/Paalkanakku-logos.jpeg" width="30" height="30" alt="logo">
+    <img src="/static/images/Paalkanakku-logos.jpeg" width="60" height="60" alt="logo">
     <b>Milk<span>Ledger</span></b>
   </a>
 
   <div class="collapse navbar-collapse justify-content-end w-100 order-3" id="navbar-list-9">
-          {% if current_user.is_authenticated %}
 
+          {% if current_user.is_authenticated %}
+<hr>
       <ul class="navbar-nav">
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,7 +59,7 @@
           </div>
         </li>
       </ul>
-
+<hr>
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -70,7 +71,7 @@
         </div>
         </li>
       </ul>
-
+<hr>
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -82,148 +83,31 @@
         </div>
         </li>
       </ul>
-
+<hr style="border-top: 10px solid steelblue;">
       <ul class="navbar-nav">
-
         <li class="nav-item">
         <a class="nav-link" href="{{url_for('users.logout')}}">Log out</a>
       </li>
+          <hr>
       <li class="nav-item">
         <a class="nav-link"  href="{{url_for('users.account')}}">Account</a>
       </li>
       </ul>
 
-
-
 {% else %}
-      <li class="nav-link">
-        <a href="{{url_for('users.login')}}">Log in</a>
+<hr style="border-top: 10px solid steelblue;">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+         <a class="nav-link" href="{{url_for('users.login')}}">Log in</a>
       </li>
-            <li class="nav-link">
-      <a type="button" class="btn btn-primary me-3" href="{{url_for('users.register')}}">
-          Register
-        </a>
-            </li>
-
+      <li class="nav-item">
+         <a type="button" class="btn btn-primary me-3" href="{{url_for('users.register')}}">Register</a>
+      </li>
+      </ul>
       {% endif %}
   </div>
 
 </nav>
-
-
-
-
-
-
-<!--&lt;!&ndash; Navbar &ndash;&gt;-->
-<!--<nav class="navbar navbar-inverse navbar-expand-lg navbar-lightheader black-bg">-->
-<!--  &lt;!&ndash; Container wrapper &ndash;&gt;-->
-<!--  <div class="container">-->
-<!--    &lt;!&ndash; Navbar brand &ndash;&gt;-->
-<!--    <a class="navbar-brand me-2 logo" href="{{url_for('core.index')}}"><b>Paal<span>Kanakku</span></b></a>-->
-<!--    &lt;!&ndash; Toggle button &ndash;&gt;-->
-<!--    <button-->
-<!--      class="navbar-toggler"-->
-<!--      type="button"-->
-<!--      data-mdb-toggle="collapse"-->
-<!--      data-mdb-target="#navbarButtonsExample"-->
-<!--      aria-controls="navbarButtonsExample"-->
-<!--      aria-expanded="false"-->
-<!--      aria-label="Toggle navigation"-->
-<!--    >-->
-<!--      <i class="fas fa-bars"></i>-->
-<!--    </button>-->
-
-<!--      <div class="top-menu">-->
-<!--        <ul class="nav pull-right top-menu">-->
-<!--          &lt;!&ndash; Collapsible wrapper &ndash;&gt;-->
-<!--    <div class="collapse navbar-collapse" id="navbarButtonsExample">-->
-<!--      &lt;!&ndash; Left links &ndash;&gt;-->
-<!--&lt;!&ndash;      <ul class="navbar-nav me-auto mb-2 mb-lg-0">&ndash;&gt;-->
-<!--&lt;!&ndash;        <li class="nav-item">&ndash;&gt;-->
-<!--&lt;!&ndash;        <a href="{{url_for('core.info')}}">About</a>&ndash;&gt;-->
-<!--&lt;!&ndash;        </li>&ndash;&gt;-->
-<!--&lt;!&ndash;      </ul>&ndash;&gt;-->
-<!--      &lt;!&ndash; Left links &ndash;&gt;-->
-<!--      </div>-->
-
-
-<!--          {% if current_user.is_authenticated %}-->
-
-<!--      &lt;!&ndash;li class="nav-link">-->
-<!--        <a href="{{url_for('customer.list_cust')}}">Customers</a>-->
-<!--      </li!&ndash;&gt;-->
-
-<!--        <div class="dropdown">-->
-<!--            <a class="btn btn-secondary dropdown-toggle"-->
-<!--                    type="button" id="dropdownMenuButton"-->
-<!--                    data-toggle="dropdown"-->
-<!--                    aria-haspopup="true" aria-expanded="false">-->
-<!--                    Customers-->
-<!--            </a>-->
-<!--            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
-<!--                <a class="dropdown-item" href="{{url_for('owner.add_own')}}">Add</a>-->
-<!--                &lt;!&ndash;a class="dropdown-item" href="{{url_for('owner.remove_own')}}">Remove</a!&ndash;&gt;-->
-<!--                <a class="dropdown-item" href="{{url_for('owner.list_own')}}">View</a>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="dropdown">-->
-<!--            <a class="btn btn-secondary dropdown-toggle"-->
-<!--                    type="button" id="dropdownMenuButton"-->
-<!--                    data-toggle="dropdown"-->
-<!--                    aria-haspopup="true" aria-expanded="false">-->
-<!--                    Milkers-->
-<!--            </a>-->
-<!--            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
-<!--                <a class="dropdown-item" href="{{url_for('milker.add_milker')}}">Add</a>-->
-<!--                &lt;!&ndash;a class="dropdown-item" href="{{url_for('milker.remove_milker')}}">Remove</a!&ndash;&gt;-->
-<!--                <a class="dropdown-item" href="{{url_for('milker.list_milker')}}">View</a>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="dropdown">-->
-<!--            <a class="btn btn-secondary dropdown-toggle me-3"-->
-<!--                    type="button" id="dropdownMenuButton"-->
-<!--                    data-toggle="dropdown"-->
-<!--                    aria-haspopup="true" aria-expanded="false">-->
-<!--                    MilkLedger-->
-<!--            </a>-->
-<!--            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
-<!--                <a class="dropdown-item" href="{{url_for('milk.add_daily_data',modified_day='None', milked_time='None')}}">Add</a>-->
-<!--                &lt;!&ndash;a class="dropdown-item" href="{{url_for('customer.remove_cust')}}">Remove</a!&ndash;&gt;-->
-<!--                <a class="dropdown-item" href="{{url_for('milk.milk_ledger_view',month='None' )}}">View</a>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <li class="nav-link">-->
-<!--        <a href="{{url_for('users.logout')}}">Log out</a>-->
-<!--      </li>-->
-<!--      <li class="nav-link">-->
-<!--        <a href="{{url_for('users.account')}}">Account</a>-->
-<!--      </li>-->
-<!--        {% else %}-->
-<!--      <li class="nav-link">-->
-<!--        <a href="{{url_for('users.login')}}">Log in</a>-->
-<!--      </li>-->
-<!--            <li class="nav-link">-->
-<!--      <a type="button" class="btn btn-primary me-3" href="{{url_for('users.register')}}">-->
-<!--          Register-->
-<!--        </a>-->
-<!--            </li>-->
-<!--    </ul>-->
-<!--{% endif %}-->
-
-
-<!--      </div>-->
-<!--    </div>-->
-<!--    &lt;!&ndash; Collapsible wrapper &ndash;&gt;-->
-<!--  </div>-->
-<!--  &lt;!&ndash; Container wrapper &ndash;&gt;-->
-
-<!--</nav>-->
-<!--&lt;!&ndash; Navbar &ndash;&gt;-->
-
 
 
     <div class="container">
@@ -250,7 +134,7 @@ function handler(e){
   console.log(time);
   date=document.getElementById("milked_date").value;
   console.log(date);
-  //debugger;
+  debugger;
   location.href = "{{url_for('milk.add_daily_data', modified_day = 'date',milked_time='mt')}}".replace('date',date).replace('mt',time);
   //location.href = Flask.url_for('milk.add_daily_data'', {modified_day: e.target.value});
 }
@@ -311,10 +195,6 @@ function milked_time_change(element, iterator) {
     ////debugger;
 }
 
-
-
-
-
-
+</script>
 </body>
 </html>

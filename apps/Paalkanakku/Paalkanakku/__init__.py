@@ -77,32 +77,3 @@ app.register_blueprint(milk)
 app.register_blueprint(error_pages)
 #app.register_blueprint(google_blueprint, url_prefix="/login")
 #gcc = gspread.oauth(credentials_filename=cred_filename)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""import gspread
-
-cred_filename = "/home/alexanders/Documents/Python/Local_Copy/Localgit/Google/google_apps/MoiKanakku/Moikanakku" \
-                "/moikanakku-341816-5b7d7ef75ff9.json"
-file_name = "Aruna Swetha Sadangu"
-
-
-gc = gspread.service_account(filename=cred_filename)
-
-#sheet = gc.open(file_name).sheet1
-
-#sheet = client.open("Aruna Swetha Sadangu").sheet1
-#total_rows = str(sheet.row_count)
-
-#data = sheet.get('A1:H'+total_rows)"""

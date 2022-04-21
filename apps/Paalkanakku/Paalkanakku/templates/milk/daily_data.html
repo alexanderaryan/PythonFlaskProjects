@@ -37,14 +37,14 @@
 
         <div class="form-outline mb-4 justify-content-center" >
             <div class="row">
-                <div class="col-sm-4"></div>
+
         {% if modified_day=="None" %}
-                <div class="col-sm-4">
+                <div class="col-sm-8">
         {{form.milked_date(class="form-control form-control-lg",
             value=day,onchange="handler(event);")}}
                 </div>
                 {% else %}
-                <div class="col-sm-4">
+                <div class="col-sm-8">
         {{form.milked_date(class="form-control form-control-lg",
             value=modified_day,onchange="handler(event);")}}
                 </div>
@@ -52,7 +52,7 @@
             <div class="col-sm-4 ">
             {% for time in form.milked_time %}{{ time(onchange="handler(event);")}} {{time.label}} {% endfor %}
             </div>
-                            </div>
+</div>
         {% endif %}
         </div>
 
