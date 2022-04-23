@@ -111,11 +111,50 @@
 
 
     <div class="container">
+
+
+
+ <p>Eng/தமிழ்</p>        <label class="switch">
+ <input onclick="lang_func()" type="checkbox" id="langbtn">
+ <div class="slider round">
+  <!--ADDED HTML -->
+  <span class="on">தமிழ்</span>
+  <span class="off">Eng</span>
+  <!--END-->
+ </div>
+
+</label>
+
+
+
+
         {% block content%}
 
         {% endblock %}
     </div>
 <script>
+
+//To handle language
+lang_func()
+
+function lang_func() {
+    check = document.getElementById('langbtn').checked;
+    debugger;
+    console.log(check);
+    if (check === true) {
+
+    for (let el of document.querySelectorAll('.en'))
+         el.style.display='none';
+    for (let el of document.querySelectorAll('.tn'))
+        el.style.display='inherit';
+    }
+    else{
+    for (let el of document.querySelectorAll('.tn'))
+        el.style.display='none';
+    for (let el of document.querySelectorAll('.en'))
+        el.style.display='inherit';
+    }
+}
 
 
 polls = document.querySelectorAll('[id ^= "daily_data-"]');
