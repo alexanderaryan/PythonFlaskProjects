@@ -103,46 +103,46 @@
             {% set looping = loop.index-1 %}
      <tr>
          <td hidden >{{form.daily_data[0].owner_id(value=values.owner_id,readonly=True,
-             id="daily_data-"+ (looping | string) +"-owner_id")}}
+             id="daily_data-"+ (looping | string) +"-owner_id",class="form-control")}}
          </td>
 
          <td>{{form.daily_data[0].place(value=values.owner_details().place,
              readonly=True,
-             id="daily_data-"+ (looping | string) +"-place")}}
+             id="daily_data-"+ (looping | string) +"-place",class="form-control")}}
          </td>
 
          <td>{{form.daily_data[0].cust_name(value=values.owner_details().name,
              readonly=True,
-             id="daily_data-"+ (looping | string) +"-cust_name")}}
+             id="daily_data-"+ (looping | string) +"-cust_name",class="form-control")}}
          </td >
 
          <td>{{ form.daily_data[0].milker(option=values.milker_id,
-             id="daily_data-"+ (looping | string) +"-milker") }}
+             id="daily_data-"+ (looping | string) +"-milker",class="form-control") }}
          </td>
         {% if milked_time == "am" %}
          <td>{{ form.daily_data[0].litre(value=((values.am_litre | string).split('.')[0] | int),
-             id="daily_data-"+ (looping | string) +"-litre") }}
+             id="daily_data-"+ (looping | string) +"-litre",class="form-control") }}
          </td>
              {% if values.am_litre != None %}
              <td>{{ form.daily_data[0].ml(value=((values.am_litre | string).split('.')[1] | int),
-                 id="daily_data-"+ (looping | string) +"-ml") }}
+                 id="daily_data-"+ (looping | string) +"-ml",class="form-control") }}
              </td>
              {% else %}
              <td>{{ form.daily_data[0].ml(value=((values.am_litre | string).split('.') | int),
-                 id="daily_data-"+ (looping | string) +"-ml") }}
+                 id="daily_data-"+ (looping | string) +"-ml",class="form-control") }}
              </td>
              {% endif %}
          {% else %}
          <td>{{ form.daily_data[0].litre(value=((values.pm_litre | string).split('.')[0] | int),
-             id="daily_data-"+ (looping | string) +"-litre") }}
+             id="daily_data-"+ (looping | string) +"-litre",class="form-control") }}
          </td>
              {% if values.pm_litre != None %}
              <td>{{ form.daily_data[0].ml(value=((values.pm_litre | string).split('.')[1] | int),
-                 id="daily_data-"+ (looping | string) +"-ml") }}
+                 id="daily_data-"+ (looping | string) +"-ml",class="form-control") }}
              </td>
             {% else %}
             <td>{{ form.daily_data[0].ml(value=((values.pm_litre | string).split('.') | int),
-                 id="daily_data-"+ (looping | string) +"-ml") }}
+                 id="daily_data-"+ (looping | string) +"-ml",class="form-control") }}
              </td>
             {% endif %}
          {% endif %}
@@ -158,14 +158,14 @@
         {% set looping = loop.index-1 %}
 
      <tr>
-         <td hidden>{{form.daily_data[0].owner_id(value=values[0],readonly=True,id="daily_data-"+ (looping | string) +"-owner_id")}}</td>
-         <td>{{form.daily_data[0].place(value=values[2],readonly=True,id="daily_data-"+ (looping | string) +"-place")}}</td>
-         <td>{{form.daily_data[0].cust_name(value=values[1],readonly=True,id="daily_data-"+ (looping | string) +"-cust_name")}}</td>
+         <td hidden>{{form.daily_data[0].owner_id(value=values[0],readonly=True,id="daily_data-"+ (looping | string) +"-owner_id",class="form-control")}}</td>
+         <td>{{form.daily_data[0].place(value=values[2],readonly=True,id="daily_data-"+ (looping | string) +"-place",class="form-control")}}</td>
+         <td>{{form.daily_data[0].cust_name(value=values[1],readonly=True,id="daily_data-"+ (looping | string) +"-cust_name",class="form-control")}}</td>
          <td>{{ form.daily_data[0].milker(option="2",
-             id="daily_data-"+ (looping | string) +"-milker")
+             id="daily_data-"+ (looping | string) +"-milker",class="form-control")
              }}</td>
-         <td>{{ form.daily_data[0].litre(id="daily_data-"+ (looping | string) +"-litre") }}</td>
-         <td>{{ form.daily_data[0].ml(id="daily_data-"+ (looping | string) +"-ml") }}</td>
+         <td>{{ form.daily_data[0].litre(id="daily_data-"+ (looping | string) +"-litre",class="form-control") }}</td>
+         <td>{{ form.daily_data[0].ml(id="daily_data-"+ (looping | string) +"-ml",class="form-control") }}</td>
        </tr>
 
      {% endfor %}

@@ -44,8 +44,23 @@
     <b>Milk<span>Ledger</span></b>
   </a>
 
-  <div class="collapse navbar-collapse justify-content-end w-100 order-3" id="navbar-list-9">
+        <div class="right-side d-flex" style="justify-content: right;">
+            <ul class="navbar-nav">
+ <label class="switch nav-item ">
+ <input onclick="lang_func()" type="checkbox" id="langbtn">
+ <div class="slider round">
+  <!--ADDED HTML -->
+  <span class="on">தமிழ்</span>
+  <span class="off">Eng</span>
+  <!--END-->
+ </div>
 
+</label>
+                </ul>
+</div>
+
+
+  <div class="collapse navbar-collapse justify-content-end w-100 order-3" id="navbar-list-9">
           {% if current_user.is_authenticated %}
 <hr>
       <ul class="navbar-nav">
@@ -111,21 +126,6 @@
 
 
     <div class="container">
-
-
-
- <p>Eng/தமிழ்</p>        <label class="switch">
- <input onclick="lang_func()" type="checkbox" id="langbtn">
- <div class="slider round">
-  <!--ADDED HTML -->
-  <span class="on">தமிழ்</span>
-  <span class="off">Eng</span>
-  <!--END-->
- </div>
-
-</label>
-
-
 
 
         {% block content%}
