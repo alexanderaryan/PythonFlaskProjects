@@ -180,8 +180,10 @@ def list_milker():
     print (milker_list)
     #header = ['', 'MilkerId', 'Name', 'Place', 'Salary', 'Bike', 'OwnerId']
     header = ['✓', 'MilkerId', 'Name', 'Place', 'Salary', 'Bike','Active']
+    tm_header = ['✓', 'க.என்', 'பெயர்', 'ஊர்', 'சம்பளம்', 'வண்டி', 'செயல்பாடு']
     return render_template('milker/list_milker.html',
                            header=header,
+                           tm_header=tm_header,
                            milker_list=milker_list,
                            flash=form.errors,
                            form=form)

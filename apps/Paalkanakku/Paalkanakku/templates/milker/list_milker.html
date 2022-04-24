@@ -33,8 +33,15 @@
   <thead>
     <tr>
       {% for col_no in range(header|length) %}
-      <th scope="col" class="thead-dark">
+      <th scope="col" class="thead-dark en">
         {{ header[col_no] }}
+      </th>
+      {% endfor %}
+    </tr>
+  <tr>
+      {% for col_no in range(header|length) %}
+      <th scope="col" class="thead-dark tn">
+        {{ tm_header[col_no] }}
       </th>
       {% endfor %}
     </tr>

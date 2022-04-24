@@ -189,8 +189,10 @@ def list_own():
 
     owner_list = CowOwner.query.order_by(CowOwner.owner_id).all()
     header = ['✓', 'CustomerId', 'Name', 'Place', 'Number of Cows','Milker','Active']
+    tm_header = ['✓', 'வா.என்', 'பெயர்', 'ஊர்', 'கறவை மாடுகள்', 'க.என்', 'செயல்பாடு']
     return render_template('owner/list_own.html',
                            header=header,
+                           tm_header=tm_header,
                            owner_list=owner_list,
                            flash=form.errors,
                            form=form)
