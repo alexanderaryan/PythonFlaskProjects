@@ -135,28 +135,42 @@
 <script>
 
 //To handle language
-lang_func()
+
 
 function lang_func() {
-    check = document.getElementById('langbtn').checked;
-    debugger;
-    console.log(check);
-    if (check === true) {
+
+
+    //document.getElementById("langbtn").checked = checked;
+
+    var checkbox = document.getElementById("langbtn");
+    check = checkbox.checked;
+
+    console.log("check func called"+check);
+
+    //debugger;
+    localStorage.setItem("langbtn", checkbox.checked=check);
+    if (check) {
 
     for (let el of document.querySelectorAll('.en'))
          el.style.display='none';
     for (let el of document.querySelectorAll('.tn'))
-        el.style.display='inherit';
+        el.style.display='revert';
+
     }
     else{
     for (let el of document.querySelectorAll('.tn'))
         el.style.display='none';
     for (let el of document.querySelectorAll('.en'))
-        el.style.display='inherit';
-    }
+        el.style.display='revert';
+
+}
 }
 
+var checked = JSON.parse(localStorage.getItem("langbtn"));
+document.getElementById("langbtn").checked = checked;
+lang_func()
 
+//To set id for multiple elements in add daily page
 polls = document.querySelectorAll('[id ^= "daily_data-"]');
 Array.prototype.forEach.call(polls, callback);
 
@@ -166,6 +180,8 @@ function callback(element, iterator) {
     document.getElementById(element.id).setAttribute("name",element.id);
 }
 
+
+//Function to handle default milked date and time
 function handler(e){
   //time = document.getElementsByName("milked_time");
   time = document.querySelector('input[name="milked_time"]:checked').value;
@@ -178,6 +194,7 @@ function handler(e){
   //location.href = Flask.url_for('milk.add_daily_data'', {modified_day: e.target.value});
 }
 
+//Function to handle default month
 function month_handler(e){
   //time = document.getElementsByName("milked_time");
   //time = document.querySelector('input[name="milked_time"]:checked').value;
@@ -191,7 +208,7 @@ function month_handler(e){
 }
 
 
-
+//To handle active and inactive milkers
 milker_id = document.querySelectorAll('[id $= "milker"]');
 Array.prototype.forEach.call(milker_id, milker_id_change);
 
@@ -203,6 +220,8 @@ function milker_id_change(element, iterator) {
     $(element).val(element.attributes.option.nodeValue);
 }
 
+
+//To handle 3 digit millilitres
 ml_id = document.querySelectorAll('[id $= "-ml"]');
 Array.prototype.forEach.call(ml_id, ml_id_change);
 
@@ -221,11 +240,12 @@ function ml_id_change(element, iterator) {
 }
 
 
-
+////Function to check the default milked time AM/PM
 milked_time = document.querySelectorAll('[name ^= "milked_time"]');
 Array.prototype.forEach.call(milked_time, milked_time_change);
 
 function milked_time_change(element, iterator) {
+
     var host = window.location.href;
     console.log(window.location.href,window.location.href.slice(-2));
     if (host.slice(-2) == "pm" ){

@@ -92,28 +92,33 @@
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+              <h2 class="text-uppercase text-center mb-5 en">Create New account</h2>
+                <h2 class="text-uppercase text-center mb-5 tn">புதிய கணக்கை உருவாக்க</h2>
                 <hr>
               <form method="POST">
                   {{form.hidden_tag()}}
                   <div class="form-outline mb-4">
                   {{form.username(class="form-control form-control-lg",id="form3Example3cg")}}
-                  <label class="form-label" for="form3Example3cg">{{form.username.label}}</label>
+                  <label class="form-label en" for="form3Example3cg">{{form.username.label}}</label>
+                  <label class="form-label tn" for="form3Example3cg">பயனர் பெயர்</label>
                 </div>
 
                 <div class="form-outline mb-4">
                   {{form.email(class="form-control form-control-lg",id="form3Example1cg")}}
-                  <label class="form-label" for="form3Example1cg">{{form.email.label}}</label>
+                  <label class="form-label en" for="form3Example1cg">{{form.email.label}}</label>
+                    <label class="form-label tn" for="form3Example3cg">மின்னஞ்சல்</label>
                 </div>
 
                 <div class="form-outline mb-4">
                   {{form.password(id="form3Example4cg",class="form-control form-control-lg")}}
-                  <label class="form-label" for="form3Example4cg">{{form.password.label}}</label>
+                  <label class="form-label en" for="form3Example4cg">{{form.password.label}}</label>
+                    <label class="form-label tn" for="form3Example3cg">கடவுச்சொல்</label>
                 </div>
 
                 <div class="form-outline mb-4">
                   {{form.pass_confirm(id="form3Example4cdg",class="form-control form-control-lg")}}
-                  <label class="form-label" for="form3Example4cdg">{{form.pass_confirm.label}}</label>
+                  <label class="form-label en" for="form3Example4cdg">{{form.pass_confirm.label}}</label>
+                    <label class="form-label tn" for="form3Example3cg">கடவுச்சொல்லை உறுதிப்படுத்தவும்</label>
                 </div>
                     <div class="form-outline mb-4">
                     {{form.recaptcha.label}}
@@ -133,9 +138,15 @@
 <!--                </div>-->
 
                 <div class="d-flex justify-content-center">
-                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body")}}
-                </div>
-                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="{{url_for('users.login')}}" class="fw-bold text-body"><u>Login here</u></a></p>
+                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body en justify-content-center")}}
+                    </div>
+                  <div class="d-flex justify-content-center">
+                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body tn justify-content-center", value="பதிவு செய்")}}
+                      </div>
+
+                <p class="text-center text-muted mt-5 mb-0 en">Have already an account? <a href="{{url_for('users.login')}}" class="fw-bold text-body"><u>Login here</u></a></p>
+                <p class="text-center text-muted mt-5 mb-0 tn">ஏற்கனவே கணக்கு உள்ளதா? <a href="{{url_for('users.login')}}" class="fw-bold text-body"><u> இங்கே உள்நுழைக</u></a></p>
+
 
               </form>
 

@@ -33,26 +33,36 @@
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Add Milker</h2>
+              <h2 class="text-uppercase text-center mb-5 en">Add New Milker</h2>
+                <h2 class="text-uppercase text-center mb-5 tn">புதிய கறவைக்காரரை சேர்க்க </h2>
                 <hr>
 
 <form method="POST">
     {{form.hidden_tag()}}
 
     <div class="form-outline mb-4">
-        <label class="form-label" >{{form.name.label}}</label> {{form.name(class="form-control form-control-lg")}}
+        <label class="form-label en" >{{form.name.label}}</label>
+        <label class="form-label tn" >பெயர்</label>
+        {{form.name(class="form-control form-control-lg")}}
     </div>
     <div class="form-outline mb-4">
-        <label class="form-label" >{{form.place.label}}</label> {{form.place(class="form-control form-control-lg")}}
+        <label class="form-label en" >{{form.place.label}}</label>
+        <label class="form-label tn" >ஊர்</label>
+        {{form.place(class="form-control form-control-lg")}}
     </div>
     <div class="form-outline mb-4">
-        <label class="form-label" >{{form.salary.label}}</label> {{form.salary(class="form-control form-control-lg")}}
+        <label class="form-label en" >{{form.salary.label}}</label>
+        <label class="form-label tn" >சம்பளம்</label>
+        {{form.salary(class="form-control form-control-lg")}}
     </div>
     <div class="form-outline mb-4">
-        <label class="form-label" >{{form.bike.label}}</label> {{form.bike(class="form-control form-control-lg")}}
+        <label class="form-label en" >{{form.bike.label}}</label>
+        <label class="form-label tn" >வண்டி</label>
+        {{form.bike(class="form-control form-control-lg")}}
     </div>
     <div class="d-flex justify-content-center">
-                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body")}}
+                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body en justify-content-center")}}
+                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body tn justify-content-center",value="சேர்")}}
     </div><br>
                     <div class="d-flex justify-content-center">
     <a href="{{ url_for('core.index') }}" class="btn btn-secondary">Cancel</a>
