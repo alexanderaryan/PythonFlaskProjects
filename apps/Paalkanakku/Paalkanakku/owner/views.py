@@ -29,7 +29,7 @@ def check_milker(name,place):
 def add_own():
     form = AddCustForm()
 
-    milkers = Milkers.query.all()
+    milkers = Milkers.query.filter(Milkers.active == True).all()
     choices = [(str(o.milker_id), o.name) for o in milkers]
     print(choices)
     form.milker_id.choices = choices

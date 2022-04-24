@@ -30,29 +30,44 @@
 
 
     <div align="center">
-<h1>Welcome to the page for {{current_user.username}}</h1>
+        <h2 class="text-uppercase text-center mb-5 en">Profile page for {{current_user.username}}</h2>
+        <h2 class="text-uppercase text-center mb-5 tn">{{current_user.username}}க்கான சுயவிவரப் பக்கம்</h2>
+
         <img src="{{url_for('static',filename='profile_pics/'+current_user.profile_image)}}">
+
     </div>
 </div>
 
 <div class="container" align="center">
 <form method="POST" action="" enctype="multipart/form-data">
     {{form.hidden_tag()}}
-    <div class="form-group">
-        {{form.username.label(class="form-group")}}
-        {{form.username(class="form-control")}}<br>
-    </div>
-    <div class="form-group">
-        {{form.email.label(class="form-group")}}
-        {{form.email(class="form-control")}}<br>
-    </div>
-    <div class="form-group">
-        {{form.picture.label}}
-        {{form.picture}}<br>
-    </div>
-    <div class="form-group">
-        {{form.submit(class='btn btn-primary')}}
-    </div>
+
+     <div class="form-outline mb-4">
+                  {{form.username(class="form-control form-control-lg",id="form3Example3cg")}}
+                      <label class="form-label en" for="form3Example3cg">{{form.username.label}}</label>
+                      <label class="form-label tn" for="form3Example3cg">பயனர் பெயர்</label>
+                </div>
+
+        <div class="form-outline mb-4">
+                  {{form.email(class="form-control form-control-lg",id="form3Example3cg")}}
+                      <label class="form-label en" for="form3Example3cg">{{form.email.label}}</label>
+                      <label class="form-label tn" for="form3Example3cg">மின்னஞ்சல்</label>
+                </div>
+    <div class="form-outline mb-4">
+                  {{form.picture(class="form-control form-control-lg",id="form3Example3cg")}}
+                      <label class="form-label en" for="form3Example3cg">{{form.picture.label}}</label>
+                      <label class="form-label tn" for="form3Example3cg">புகைப்படம்</label>
+                </div>
+    <div class="d-flex justify-content-center">
+                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body en justify-content-center")}}
+                    {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body tn justify-content-center",value="புதுப்பி")}}
+                </div>
+    <div class="d-flex justify-content-center">
+    <a href="{{ url_for('core.index') }}" class="btn btn-secondary en">Cancel</a>
+                </div>
+        <div class="d-flex justify-content-center">
+    <a href="{{ url_for('core.index') }}" class="btn btn-secondary tn">ரத்து செய்</a>
+                </div>
 </form>
         </div>
 </div>

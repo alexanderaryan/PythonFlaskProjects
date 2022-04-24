@@ -290,9 +290,14 @@ def milk_ledger_view(month=None):
         flash(f"The data is backed up for {mon}")
         return redirect(url_for("milk.milk_ledger_view", month=form.month.data))
 
+    header = ['Place','Name','AM','PM','Total','AM Price','PM Price','Total Price']
+    tm_header = ['ஊர்', 'பெயர்', 'காலை', 'மாலை', 'மொத்தம்', 'காலை விலை', 'மாலை விலை', 'மொத்த விலை']
+
     return render_template('milk/view_ledger.html',
                            form=form,
                            month=month,
+                           tm_header = tm_header,
+                           header=header,
                            monthly_ledger=monthly_ledger,
                            customer_set=customer_set(),
                            sheet_url=sheet_url)

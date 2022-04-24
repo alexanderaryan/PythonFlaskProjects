@@ -29,7 +29,7 @@ def check_username(self, field):
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email',validators=[DataRequired(),Email(),check_email, Length(max=50,message="Please Enter less than 50 characters")])
-    username = StringField('Username',validators=[DataRequired(),check_username, Length(min=5,max=15,message="Min 6 and max 15 characters allowed")])
+    username = StringField("Username",validators=[DataRequired(),check_username, Length(min=5,max=15,message="Min 6 and max 15 characters allowed")])
     password = PasswordField('Password',validators=[DataRequired(),Length(min=6,max=25,message="Min Length is 6"),EqualTo('pass_confirm', message='Passwords Must Match')])
     pass_confirm = PasswordField('Confirm Password', validators=[DataRequired()])
     recaptcha = RecaptchaField()

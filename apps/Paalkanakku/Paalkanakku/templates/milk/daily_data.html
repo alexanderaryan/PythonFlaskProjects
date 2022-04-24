@@ -31,14 +31,16 @@
       <div class="row d-flex justify-content-center align-items-center h-100">
           <form class="card" method="POST" style="border-radius: 15px;">
             <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Add Milk Data</h2>
+              <h2 class="text-uppercase text-center mb-5 en">Add Milk Data</h2>
+              <h2 class="text-uppercase text-center mb-5 tn">பால் கணக்கை சேர்க்க</h2>
     {{form.hidden_tag()}}
 
     <div class="row" align="right">
       <div class="col-sm"></div>
         <div class="form-outline mb-4">
             {{form.price(value=rate, id="form3Example4cg",class="form-control form-control-lg",style="background-color: powderblue;")}}
-            <label class="form-label" for="form3Example4cg">{{form.price.label}}</label>
+            <label class="form-label en" for="form3Example4cg">{{form.price.label}}</label>
+            <label class="form-label tn" for="form3Example4cg">பால் விலை</label>
         </div>
     </div>
 
@@ -48,10 +50,12 @@
             <div class="row">
 
         {% if modified_day=="None" %}
+
                 <div class="col-sm-8">
         {{form.milked_date(class="form-control form-control-lg",
             value=day,onchange="handler(event);")}}
                 </div>
+
                 {% else %}
                 <div class="col-sm-8">
         {{form.milked_date(class="form-control form-control-lg",
@@ -59,7 +63,17 @@
                 </div>
 
             <div class="col-sm-4 ">
-            {% for time in form.milked_time %}{{ time(onchange="handler(event);")}} {{time.label}} {% endfor %}
+
+            {% for time in form.milked_time %}
+                {{ time(onchange="handler(event);")}}
+                {{time.label(class="en")}}
+
+                {% if loop.index == 1%}
+                <label for="milked_time-0" class="tn" style="display: inline-block !important;">காலை</label>
+                {% else %}
+                <label for="milked_time-1" class="tn" style="display: inline-block !important; ">மாலை</label>
+                {% endif %}
+                {% endfor %}
             </div>
 </div>
         {% endif %}
@@ -160,10 +174,14 @@
   </table>
 </div>
                 <div class="d-flex justify-content-center">
-           {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body")}}
+                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body en justify-content-center")}}
+                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body tn justify-content-center",value="சேர்")}}
     </div><br>
                 <div class="d-flex justify-content-center">
-    <a href="{{ url_for('core.index') }}" class="btn btn-secondary">Cancel</a>
+    <a href="{{ url_for('core.index') }}" class="btn btn-secondary en">Cancel</a>
+                </div>
+        <div class="d-flex justify-content-center">
+    <a href="{{ url_for('core.index') }}" class="btn btn-secondary tn">ரத்து செய்</a>
                 </div>
 </form>
                 </div>

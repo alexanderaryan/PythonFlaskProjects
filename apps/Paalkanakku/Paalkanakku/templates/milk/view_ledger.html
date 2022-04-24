@@ -22,17 +22,20 @@
       <div class="row d-flex justify-content-center align-items-center h-100">
           <form class="card" method="POST" style="border-radius: 15px;">
             <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Milk Ledger</h2>
+              <h2 class="text-uppercase text-center mb-5 en">Milk Ledger</h2>
+                <h2 class="text-uppercase text-center mb-5 tn">பால் பேரேடு</h2>
 
                 <div class="d-flex" style="justify-content: right;">
-           <a class="btn btn-success btn-lg text-body"  href={{sheet_url}}> Google Backup </a>
+           <a class="btn btn-success btn-lg text-body en"  href={{sheet_url}}> Google Backup </a>
+                    <a class="btn btn-success btn-lg text-body tn"  href={{sheet_url}}> Google காப்புப்பிரதி</a>
     </div><br>
 
                 <br>
 {{form.hidden_tag()}}
 
     <div class="form-outline mb-4">
-        {{form.month.label(class="form-label")}}
+        {{form.month.label(class="form-label en")}}
+        <label class="form-label tn" for="month">மாதம்</label>
         {% set mon_val = (month.year | string) + "-" + ('%02d' % month.month) %}
         {% if modified_day=="None" %}
             <div class="col-sm">{{form.milked_date(class="form-control form-control-lg", id="milkmonth",
@@ -53,30 +56,42 @@
 
   <thead>
     <tr>
-      <th scope="col" class="thead-dark">
-        Place
+        {% for col_no in range(header|length) %}
+      <th scope="col" class="thead-dark en">
+        {{ header[col_no] }}
       </th>
-        <th scope="col" class="thead-dark">
-        Name
+      {% endfor %}
+    </tr>
+    <tr>
+        {% for col_no in range(header|length) %}
+      <th scope="col" class="thead-dark tn">
+        {{ tm_header[col_no] }}
       </th>
-          <th scope="col" class="thead-dark">
-        AM
-      </th>
-          <th scope="col" class="thead-dark">
-        PM
-      </th>
-          <th scope="col" class="thead-dark">
-        Total Litre
-      </th>
-        <th scope="col" class="thead-dark">
-        AM Price
-      </th>
-        <th scope="col" class="thead-dark">
-        PM Price
-      </th>
-          <th scope="col" class="thead-dark">
-        Total Price
-      </th>
+      {% endfor %}
+<!--      <th scope="col" class="thead-dark">-->
+<!--        Place-->
+<!--      </th>-->
+<!--        <th scope="col" class="thead-dark">-->
+<!--        Name-->
+<!--      </th>-->
+<!--          <th scope="col" class="thead-dark">-->
+<!--        AM-->
+<!--      </th>-->
+<!--          <th scope="col" class="thead-dark">-->
+<!--        PM-->
+<!--      </th>-->
+<!--          <th scope="col" class="thead-dark">-->
+<!--        Total Litre-->
+<!--      </th>-->
+<!--        <th scope="col" class="thead-dark">-->
+<!--        AM Price-->
+<!--      </th>-->
+<!--        <th scope="col" class="thead-dark">-->
+<!--        PM Price-->
+<!--      </th>-->
+<!--          <th scope="col" class="thead-dark">-->
+<!--        Total Price-->
+<!--      </th>-->
 
     </tr>
   </thead>
@@ -113,16 +128,22 @@
 
 
 </div>
+
           <div class="d-flex justify-content-center">
-           {{form.submit(class="btn btn-success btn-block btn-lg text-body")}}
-    </div><br>
+                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body en justify-content-center")}}
+                    {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body tn justify-content-center",value="காப்புப்பிரதி எடு")}}
+                </div><br>
 
           {% else %}
-         <p style="text-align: center;">No data Found!</p>
+         <p class="en" style="text-align: center;">No data Found!</p>
+          <p class="tn" style="text-align: center;">ஒரு தகவலும் பதிவில் இல்லை </p>
      {% endif %}
 
           <div class="d-flex justify-content-center">
-    <a href="{{ url_for('core.index') }}" class="btn btn-secondary">Cancel</a>
+    <a href="{{ url_for('core.index') }}" class="btn btn-secondary en">Cancel</a>
+                </div>
+        <div class="d-flex justify-content-center">
+    <a href="{{ url_for('core.index') }}" class="btn btn-secondary tn">ரத்து செய்</a>
                 </div>
 </div>
           </form>
