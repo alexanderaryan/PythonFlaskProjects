@@ -7,11 +7,13 @@ try:
     from Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data
     from Paalkanakku.milkdata import google_backup
+    from Paalkanakku.config import sheet_config
 except:
     from Paalkanakku.Paalkanakku import app, db
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData, DailyData
     from Paalkanakku.Paalkanakku.milkdata import google_backup
+    from Paalkanakku.Paalkanakku.config import sheet_config
 
 
 from flask import render_template, url_for, flash, redirect, request, Blueprint
@@ -23,7 +25,7 @@ today_date = datetime.date(datetime.today())
 
 
 def check_google_sheet():
-    with open("/home/alexanders/Documents/Python/GitPythonWork/apps/Paalkanakku/Paalkanakku/config.yaml") as f:
+    with open(sheet_config) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
         print(data)
         if data['gsheet_url'] is not None:
@@ -274,7 +276,7 @@ def milk_ledger_view(month=None):
         sheet_url = google_backup.spreadsheet_check(month.strftime("%Y") + "Paalkanakku").url
         yaml_data = {'gsheet_url' : sheet_url}
         print ("Sheet Not found")
-        with open("/home/alexanders/Documents/Python/GitPythonWork/apps/Paalkanakku/Paalkanakku/config.yaml","w+") as w:
+        with open(sheet_config,"w+") as w:
             data = yaml.dump(yaml_data, w)
     else:
         sheet_url = check_google_sheet()
