@@ -28,6 +28,5 @@ google_blueprint = make_google_blueprint(client_id=google_data['client_id'],
                                          offline=True,
                                          scope=['profile', 'email'])
 
-
-
-
+home_dir=os.path.expanduser("~")
+sheet_config=home_dir+"/Documents/Python/GitPythonWork/apps/Paalkanakku/Paalkanakku/config.yaml"
