@@ -36,6 +36,14 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField("Register!")
 
 
+def FileSizeLimit(max_size_in_mb):
+    max_bytes = max_size_in_mb * 1024 * 1024
+
+    def file_length_check(form, field):
+        if len(field.data.read()) > max_bytes:
+            raise ValidationError(f"File size must be less than {max_size_in_mb}MB")
+
+    return file_length_check
 
 class UpdateUserForm(FlaskForm):
 
@@ -46,9 +54,8 @@ class UpdateUserForm(FlaskForm):
                         validators=[FileAllowed(
                             ['jpg', 'jpeg', 'png'],
                             "The format can be uploaded is .jpg,.jpeg,.png"
-                            )]
+                            ),FileSizeLimit(max_size_in_mb=1)]
                         )
-    pic = FileField()
     submit = SubmitField("Update!")
 
     def check_email(self, field):

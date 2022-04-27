@@ -15,8 +15,8 @@ except:
 
 class AddCustForm(FlaskForm):
 
-    place = StringField('Place', validators=[DataRequired(),Length(min=5,max=30,message="Max 30 characters")])
-    name = StringField('Name', validators=[DataRequired(),Length(min=5,max=30,message="Max 30 characters")])
+    place = StringField('Place', validators=[DataRequired(),Length(max=30,message="Min 5 / Max 30 characters")])
+    name = StringField('Name', validators=[DataRequired(),Length(max=30,message="Min 5 / Max 30 characters")])
     cows = IntegerField('Number of Cows',validators=[DataRequired(),NumberRange(min=0, max=20,message='Max No.of Cows is 20')])
     milker_id = SelectMultipleField('Milker',validators=[DataRequired()])
     submit = SubmitField('Add')
