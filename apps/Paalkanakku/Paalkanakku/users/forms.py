@@ -40,9 +40,11 @@ def FileSizeLimit(max_size_in_mb):
     max_bytes = max_size_in_mb * 1024 * 1024
 
     def file_length_check(form, field):
-        if len(field.data.read()) > max_bytes:
-            raise ValidationError(f"File size must be less than {max_size_in_mb}MB")
-
+        try:
+            if len(field.data.read()) > max_bytes:
+                raise ValidationError(f"File size must be less than {max_size_in_mb}MB")
+        except:
+            pass
     return file_length_check
 
 class UpdateUserForm(FlaskForm):

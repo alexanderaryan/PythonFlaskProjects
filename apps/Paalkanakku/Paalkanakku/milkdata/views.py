@@ -66,6 +66,13 @@ def price(date):
     return milk_data[0] if milk_data is not None else "0.00"
 
 
+
+@app.context_processor
+def utility_processor():
+    def milk_price():
+        return price(date=today_date)
+    return dict(milk_price=milk_price)
+
 class whole_month_data():
 
     def __init__(self,month):
