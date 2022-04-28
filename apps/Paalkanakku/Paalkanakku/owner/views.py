@@ -1,11 +1,11 @@
 
 try:
-    from Paalkanakku import app, db
+    from Paalkanakku import app, db, today_date
     from Paalkanakku.models import Milkers, CowOwner
-    from Paalkanakku.owner.forms import AddCustForm, DeleteCustForm
+    from Paalkanakku.owner.forms import AddCustForm, DeleteCustForm, EditUserForm
 
 except:
-    from Paalkanakku.Paalkanakku import app, db
+    from Paalkanakku.Paalkanakku import app, db, today_date
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner
     from Paalkanakku.Paalkanakku.owner.forms import AddCustForm, DeleteCustForm
 
@@ -197,3 +197,31 @@ def list_own():
                            flash=form.errors,
                            form=form)
 
+
+@owner.route('/liab_own/<int:own_id>',methods=['GET','POST'])
+@login_required
+def liab_own(own_id):
+
+    form = EditUserForm()
+    day = today_date
+
+    print (own_id)
+
+    owner = CowOwner.query.filter(CowOwner.owner_id == own_id).first_or_404()
+    print (owner.place)
+    print(owner.name)
+
+
+    if form.validate_on_submit():
+
+        return redirect(url_for('owner/liab_own.html',own_id=own_id))
+
+    elif request.method == 'GET':
+        form.name.data = owner.name
+        form.place.data = owner.place
+
+
+    return render_template('owner/liab_own.html',
+                           form=form,
+                           day=day,
+                           owner=owner)
