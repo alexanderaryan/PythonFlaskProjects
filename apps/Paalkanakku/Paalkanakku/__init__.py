@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from sqlalchemy import MetaData
+from datetime import datetime, timedelta
 
 try:
     from Paalkanakku.errors_pages.handlers import error_pages
@@ -13,6 +14,8 @@ except:
     from Paalkanakku.Paalkanakku.errors_pages.handlers import error_pages
     #from Paalkanakku.Paalkanakku.config import google_blueprint
 
+
+today_date = datetime.date(datetime.today())
 
 app = Flask(__name__)
 

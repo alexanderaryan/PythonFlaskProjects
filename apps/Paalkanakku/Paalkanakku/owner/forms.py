@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, BooleanField, \
-    SelectField, SelectMultipleField
+    SelectField, SelectMultipleField, DateField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
@@ -28,42 +28,30 @@ class DeleteCustForm(FlaskForm):
     #checkbox = SelectField(u'Delete',choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
     submit = SubmitField('Update')
 
-"""
-class RegistrationForm(FlaskForm):
-    email = StringField('Email',validators=[DataRequired(),Email()])
-    username = StringField('Username',validators=[DataRequired()])
-    password = PasswordField('Password',validators=[DataRequired(),EqualTo('pass_confirm', message='Passwords Must Match')])
-    pass_confirm = PasswordField('Confirm Password', validators=[DataRequired()])
-    submit = SubmitField("Register!")
 
-    def check_email(self, field):
-        if User.query.filter_by(email=field.data).first():
-            raise ValidationError("Your email has been registered Already!")
+class EditUserForm(FlaskForm):
 
-    def check_username(self, field):
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError("Entered username is taken by someone!")
+    name = StringField('Name', validators=[DataRequired(),Length(max=30,message="Min 5 / Max 30 characters")])
+    surname = StringField('Initial', validators=[DataRequired(), Length(max=30, message="Min 5 / Max 30 characters")])
+    place = StringField('Place', validators=[DataRequired(), Length(max=30, message="Min 5 / Max 30 characters")])
+    cows = IntegerField('Number of Cows',
+                        validators=[DataRequired(), NumberRange(min=0, max=20, message='Max No.of Cows is 20')])
+    milker_id = SelectMultipleField('Milker', validators=[DataRequired()])
+    phone_number = IntegerField("Mobile",
+                                validators=[NumberRange(min=0, max=10, message='Mobile NUmber should be 10 digits')])
+    address_line2 = StringField("Address Line1", validators=[])
+    pincode = IntegerField("Pin", validators=[])
+    email = StringField("email", validators=[Email(), Length(max=60, message="Length exceeded 60")])
 
+    date = DateField('Date', validators=[DataRequired()])
 
-class UpdateUserForm(FlaskForm):
+    dairy_loan = IntegerField("DairyLoan",validators=[])
+    kcc_loan = IntegerField("KCCLoan",validators=[])
 
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    username = StringField('Username', validators=[DataRequired()])
+    products = IntegerField("Punnakku", validators=[])
+    milking_charge = IntegerField("MilkingCharge", validators=[])
+    dr_service = IntegerField("Doctor Service", validators=[])
+    advance = IntegerField("Advance", validators=[])
+    loan = IntegerField("Debt", validators=[])
 
-    picture = FileField('Update Profile Picture',
-                        validators=[FileAllowed(
-                            ['jpg', 'jpeg', 'png'],
-                            "The format can be uploaded is .jpg,.jpeg,.png"
-                            )]
-                        )
-    pic = FileField()
-    submit = SubmitField("Update!")
-
-    def check_email(self, field):
-        if User.query.filter_by(email=field.data).first():
-            raise ValidationError("Your email has been registered Already!")
-
-    def check_username(self, field):
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError("Entered username is taken by someone!")
-"""
+    submit = SubmitField('Save Profile')

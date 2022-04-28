@@ -1,15 +1,16 @@
 from datetime import datetime, timedelta
+
 from sqlalchemy import func
 import yaml
 
 try:
-    from Paalkanakku import app, db
+    from Paalkanakku import app, db, today_date
     from Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data
     from Paalkanakku.milkdata import google_backup
     from Paalkanakku.config import sheet_config
 except:
-    from Paalkanakku.Paalkanakku import app, db
+    from Paalkanakku.Paalkanakku import app, db, today_date
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData, DailyData
     from Paalkanakku.Paalkanakku.milkdata import google_backup
@@ -20,8 +21,6 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
 
 milk = Blueprint('milk', __name__)
-
-today_date = datetime.date(datetime.today())
 
 
 def check_google_sheet():

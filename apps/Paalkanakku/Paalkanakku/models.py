@@ -79,22 +79,39 @@ class CowOwner(db.Model, UserMixin):
     __tablename__ = 'owners'
 
     id = db.Column(db.Integer, primary_key=True)
-    owner_id = db.Column(db.Integer,index=True)
-    name = db.Column(db.String(64),index=True)
-    place = db.Column(db.String(64),index=True)
+    owner_id = db.Column(db.Integer, index=True)
+    name = db.Column(db.String(64), index=True)
+    place = db.Column(db.String(64), index=True)
     cows = db.Column(db.Integer)
     milker_id = db.Column(db.Integer, db.ForeignKey('milkers.milker_id'), nullable=False)
     active = db.Column(db.Boolean, unique=False, default=True)
+
+    #Adding after 2.0
+    surname = db.Column(db.String(64),index=True)
+    phone_number = db.Column(db.Integer,unique=True)
+    address_line2 = db.Column(db.String(64),index=True)
+
+    pincode = db.Column(db.Integer)
+    email = db.Column(db.String(64), unique=True, index=True)
+
+
     #own_cows = db.relationship('Cows', backref='owner', lazy='dynamic')
     milk = db.relationship('Milk', backref='owner', lazy=True)
     # milker = db.relationship('Milkers', backref='owner', lazy='dynamic')
 
-    def __init__(self, owner_id, name, place, num_cows,milker_id):
+    def __init__(self, owner_id, name, place, num_cows,milker_id,\
+                 surname=None, phone=None,ad_2=None,pincode=None,
+                 email=None):
         self.owner_id=owner_id
         self.name = name
         self.place = place
         self.cows = num_cows
         self.milker_id = milker_id
+        #After upgrade 2.0
+        self.email=email
+        self.surname=surname
+        self.phone_number=phone
+        self.pincode=pincode
 
     def __repr__(self):
         return f"Owner {self.name} place {self.place} num_cows {self.cows} milker {self.milker_id}"
