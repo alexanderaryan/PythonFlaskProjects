@@ -90,28 +90,37 @@ class CowOwner(db.Model, UserMixin):
     surname = db.Column(db.String(64),index=True)
     phone_number = db.Column(db.Integer,unique=True)
     address_line2 = db.Column(db.String(64),index=True)
-
     pincode = db.Column(db.Integer)
     email = db.Column(db.String(64), unique=True, index=True)
+    dairy_loan = db.Column(db.Integer)
+    kcc_loan = db.Column(db.Integer)
+    country = db.Column(db.String(64))
+    state = db.Column(db.String(64))
 
 
     #own_cows = db.relationship('Cows', backref='owner', lazy='dynamic')
     milk = db.relationship('Milk', backref='owner', lazy=True)
     # milker = db.relationship('Milkers', backref='owner', lazy='dynamic')
 
-    def __init__(self, owner_id, name, place, num_cows,milker_id,\
-                 surname=None, phone=None,ad_2=None,pincode=None,
-                 email=None):
-        self.owner_id=owner_id
+    def __init__(self, owner_id, name, place, num_cows, milker_id,\
+                 surname=None, phone=None, ad_2=None, pincode=None,
+                 email=None, dairy_loan=0, kcc_loan=0,
+                 country="இந்தியா",state="தமிழ் நாடு"):
+        self.owner_id = owner_id
         self.name = name
         self.place = place
         self.cows = num_cows
         self.milker_id = milker_id
         #After upgrade 2.0
-        self.email=email
-        self.surname=surname
-        self.phone_number=phone
-        self.pincode=pincode
+        self.email = email
+        self.surname = surname
+        self.address_line2 = ad_2
+        self.phone_number = phone
+        self.pincode = pincode
+        self.dairy_loan = dairy_loan
+        self.kcc_loan = kcc_loan
+        self.country = country
+        self.state = state
 
     def __repr__(self):
         return f"Owner {self.name} place {self.place} num_cows {self.cows} milker {self.milker_id}"
@@ -119,6 +128,8 @@ class CowOwner(db.Model, UserMixin):
     def cows_and_owners(self):
         return self.milk.all()
 
+    def milker_list(self):
+        return self.milker_id
 
 class Milk(db.Model,UserMixin):
 
