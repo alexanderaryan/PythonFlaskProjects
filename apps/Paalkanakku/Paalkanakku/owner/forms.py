@@ -32,26 +32,28 @@ class DeleteCustForm(FlaskForm):
 class EditUserForm(FlaskForm):
 
     name = StringField('Name', validators=[DataRequired(),Length(max=30,message="Min 5 / Max 30 characters")])
-    surname = StringField('Initial', validators=[DataRequired(), Length(max=30, message="Min 5 / Max 30 characters")])
+    surname = StringField('Initial', validators=[Length(max=30, message="Min 5 / Max 30 characters")])
     place = StringField('Place', validators=[DataRequired(), Length(max=30, message="Min 5 / Max 30 characters")])
     cows = IntegerField('Number of Cows',
                         validators=[DataRequired(), NumberRange(min=0, max=20, message='Max No.of Cows is 20')])
-    milker_id = SelectMultipleField('Milker', validators=[DataRequired()])
+#    milker_id = SelectMultipleField('Milker', validators=[DataRequired()])
     phone_number = IntegerField("Mobile",
-                                validators=[NumberRange(min=0, max=10, message='Mobile NUmber should be 10 digits')])
+                                validators=[NumberRange(min=0, max=9999999999, message='Mobile NUmber should be 10 digits')])
     address_line2 = StringField("Address Line1", validators=[])
     pincode = IntegerField("Pin", validators=[])
     email = StringField("email", validators=[Email(), Length(max=60, message="Length exceeded 60")])
 
-    date = DateField('Date', validators=[DataRequired()])
+    # date = DateField('Date', validators=[DataRequired()])
 
     dairy_loan = IntegerField("DairyLoan",validators=[])
     kcc_loan = IntegerField("KCCLoan",validators=[])
 
-    products = IntegerField("Punnakku", validators=[])
-    milking_charge = IntegerField("MilkingCharge", validators=[])
-    dr_service = IntegerField("Doctor Service", validators=[])
-    advance = IntegerField("Advance", validators=[])
-    loan = IntegerField("Debt", validators=[])
+    country = StringField("Country", validators=[])
+    state = StringField("State", validators=[])
+    # products = IntegerField("Punnakku", validators=[])
+    # milking_charge = IntegerField("MilkingCharge", validators=[])
+    # dr_service = IntegerField("Doctor Service", validators=[])
+    # advance = IntegerField("Advance", validators=[])
+    # loan = IntegerField("Debt", validators=[])
 
     submit = SubmitField('Save Profile')

@@ -49,7 +49,7 @@
      {% for values in owner_list%}
      <tr>
         <td>{{form.checkbox(value=(values.id | string) +':'+ (values.owner_id | string))}}</td>
-        <td>{{ values.owner_id }}</td>
+        <td><a href="{{url_for('owner.liab_own',own_id=values.owner_id)}}">{{values.owner_id}} </a></td>
          <td>{{ values.name }}</td>
          <td>{{ values.place }}</td>
          <td>{{ values.cows }}</td>

@@ -24,15 +24,21 @@ def check_milker(name,place):
         return owner_detail
 
 
+def milker_choice():
+    milkers = Milkers.query.filter(Milkers.active == True).all()
+    choices = [(str(o.milker_id), o.name) for o in milkers]
+    return choices
+
+
 @owner.route('/add_own', methods=['GET', 'POST'])
 @login_required
 def add_own():
     form = AddCustForm()
 
-    milkers = Milkers.query.filter(Milkers.active == True).all()
-    choices = [(str(o.milker_id), o.name) for o in milkers]
-    print(choices)
-    form.milker_id.choices = choices
+    # milkers = Milkers.query.filter(Milkers.active == True).all()
+    # choices = [(str(o.milker_id), o.name) for o in milkers]
+    # print(choices)
+    form.milker_id.choices = milker_choice()
 
     print(form.data)
     if form.validate_on_submit():
@@ -204,24 +210,73 @@ def liab_own(own_id):
 
     form = EditUserForm()
     day = today_date
+    milker_names=None
 
     print (own_id)
+    # form.milker_id.choices = milker_choice()
 
-    owner = CowOwner.query.filter(CowOwner.owner_id == own_id).first_or_404()
+    owner_query = CowOwner.query.filter(CowOwner.owner_id == own_id)
+    owner = owner_query.first_or_404()
     print (owner.place)
     print(owner.name)
 
-
+    print ("Form validation",form.validate_on_submit())
+    print (form.kcc_loan.data,"kcc")
+    print(form.dairy_loan.data, "dairy")
     if form.validate_on_submit():
 
-        return redirect(url_for('owner/liab_own.html',own_id=own_id))
+        owner.name = form.name.data
+        owner.surname = form.surname.data
+        owner.place = form.place.data
+        owner.cows = form.cows.data
+        owner.phone_number = form.phone_number.data
+        owner.ad_2 = form.address_line2.data
+        owner.pincode = form.pincode.data
+        owner.dairy_loan = form.dairy_loan.data
+        owner.kcc_loan = form.kcc_loan.data
+        owner.email = form.email.data
+        owner.country = form.country.data
+        owner.state = form.state.data
+        try:
+            db.session.commit()
+        except:
+            db.session.commit()
+            flash(f"Unknown Error in updating profile")
+        else:
+            flash(f"Profile Updated Successfully")
+
+        return redirect(url_for('owner.liab_own',own_id=own_id))
 
     elif request.method == 'GET':
+
+        print ("Inside get")
         form.name.data = owner.name
         form.place.data = owner.place
+        form.email.data = owner.email
+        form.cows.data = owner.cows
+        form.surname.data = owner.surname
+        form.pincode.data = owner.pincode
+        form.phone_number.data = owner.phone_number
+        form.address_line2.data = owner.address_line2
+        print (owner.kcc_loan if owner.kcc_loan else 0,"ds")
+        form.kcc_loan.data = owner.kcc_loan if owner.kcc_loan else 0
+        form.dairy_loan.data = owner.dairy_loan if owner.dairy_loan else 0
+        form.country.data = owner.country
+        form.state.data = owner.state
 
+        milker_of_owner = [own.milker_id for own in owner_query.all()]
+        milker_names = Milkers.query.with_entities(Milkers.name).\
+            filter(Milkers.milker_id.in_(milker_of_owner)).all()
+
+    # print (owner.cows,"cows")
+    # print (form.name.data)
+
+    for error,message in form.errors.items():
+        flash(f"{error.capitalize()} : {message[0]}", category='error')
 
     return render_template('owner/liab_own.html',
                            form=form,
                            day=day,
+                           flash=form.errors,
+                           milker_names=milker_names,
                            owner=owner)
