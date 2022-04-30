@@ -15,6 +15,22 @@ from flask_login import login_user, login_required, logout_user, current_user
 owner = Blueprint('owner', __name__)
 
 
+def check_own_email(email, owner):
+    "To chek if an email is taken already"
+    print(email, "came in")
+    if email:
+        print (email,"email")
+        if CowOwner.query.filter(CowOwner.email == email).filter(CowOwner.owner_id != owner).first():
+            return True
+
+
+def check_own_phone(phone, owner):
+    "To chek if an email is taken already"
+    if phone:
+        if CowOwner.query.filter(CowOwner.phone_number == phone).filter(CowOwner.owner_id != owner).first():
+            return True
+
+
 def check_milker(name,place):
     """
     To return the details of the owners available already
@@ -224,26 +240,34 @@ def liab_own(own_id):
     print (form.kcc_loan.data,"kcc")
     print(form.dairy_loan.data, "dairy")
     if form.validate_on_submit():
-
-        owner.name = form.name.data
-        owner.surname = form.surname.data
-        owner.place = form.place.data
-        owner.cows = form.cows.data
-        owner.phone_number = form.phone_number.data
-        owner.ad_2 = form.address_line2.data
-        owner.pincode = form.pincode.data
-        owner.dairy_loan = form.dairy_loan.data
-        owner.kcc_loan = form.kcc_loan.data
-        owner.email = form.email.data
-        owner.country = form.country.data
-        owner.state = form.state.data
-        try:
-            db.session.commit()
-        except:
-            db.session.commit()
-            flash(f"Unknown Error in updating profile")
-        else:
-            flash(f"Profile Updated Successfully")
+        print(form.email.data, "email")
+        print(form.phone_number.data, "phone")
+        print (check_own_email(form.email.data, owner.owner_id),"1")
+        print (check_own_phone(form.phone_number.data, owner.owner_id),"2")
+        if not check_own_email(form.email.data, owner.owner_id) and not check_own_phone(form.phone_number.data, owner.owner_id):
+            owner.name = form.name.data
+            owner.surname = form.surname.data
+            owner.place = form.place.data
+            owner.cows = form.cows.data
+            owner.phone_number = form.phone_number.data
+            owner.ad_2 = form.address_line2.data
+            owner.pincode = form.pincode.data
+            owner.dairy_loan = form.dairy_loan.data
+            owner.kcc_loan = form.kcc_loan.data
+            owner.email = form.email.data
+            owner.country = form.country.data
+            owner.state = form.state.data
+            try:
+                db.session.commit()
+            except:
+                db.session.commit()
+                flash(f"Unknown Error in updating profile")
+            else:
+                flash(f"Profile Updated Successfully")
+        elif check_own_email(form.email.data, owner.owner_id):
+            flash(f"Email {form.email.data} is already taken!")
+        elif check_own_phone(form.phone_number.data, owner.owner_id):
+            flash(f"Mobile number {form.phone_number.data} is already taken!")
 
         return redirect(url_for('owner.liab_own',own_id=own_id))
 
@@ -258,9 +282,8 @@ def liab_own(own_id):
         form.pincode.data = owner.pincode
         form.phone_number.data = owner.phone_number
         form.address_line2.data = owner.address_line2
-        print (owner.kcc_loan if owner.kcc_loan else 0,"ds")
-        form.kcc_loan.data = owner.kcc_loan if owner.kcc_loan else 0
-        form.dairy_loan.data = owner.dairy_loan if owner.dairy_loan else 0
+        form.kcc_loan.data = owner.kcc_loan
+        form.dairy_loan.data = owner.dairy_loan
         form.country.data = owner.country
         form.state.data = owner.state
 
@@ -272,6 +295,7 @@ def liab_own(own_id):
     # print (form.name.data)
 
     for error,message in form.errors.items():
+        print (error,message,form.pincode.data)
         flash(f"{error.capitalize()} : {message[0]}", category='error')
 
     return render_template('owner/liab_own.html',
