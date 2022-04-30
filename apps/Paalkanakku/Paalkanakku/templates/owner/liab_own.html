@@ -65,7 +65,7 @@
                     <div class="d-flex flex-column"> <span class="followers">KCC Loan</span> <span class="number2">{{form.kcc_loan.data}}</span> </div>
                     <div class="d-flex flex-column"> <span class="rating">Dairy Loan</span> <span class="number3">{{form.dairy_loan.data}}</span> </div>
                 </div>
-                <div class="button mt-2 d-flex flex-row align-items-center"> <button class="btn btn-sm btn-outline-primary w-100">Chat</button> <button class="btn btn-sm btn-primary w-100 ml-2">Follow</button> </div>
+                <div class="button mt-2 d-flex flex-row align-items-center"> <a href="{{url_for('owner.list_own')}}" class="btn btn-sm btn-outline-primary w-100">Back</a> <button class="btn btn-sm btn-primary w-100 ml-2">EDIT</button> </div>
             </div>
                 {% if form.email.data is not none  %}
                 <span class="text-black-50">{{form.email.data}}</span><span> </span></div>
@@ -83,39 +83,39 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-6"><label class="labels">Name</label>
-                        {{form.name(class="form-control")}}</div>
+                        {{form.name(class="form-control",id="trans")}}</div>
                     <div class="col-md-6"><label class="labels">Surname</label>
-                        {{form.surname(class="form-control",placeholder="surname")}}</div>
+                        {{form.surname(class="form-control",id="trans",placeholder="surname")}}</div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-12">
                         <label class="labels">Mobile Number</label>
-                        {{form.phone_number(class="form-control",placeholder="enter phone number")}}
+                        {{form.phone_number(class="form-control",id="trans",placeholder="enter phone number")}}
                     </div>
                     <div class="col-md-12">
                         <label class="labels">Address Line 1</label>
-                        {{form.place(class="form-control",placeholder="enter address line 1")}}
+                        {{form.place(class="form-control",id="trans",placeholder="enter address line 1")}}
                     </div>
                     <div class="col-md-12">
                         <label class="labels">Address Line 2</label>
-                        {{form.address_line2(class="form-control",placeholder="enter address line 2")}}
+                        {{form.address_line2(class="form-control",id="trans",placeholder="enter address line 2")}}
                     </div>
                     <div class="col-md-12">
                         <label class="labels">Postcode</label>
-                        {{form.pincode(class="form-control", placeholder="enter Postcode" )}}
+                        {{form.pincode(class="form-control",id="trans", placeholder="Enter Pincode" )}}
                     </div>
-<!--                    <div class="col-md-12"><label class="labels">Area</label><input type="text" class="form-control" placeholder="enter address line 2" value=""></div>-->
+<!--                    <div class="col-md-12"><label class="labels">Area</label><input type="text" class="form-control",id="trans" placeholder="enter address line 2" value=""></div>-->
                     <div class="col-md-12">
                         <label class="labels">Email ID</label>
                         {{form.email(class="form-control",placeholder="enter email id")}}
                     </div>
-<!--                    <div class="col-md-12"><label class="labels">Education</label><input type="text" class="form-control" placeholder="education" value=""></div>-->
+<!--                    <div class="col-md-12"><label class="labels">Education</label><input type="text" class="form-control",id="trans" placeholder="education" value=""></div>-->
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-6"><label class="labels">Country</label>
-                        {{form.country(class="form-control",placeholder="இந்தியா")}}</div>
+                        {{form.country(class="form-control",id="trans",placeholder="இந்தியா")}}</div>
                     <div class="col-md-6"><label class="labels">State/Region</label>
-                        {{form.state(class="form-control",placeholder="தமிழ் நாடு")}}</div>
+                        {{form.state(class="form-control",id="trans",placeholder="தமிழ் நாடு")}}</div>
                 </div>
                 <div class="mt-5 text-center">{{form.submit(class="btn btn-primary profile-button")}}</div>
             </div>
@@ -129,11 +129,11 @@
 <!--                    <span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span>-->
                 </div><br>
                 <div class="col-md-12"><label class="labels">{{form.cows.label}}</label>
-                    {{form.cows(class="form-control")}}</div> <br>
+                    {{form.cows(class="form-control",id="trans")}}</div> <br>
                 <div class="col-md-12"><label class="labels">{{form.dairy_loan.label}}</label>
-                    {{form.dairy_loan(class="form-control")}}</div> <br>
+                    {{form.dairy_loan(class="form-control",id="trans", placeholder="Enter Dairy Loan")}}</div> <br>
                 <div class="col-md-12"><label class="labels">{{form.kcc_loan.label}}</label>
-                    {{form.kcc_loan(class="form-control")}}</div> <br>
+                    {{form.kcc_loan(class="form-control",id="trans", placeholder="Enter KCC Loan")}}</div> <br>
             </div>
         </div>
     </div>

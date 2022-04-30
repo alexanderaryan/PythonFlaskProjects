@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, BooleanField, \
     SelectField, SelectMultipleField, DateField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
-from wtforms import ValidationError
+from wtforms import ValidationError, validators
 from flask_wtf.file import FileField, FileAllowed
 
 
@@ -38,15 +38,19 @@ class EditUserForm(FlaskForm):
                         validators=[DataRequired(), NumberRange(min=0, max=20, message='Max No.of Cows is 20')])
 #    milker_id = SelectMultipleField('Milker', validators=[DataRequired()])
     phone_number = IntegerField("Mobile",
-                                validators=[NumberRange(min=0, max=9999999999, message='Mobile NUmber should be 10 digits')])
+                                validators=[NumberRange(min=0, max=9999999999, message='Mobile NUmber should be 10 digits'),
+                                            validators.Optional()])
     address_line2 = StringField("Address Line1", validators=[])
-    pincode = IntegerField("Pin", validators=[])
-    email = StringField("email", validators=[Email(), Length(max=60, message="Length exceeded 60")])
+    pincode = IntegerField("Pin", validators=[validators.Optional()])
+    email = StringField("email", validators=[Email(),
+                                             Length(max=60, message="Length exceeded 60"),
+                                             validators.Optional()],
+                        filters = [lambda x: x or None])
 
     # date = DateField('Date', validators=[DataRequired()])
 
-    dairy_loan = IntegerField("DairyLoan",validators=[])
-    kcc_loan = IntegerField("KCCLoan",validators=[])
+    dairy_loan = IntegerField("DairyLoan",validators=[validators.Optional()])
+    kcc_loan = IntegerField("KCCLoan",validators=[validators.Optional()])
 
     country = StringField("Country", validators=[])
     state = StringField("State", validators=[])
