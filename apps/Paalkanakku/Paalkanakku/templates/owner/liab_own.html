@@ -5,7 +5,7 @@
         {% if messages %}
         {% for mess in messages%}
 
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <div class="snackbar show alert alert-warning alert-dismissible fade show" role="alert">
       <strong>{{error}}</strong>  {{ mess }}
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -20,14 +20,63 @@
 
 
 <div class="container rounded bg-white mt-5 mb-5">
-<form method="POST" >
+<form method="POST" action="" enctype="multipart/form-data">
 {{form.hidden_tag()}}
+
+
+
     <div class="row">
         <div class="col-md-3 border-right">
-        
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+
+
+
+<!--    <div class="profile-pic-wrapper">-->
+<!--  <div class="pic-holder">-->
+<!--    &lt;!&ndash; uploaded pic shown here &ndash;&gt;-->
+<!--    <img id="profilePic" class="pic" src="https://source.unsplash.com/random/150x150">-->
+
+<!--    <Input class="uploadProfileInput" type="file" name="profile_pic" id="newProfilePhoto" accept="image/*" />-->
+<!--    <label for="newProfilePhoto" class="upload-file-block">-->
+<!--      <div class="text-center">-->
+<!--        <div class="mb-2">-->
+<!--          <i class="fa fa-camera fa-2x"></i>-->
+<!--        </div>-->
+<!--        <div class="text-uppercase">-->
+<!--          Update <br /> Profile Photo-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </label>-->
+<!--  </div>-->
+<!--    </div>-->
+
+
+        <div class="profile-pic-wrapper">
+            <div class="pic-holder">
 <!--                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">&ndash;&gt;-->
-                <div class="image"> <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" class="rounded" width="155"> </div>
+                <div class="image">
+                 {% if profile_image %}
+                        <img src="{{profile_image}}" alt="No Porfile pic" class="pic" >
+                 {% else %}
+                        <img class="pic" src= "/static/images/default_cust.jpg" class="rounded" width="155">
+                 {% endif %}
+                    {{form.picture(class="form-control uploadProfileInput", id="newProfilePhoto",style="display:none;")}}
+                      <label class="upload-file-block" for="newProfilePhoto">
+                      <div class="text-center">
+                        <div class="mb-2">
+                          <i class="fa fa-camera fa-2x"></i>
+                        </div>
+                          <div class="text-uppercase">
+                              {{form.picture.label(class="labels en")}}
+                              <div class="labels tn" >சுயவிவர படம்</div>
+                            </div>
+                      </div>
+                      </label>
+
+                </div>
+            </div>
+        </div>
+
             <div class="ml-3 w-100">
                 <h4 class="mb-0 mt-0">
                     {{form.name.data}}
@@ -65,7 +114,9 @@
                     <div class="d-flex flex-column"> <span class="followers">KCC Loan</span> <span class="number2">{{form.kcc_loan.data}}</span> </div>
                     <div class="d-flex flex-column"> <span class="rating">Dairy Loan</span> <span class="number3">{{form.dairy_loan.data}}</span> </div>
                 </div>
-                <div class="button mt-2 d-flex flex-row align-items-center"> <a href="{{url_for('owner.list_own')}}" class="btn btn-sm btn-outline-primary w-100">Back</a> <button class="btn btn-sm btn-primary w-100 ml-2">EDIT</button> </div>
+                <div class="button mt-2 d-flex flex-row align-items-center"> <a href="{{url_for('owner.list_own')}}" class="btn btn-sm btn-outline-primary w-100">Back</a>
+<!--                    <button class="btn btn-sm btn-primary w-100 ml-2">EDIT</button> -->
+                </div>
             </div>
                 {% if form.email.data is not none  %}
                 <span class="text-black-50">{{form.email.data}}</span><span> </span></div>
@@ -140,6 +191,9 @@
 </div>
 </div>
 </div>
+
+
+
 
 {% endblock %}
 

@@ -96,7 +96,7 @@ class CowOwner(db.Model, UserMixin):
     kcc_loan = db.Column(db.Integer)
     country = db.Column(db.String(64))
     state = db.Column(db.String(64))
-
+    profile_pic_name = db.Column(db.String(64),default='default_profile.png')
 
     #own_cows = db.relationship('Cows', backref='owner', lazy='dynamic')
     milk = db.relationship('Milk', backref='owner', lazy=True)
@@ -131,6 +131,7 @@ class CowOwner(db.Model, UserMixin):
     def milker_list(self):
         return self.milker_id
 
+
 class Milk(db.Model,UserMixin):
 
     __tablename__ = "milk"
@@ -143,11 +144,17 @@ class Milk(db.Model,UserMixin):
     am_litre = db.Column(db.Float, nullable=True, default=0)
     pm_litre = db.Column(db.Float, nullable=True, default=0)
     price =  db.Column(db.Float, nullable=False)
+    fodder = db.Column(db.Integer)
+    advance = db.Column(db.Integer)
+    loan = db.Column(db.Integer)
 
     __table_args__ = (UniqueConstraint('event_id','owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
                      )
 
-    def __init__(self,owner_id,milker,milked_date,milked_time,litre,ml,price):
+    def __init__(self,owner_id,milker,milked_date,milked_time,litre,ml,price,
+                 fodder=0,
+                 advance=0,
+                 loan=0):
 
         self.owner_id=owner_id
         #self.name=name
@@ -155,6 +162,9 @@ class Milk(db.Model,UserMixin):
         self.milker_id=milker
         self.milked_date=milked_date
         self.price = price
+        self.loan = loan
+        self.fodder = fodder
+        self.advance = advance
         if milked_time == "am":
             self.am_litre = self.litre_conv(litre,ml)
         else:

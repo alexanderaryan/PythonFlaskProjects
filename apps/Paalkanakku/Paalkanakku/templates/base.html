@@ -26,7 +26,10 @@
     <link href="/static/css/user_profile.css" rel="stylesheet">
 
     <!--    Google Transliterate-->
-    <script type="text/javascript" src="/static/js/main.js"></script>
+    <script type="text/javascript" src="/static/js/tamil_trans.js"></script>
+    <!--    Profile Pic -->
+    <script type="text/javascript" src="/static/js/profile_pic.js"></script>
+
 </head>
 
 <body style = "background-color: lavender;">
@@ -250,8 +253,17 @@ function lang_func() {
     document.getElementById("font_logo").style.border="solid #2ab934";
     document.getElementById("hr_logo").style.borderTop= "10px solid #2ab934";
     //document.getElementsByClassName("btn-primary")
-    for (let el of document.querySelectorAll('.btn-primary'))
+    for (let el of document.querySelectorAll('.btn-primary')){
         el.style.backgroundColor="#2ab934";
+        el.style.borderColor="#2ab934";
+        }
+    for (let el of document.querySelectorAll('.btn-outline-primary')){
+        el.style.borderColor="#2ab934";
+        el.style.color="#2ab934";
+        }
+    for (let el of document.querySelectorAll('.form-control')){
+        el.style.borderColor="#2ab934";
+        }
     for (let el of document.querySelectorAll('.btn-primary.tn, .dropdown-item.tn'))
         el.style.display='flow-root';
 
@@ -265,8 +277,19 @@ function lang_func() {
     document.getElementById("font_logo").style.color="#007bff";
     document.getElementById("font_logo").style.border="solid #007bff";
     document.getElementById("hr_logo").style.borderTop= "10px solid #007bff";
-    for (let el of document.querySelectorAll('.btn-primary'))
+
+    for (let el of document.querySelectorAll('.btn-primary')){
         el.style.backgroundColor="#007bff";
+        el.style.borderColor="#007bff";
+        }
+
+    for (let el of document.querySelectorAll('.btn-outline-primary')){
+        el.style.borderColor="#007bff";
+        el.style.color="#007bff";
+        }
+   for (let el of document.querySelectorAll('.form-control')){
+        el.style.borderColor="#007bff";
+        }
     for (let el of document.querySelectorAll('.btn-primary.en, .dropdown-item.en'))
         el.style.display='flow-root';
 }
@@ -360,6 +383,7 @@ function milked_time_change(element, iterator) {
     ////debugger;
 }
 
+
 //To trasnlate the form elements to Tamil
     google.load("elements", "1", {
         packages: "transliteration"
@@ -380,6 +404,9 @@ function milked_time_change(element, iterator) {
         //control.showControl('container');
     }
     google.setOnLoadCallback(onLoad);
+
+
+
 </script>
 
 </body>

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, BooleanField, \
-    SelectField, SelectMultipleField, DateField
+    SelectField, SelectMultipleField, DateField, FileField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
 from wtforms import ValidationError, validators
 from flask_wtf.file import FileField, FileAllowed
@@ -9,8 +9,10 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 try:
     from Paalkanakku.models import CowOwner
+    from Paalkanakku.users.forms import FileSizeLimit
 except:
     from Paalkanakku.Paalkanakku.models import CowOwner
+    from Paalkanakku.Paalkanakku.users.forms import FileSizeLimit
 
 
 class AddCustForm(FlaskForm):
@@ -54,6 +56,13 @@ class EditUserForm(FlaskForm):
 
     country = StringField("Country", validators=[])
     state = StringField("State", validators=[])
+
+    picture = FileField('Update Profile Picture',
+                        validators=[FileAllowed(
+                            ['jpg', 'jpeg', 'png'],
+                            "The format can be uploaded is .jpg,.jpeg,.png"), FileSizeLimit(max_size_in_mb=1)]
+                        )
+
     # products = IntegerField("Punnakku", validators=[])
     # milking_charge = IntegerField("MilkingCharge", validators=[])
     # dr_service = IntegerField("Doctor Service", validators=[])

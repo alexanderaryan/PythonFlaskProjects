@@ -97,6 +97,7 @@ def account():
     if form.validate_on_submit():
 
         if form.picture.data:
+
             username = current_user.username
             pic = add_profile_pic(form.picture.data,username)
             #print ("Inside valida form", pic)
