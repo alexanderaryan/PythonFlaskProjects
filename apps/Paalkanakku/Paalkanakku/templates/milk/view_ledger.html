@@ -68,30 +68,6 @@
         {{ tm_header[col_no] }}
       </th>
       {% endfor %}
-<!--      <th scope="col" class="thead-dark">-->
-<!--        Place-->
-<!--      </th>-->
-<!--        <th scope="col" class="thead-dark">-->
-<!--        Name-->
-<!--      </th>-->
-<!--          <th scope="col" class="thead-dark">-->
-<!--        AM-->
-<!--      </th>-->
-<!--          <th scope="col" class="thead-dark">-->
-<!--        PM-->
-<!--      </th>-->
-<!--          <th scope="col" class="thead-dark">-->
-<!--        Total Litre-->
-<!--      </th>-->
-<!--        <th scope="col" class="thead-dark">-->
-<!--        AM Price-->
-<!--      </th>-->
-<!--        <th scope="col" class="thead-dark">-->
-<!--        PM Price-->
-<!--      </th>-->
-<!--          <th scope="col" class="thead-dark">-->
-<!--        Total Price-->
-<!--      </th>-->
 
     </tr>
   </thead>
@@ -110,15 +86,20 @@
             {% set am_milk = 00 %}
             {% set pm_milk = data[3] %}
          {% endif %}-->
-         <td>{{"%.3f"| format(data[1])}}</td>
-         <td>{{"%.3f"| format(data[2])}}</td>
+<!--         <td>{{"%.3f"| format(data[1])}}</td>-->
+<!--         <td>{{"%.3f"| format(data[2])}}</td>-->
 
          {% set milk = data[1] + data[2] %}
          <td>{{"%.3f"| format(milk)}}</td>
-         <td>{{"%.2f"| format(data[3])}}</td>
-         <td>{{"%.2f"| format(data[4])}}</td>
+<!--         <td>{{"%.2f"| format(data[3])}}</td>-->
+<!--         <td>{{"%.2f"| format(data[4])}}</td>-->
+         <td>{{"%.2f"| format(milking_charge) }}</td>
+         {% set price = data[3] + data[4] %}
+         <td>{{ data[5] }}</td>
+         <td>{{ data[6] }}</td>
+         <td>{{ data[7] }}</td>
+         <td>{{"%.2f"| format(price - milking_charge)}}</td>
 
-         <td>{{"%.2f"| format(data[3]+data[4])}}</td>
         {% endif %}
          {% endfor %}
      {% endfor %}

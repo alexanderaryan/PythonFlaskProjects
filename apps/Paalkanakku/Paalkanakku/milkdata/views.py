@@ -34,6 +34,15 @@ def check_google_sheet():
         else:
             return False
 
+
+def config_data():
+
+    stream = open(sheet_config, 'r')
+    data = yaml.load(stream, Loader=yaml.FullLoader)
+
+    return data
+
+
 def milk_data_check(date,milked_time):
 
     day = datetime(date.year,date.month,date.day)
@@ -91,11 +100,14 @@ class whole_month_data():
                                              func.coalesce(func.sum(Milk.am_litre), 0.0).label('AM_Total'),
                                              func.coalesce(func.sum(Milk.pm_litre), 0.0).label('PM_Total'),
                         func.coalesce(func.sum(Milk.am_litre*Milk.price), 0.0).label('AM_Total_Price'),
-                    func.coalesce(func.sum(Milk.pm_litre*Milk.price), 0.0).label('PM_Total_Price')).\
+                    func.coalesce(func.sum(Milk.pm_litre*Milk.price), 0.0).label('PM_Total_Price'),
+        func.coalesce(func.sum(Milk.fodder), 0.0).label('Fodder'),
+        func.coalesce(func.sum(Milk.loan), 0.0).label('Loan'),
+        func.coalesce(func.sum(Milk.advance), 0.0).label('Advance')).\
             filter(Milk.milked_date.between( self.first_day_of_month,self.last_day_of_month)).\
             group_by(Milk.owner_id).\
             order_by(Milk.owner_id).all()
-
+        print ("whole",milk_data)
         return milk_data
 
 """def milker_set():
@@ -116,12 +128,11 @@ def customer_set(active=False):
     try:
         if not active:
             customer =  (CowOwner.query.with_entities(CowOwner.owner_id,CowOwner.name,CowOwner.place).\
-                   filter(CowOwner.milker_id.in_(milker_ids)).group_by(CowOwner.place,CowOwner.owner_id,CowOwner.name).\
+                   filter(CowOwner.milker_id.in_(milker_ids)).group_by(CowOwner.owner_id).\
                    order_by(CowOwner.place,CowOwner.name).all())
         else:
             customer = (CowOwner.query.with_entities(CowOwner.owner_id, CowOwner.name, CowOwner.place). \
-                            filter(CowOwner.milker_id.in_(milker_ids),CowOwner.active==True).group_by(CowOwner.place, CowOwner.owner_id,
-                                                                                CowOwner.name). \
+                            filter(CowOwner.milker_id.in_(milker_ids),CowOwner.active==True).group_by( CowOwner.owner_id). \
                             order_by(CowOwner.place, CowOwner.name).all())
     except:
         print ('CowOwner table is empty')
@@ -135,6 +146,7 @@ def customer_set(active=False):
 def add_daily_data(modified_day=None,milked_time=None):
 
     form = AddDailyData()
+
 
     print (type(form.daily_data),len(form.daily_data))
     print(type(form.milked_time))
@@ -154,7 +166,8 @@ def add_daily_data(modified_day=None,milked_time=None):
         print ("MilkedTime",milked_time)
         rate = price(day)
 
-
+    no_milker = config_data()['no_milker']
+    print(no_milker, "milker")
 
     if milked_time != "am":
         milk_data_for_today = milk_data_check(day,milked_time)
@@ -164,24 +177,38 @@ def add_daily_data(modified_day=None,milked_time=None):
         print("Form not ", milk_data_for_today)
     print ("buddhgsd",milk_data_for_today)
 
+
     for n in milk_data_for_today:
         print("milker", n.milker_id,n.am_litre,n.pm_litre)
     if not milk_data_for_today:
-        form.daily_data[0].milker.choices = milker_data(False)[2]
-        print(milker_data(False)[2])
+        if not no_milker:
+            form.daily_data[0].milker.choices = milker_data(False)[2]
+            print(milker_data(False)[2])
         customers = customer_set(True)
     else:
-        form.daily_data[0].milker.choices = milker_data()[2]
-        print(milker_data(False)[2])
+        if not no_milker:
+            form.daily_data[0].milker.choices = milker_data()[2]
+            print(milker_data(False)[2])
         customers = customer_set()
 
-    print("Length", len(customers), len(milk_data_for_today))
-    #print (customer_set,milkers)
+    #print("Length", len(customers), len(milk_data_for_today))
+    print ("customer",customer_set)
 
     print(form.data, "data of form")
 
     print ("Form validation is ",form.validate_on_submit())
+
     if form.validate_on_submit():
+
+        if form.milking_charge.data:
+            data = config_data()
+            print(data['milking_charge'])
+            data['milking_charge'] = form.milking_charge.data
+
+            with open(sheet_config, 'w') as yaml_file:
+                yaml_file.write(yaml.dump(data, default_flow_style=False))
+
+
         print ("inside form",milk_data_check(form.milked_date.data,form.milked_time.data))
         milk_data = milk_data_check(form.milked_date.data,form.milked_time.data)
         if not milk_data:
@@ -190,12 +217,16 @@ def add_daily_data(modified_day=None,milked_time=None):
             for each_cust in form.daily_data:
                 milk_data=Milk(
                     owner_id=each_cust.owner_id.data,
-                    milker=each_cust.milker.data,
+                    #After version 2.0
+                    milker=each_cust.milker.data if not no_milker else 1,
                     milked_date=form.milked_date.data,
                     milked_time=form.milked_time.data,
                     litre=each_cust.litre.data,
                     ml=each_cust.ml.data,
-                    price=form.price.data
+                    price=form.price.data,
+                    fodder = each_cust.fodder.data,
+                    loan = each_cust.loan.data,
+                    advance = each_cust.advance.data,
                 )
                 db.session.add(milk_data)
             print ("committing")
@@ -209,8 +240,8 @@ def add_daily_data(modified_day=None,milked_time=None):
                     # print ('N',n.milker_id,n.owner_id,n.milked_time,n.litre,n.ml,n.milked_date)
                     if m.owner_id == each.owner_id.data:
                         print ("rim",form.milked_time.data)
-                        print (each.milker.data)
-                        m.milker_id=each.milker.data
+                        #After version 2.0
+                        m.milker_id=each.milker.data if not no_milker else 1
                         m.price=form.price.data
                         if form.milked_time.data == "am":
                             m.am_litre = Milk.litre_conv(m,each.litre.data,each.ml.data)
@@ -218,6 +249,10 @@ def add_daily_data(modified_day=None,milked_time=None):
                             m.pm_litre = Milk.litre_conv(m,each.litre.data, each.ml.data)
                         print("m", each.ml.data)
                         print ("m",m.am_litre)
+                        print (each.fodder.data,each.loan.data,each.advance.data)
+                        m.fodder = each.fodder.data
+                        m.loan = each.loan.data
+                        m.advance = each.advance.data
                         db.session.add(m)
                     db.session.commit()
             print (form.milked_date.data)
@@ -231,31 +266,30 @@ def add_daily_data(modified_day=None,milked_time=None):
     milk_header = [daily_data_form.owner_id.label,
                    daily_data_form.place.label,
                    daily_data_form.cust_name.label,
-                   daily_data_form.milker.label,
                    daily_data_form.litre.label,
-                   daily_data_form.ml.label]
+                   daily_data_form.ml.label,
+                   daily_data_form.fodder.label,
+                   daily_data_form.loan.label,
+                   daily_data_form.advance.label]
     header = milk_header
     print ("days", modified_day, day, milk_data_for_today, milked_time)
     for n in milk_data_for_today:
         print (n.milker_id, n.owner_id, n.am_litre, n.pm_litre)
 
+    milking_charge = config_data()['milking_charge']
+
     return render_template('milk/daily_data.html',
                            form=form,
                            day=day,
+                           no_milker=no_milker,
                            modified_day = modified_day,
+                           milking_charge = milking_charge,
                            header=header,
                            rate=rate,
                            milk_data_for_today=milk_data_for_today,
                            milked_time=milked_time,
                            customer_set=customers,
                            flash=flash)
-
-"""from Paalkanakku import app, db
-from Paalkanakku.models import Milkers, CowOwner, Milk
-print (Milk.query.delete())
-db.session.commit()"""
-
-
 
 
 @milk.route('/ledger/<month>',methods=["GET","POST"])
@@ -278,14 +312,15 @@ def milk_ledger_view(month=None):
     print("data", monthly_ledger)
     #sheet_url = google_backup.spreadsheet_check(month.strftime("%Y")+"Paalkanakku").url
     sheet_url = "dumm"
-    if check_google_sheet() is False:
-        sheet_url = google_backup.spreadsheet_check(month.strftime("%Y") + "Paalkanakku").url
-        yaml_data = {'gsheet_url' : sheet_url}
-        print ("Sheet Not found")
-        with open(sheet_config,"w+") as w:
-            data = yaml.dump(yaml_data, w)
-    else:
+    if check_google_sheet():
         sheet_url = check_google_sheet()
+    else:
+        sheet_url = google_backup.spreadsheet_check(month.strftime("%Y") + "Paalkanakku").url
+        yaml_data = {'gsheet_url': sheet_url}
+        print("Sheet Not found")
+        with open(sheet_config, "a+") as w:
+            data = yaml.dump(yaml_data, w)
+
 
     if form.validate_on_submit():
         print (form.month.data)
@@ -298,12 +333,14 @@ def milk_ledger_view(month=None):
         flash(f"The data is backed up for {mon}")
         return redirect(url_for("milk.milk_ledger_view", month=form.month.data))
 
-    header = ['Place','Name','AM','PM','Total','AM Price','PM Price','Total Price']
-    tm_header = ['ஊர்', 'பெயர்', 'காலை', 'மாலை', 'மொத்தம்', 'காலை விலை', 'மாலை விலை', 'மொத்த விலை']
-
+    milking_charge = config_data()['milking_charge']
+    header = ['Place','Name','Milk','M.Charge','Fodder','Loan','Advance','Debit']
+    tm_header = ['ஊர்', 'பெயர்','பால்','க.காசு','புண்ணாக்கு','கடன்','முன்பணம்','பற்று ']
+    print ("customer", customer_set())
     return render_template('milk/view_ledger.html',
                            form=form,
                            month=month,
+                           milking_charge=milking_charge,
                            tm_header = tm_header,
                            header=header,
                            monthly_ledger=monthly_ledger,

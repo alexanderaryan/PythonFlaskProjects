@@ -28,8 +28,11 @@ class DailyData(FlaskForm):
     owner_id=IntegerField('CustomerId', validators=[DataRequired()])
     cust_name = StringField('Name', validators=[DataRequired()])
     place = StringField('Place', validators=[DataRequired()])
-    milker = SelectField('Milker', validators=[DataRequired()],choices=milkers)
-    #milked_time = RadioField('AM/PM',choices=[('am','AM'),('pm','PM')])
+
+    #After version 2.0
+    # milker = SelectField('Milker', choices=milkers)
+    #milker = SelectField('Milker', validators=[DataRequired()],choices=milkers)
+
     litre = IntegerField('Litre',
                          validators=[NumberRange(min=0, max=99, message='Max 3 digits')],
                          default=0
@@ -38,6 +41,9 @@ class DailyData(FlaskForm):
                       validators=[NumberRange(min=0, max=999, message='Max 3 digits')],
                       default=0
                       )
+    fodder = IntegerField("Fodder", default="0")
+    loan = IntegerField("Loan", default="0")
+    advance = IntegerField("Advance", default="0")
 
 
 class AddDailyData(FlaskForm):
@@ -49,6 +55,7 @@ class AddDailyData(FlaskForm):
     daily_data = FieldList(FormField(DailyData),
                            min_entries=1,
                            max_entries=100)
+    milking_charge = IntegerField("Milking Charge",validators=[DataRequired()], default="0")
     
     submit = SubmitField('Add')
 

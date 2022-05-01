@@ -3,11 +3,13 @@ try:
     from Paalkanakku import app, db, today_date
     from Paalkanakku.models import Milkers, CowOwner
     from Paalkanakku.owner.forms import AddCustForm, DeleteCustForm, EditUserForm
+    from Paalkanakku.users.views import add_profile_pic
 
 except:
     from Paalkanakku.Paalkanakku import app, db, today_date
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner
     from Paalkanakku.Paalkanakku.owner.forms import AddCustForm, DeleteCustForm
+    from Paalkanakku.Paalkanakku.users.views import add_profile_pic
 
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
@@ -239,6 +241,11 @@ def liab_own(own_id):
     print ("Form validation",form.validate_on_submit())
     print (form.kcc_loan.data,"kcc")
     print(form.dairy_loan.data, "dairy")
+
+    milker_of_owner = [own.milker_id for own in owner_query.all()]
+    milker_names = Milkers.query.with_entities(Milkers.name). \
+        filter(Milkers.milker_id.in_(milker_of_owner)).all()
+
     if form.validate_on_submit():
         print(form.email.data, "email")
         print(form.phone_number.data, "phone")
@@ -257,6 +264,16 @@ def liab_own(own_id):
             owner.email = form.email.data
             owner.country = form.country.data
             owner.state = form.state.data
+            for own in milker_of_owner:
+                owner.milker_id=milker_of_owner[1]
+
+            if form.picture.data:
+
+                ownername = owner.owner_id
+                pic = add_profile_pic(form.picture.data, ownername)
+                owner.profile_pic_name = pic
+
+
             try:
                 db.session.commit()
             except:
@@ -273,7 +290,6 @@ def liab_own(own_id):
 
     elif request.method == 'GET':
 
-        print ("Inside get")
         form.name.data = owner.name
         form.place.data = owner.place
         form.email.data = owner.email
@@ -287,9 +303,7 @@ def liab_own(own_id):
         form.country.data = owner.country
         form.state.data = owner.state
 
-        milker_of_owner = [own.milker_id for own in owner_query.all()]
-        milker_names = Milkers.query.with_entities(Milkers.name).\
-            filter(Milkers.milker_id.in_(milker_of_owner)).all()
+
 
     # print (owner.cows,"cows")
     # print (form.name.data)
@@ -298,9 +312,13 @@ def liab_own(own_id):
         print (error,message,form.pincode.data)
         flash(f"{error.capitalize()} : {message[0]}", category='error')
 
+
+    profile_image = url_for('static', filename='profile_pics/' + owner.profile_pic_name) if owner.profile_pic_name else None
+
     return render_template('owner/liab_own.html',
                            form=form,
                            day=day,
+                           profile_image=profile_image,
                            flash=form.errors,
                            milker_names=milker_names,
                            owner=owner)

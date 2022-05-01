@@ -49,7 +49,6 @@ class UpdateUserForm(FlaskForm):
                             "The format can be uploaded is .jpg,.jpeg,.png"
                             )]
                         )
-    pic = FileField()
     submit = SubmitField("Update!")
 
     def check_email(self, field):
