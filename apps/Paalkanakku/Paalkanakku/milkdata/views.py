@@ -4,13 +4,13 @@ from sqlalchemy import func
 import yaml
 
 try:
-    from Paalkanakku import app, db, today_date
+    from Paalkanakku import app, db, today_date, crontab
     from Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data
     from Paalkanakku.milkdata import google_backup
     from Paalkanakku.config import sheet_config
 except:
-    from Paalkanakku.Paalkanakku import app, db, today_date
+    from Paalkanakku.Paalkanakku import app, db, today_date, crontab
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData, DailyData
     from Paalkanakku.Paalkanakku.milkdata import google_backup
@@ -42,6 +42,7 @@ def config_data():
 
     return data
 
+milking_charge = config_data()['milking_charge']
 
 def milk_data_check(date,milked_time):
 
@@ -81,6 +82,7 @@ def utility_processor():
         return price(date=today_date)
     return dict(milk_price=milk_price)
 
+
 class whole_month_data():
 
     def __init__(self,month):
@@ -103,7 +105,8 @@ class whole_month_data():
                     func.coalesce(func.sum(Milk.pm_litre*Milk.price), 0.0).label('PM_Total_Price'),
         func.coalesce(func.sum(Milk.fodder), 0.0).label('Fodder'),
         func.coalesce(func.sum(Milk.loan), 0.0).label('Loan'),
-        func.coalesce(func.sum(Milk.advance), 0.0).label('Advance')).\
+        func.coalesce(func.sum(Milk.advance), 0.0).label('Advance'),
+        func.coalesce(func.sum(Milk.dr_service), 0.0).label('Dr_service')).\
             filter(Milk.milked_date.between( self.first_day_of_month,self.last_day_of_month)).\
             group_by(Milk.owner_id).\
             order_by(Milk.owner_id).all()
@@ -127,12 +130,18 @@ def customer_set(active=False):
     milker_ids = milker_data()[1]
     try:
         if not active:
-            customer =  (CowOwner.query.with_entities(CowOwner.owner_id,CowOwner.name,CowOwner.place).\
+            customer = (CowOwner.query.with_entities(CowOwner.owner_id,
+                                                     CowOwner.name+' '+CowOwner.surname,
+                                                     CowOwner.place,
+                                                     CowOwner.profile_pic_name).\
                    filter(CowOwner.milker_id.in_(milker_ids)).group_by(CowOwner.owner_id).\
-                   order_by(CowOwner.place,CowOwner.name).all())
+                   order_by(CowOwner.place, CowOwner.name).all())
         else:
-            customer = (CowOwner.query.with_entities(CowOwner.owner_id, CowOwner.name, CowOwner.place). \
-                            filter(CowOwner.milker_id.in_(milker_ids),CowOwner.active==True).group_by( CowOwner.owner_id). \
+            customer = (CowOwner.query.with_entities(CowOwner.owner_id,
+                                                     CowOwner.name+' '+CowOwner.surname,
+                                                     CowOwner.place,
+                                                     CowOwner.profile_pic_name).\
+                            filter(CowOwner.milker_id.in_(milker_ids),CowOwner.active == True).group_by(CowOwner.owner_id). \
                             order_by(CowOwner.place, CowOwner.name).all())
     except:
         print ('CowOwner table is empty')
@@ -227,6 +236,7 @@ def add_daily_data(modified_day=None,milked_time=None):
                     fodder = each_cust.fodder.data,
                     loan = each_cust.loan.data,
                     advance = each_cust.advance.data,
+                    dr_service = each_cust.dr_service.data
                 )
                 db.session.add(milk_data)
             print ("committing")
@@ -253,6 +263,7 @@ def add_daily_data(modified_day=None,milked_time=None):
                         m.fodder = each.fodder.data
                         m.loan = each.loan.data
                         m.advance = each.advance.data
+                        m.dr_service = each.dr_service.data
                         db.session.add(m)
                     db.session.commit()
             print (form.milked_date.data)
@@ -261,17 +272,15 @@ def add_daily_data(modified_day=None,milked_time=None):
     for error,message in form.errors.items():
         flash(f"{error.capitalize()} : {message[0]}", category='error')
 
-
     daily_data_form = DailyData()
     milk_header = [daily_data_form.owner_id.label,
                    daily_data_form.place.label,
                    daily_data_form.cust_name.label,
                    daily_data_form.litre.label,
                    daily_data_form.ml.label,
-                   daily_data_form.fodder.label,
-                   daily_data_form.loan.label,
-                   daily_data_form.advance.label]
+                   ]
     header = milk_header
+    tm_header = ['வா.என்', 'ஊர்', 'பெயர்', 'லிட்டர்', 'மில்லி']
     print ("days", modified_day, day, milk_data_for_today, milked_time)
     for n in milk_data_for_today:
         print (n.milker_id, n.owner_id, n.am_litre, n.pm_litre)
@@ -285,6 +294,7 @@ def add_daily_data(modified_day=None,milked_time=None):
                            modified_day = modified_day,
                            milking_charge = milking_charge,
                            header=header,
+                           tm_header=tm_header,
                            rate=rate,
                            milk_data_for_today=milk_data_for_today,
                            milked_time=milked_time,
@@ -333,10 +343,10 @@ def milk_ledger_view(month=None):
         flash(f"The data is backed up for {mon}")
         return redirect(url_for("milk.milk_ledger_view", month=form.month.data))
 
-    milking_charge = config_data()['milking_charge']
-    header = ['Place','Name','Milk','M.Charge','Fodder','Loan','Advance','Debit']
-    tm_header = ['ஊர்', 'பெயர்','பால்','க.காசு','புண்ணாக்கு','கடன்','முன்பணம்','பற்று ']
-    print ("customer", customer_set())
+
+    header = ['Place','Name','Milk','M.Charge', 'Fodder','Loan','Advance','Dr_service','Debit']
+    tm_header = ['ஊர்', 'பெயர்','பால்','க.காசு','புண்ணாக்கு','கடன்','முன்பணம்','மருத்துவச் செலவு','பற்று ']
+
     return render_template('milk/view_ledger.html',
                            form=form,
                            month=month,
@@ -346,3 +356,16 @@ def milk_ledger_view(month=None):
                            monthly_ledger=monthly_ledger,
                            customer_set=customer_set(),
                            sheet_url=sheet_url)
+
+@crontab.job(minute="05", hour="0", day="*", month="*", day_of_week="*")
+def my_scheduled_job():
+    last_day_of_month = whole_month_data(today_date).last_day_of_month
+    print("last", last_day_of_month, datetime.combine(today_date, datetime.min.time()))
+    if today_date == last_day_of_month:
+        print("Hello there")
+    prev_month_due = [(ledger[0], ledger[3] + ledger[4]
+                       - ledger[5]
+                       - ledger[6]
+                       - ledger[7]
+                       - ledger[8] - milking_charge) for ledger in whole_month_data(today_date).ledger_calc()]
+    print(prev_month_due)

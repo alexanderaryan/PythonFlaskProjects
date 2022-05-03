@@ -235,7 +235,6 @@ def liab_own(own_id):
 
     owner_query = CowOwner.query.filter(CowOwner.owner_id == own_id)
     owner = owner_query.first_or_404()
-    owner_list = owner_query.all()
     print(owner.name)
 
     print ("Form validation",form.validate_on_submit())
@@ -249,9 +248,9 @@ def liab_own(own_id):
     if form.validate_on_submit():
         print(form.email.data, "email")
         print(form.phone_number.data, "phone")
-        print (check_own_email(form.email.data, owner.owner_id),"1")
-        print (check_own_phone(form.phone_number.data, owner.owner_id),"2")
-        if not check_own_email(form.email.data, owner.owner_id) and not check_own_phone(form.phone_number.data, owner.owner_id):
+        email_check = check_own_email(form.email.data, owner.owner_id)
+        phone_check = check_own_phone(form.phone_number.data, owner.owner_id)
+        if not email_check and not phone_check:
             CowOwner.query.filter(CowOwner.owner_id == own_id).update({
                 'name': form.name.data,
                 'surname': form.surname.data,
@@ -287,7 +286,7 @@ def liab_own(own_id):
                 owner_name = owner.owner_id
                 pic = add_profile_pic(form.picture.data, owner_name)
                 CowOwner.query.filter(CowOwner.owner_id == own_id).update({
-                    'profile_pic': pic
+                    'profile_pic_name': pic
                 }
                 )
                 # own.profile_pic_name = pic
@@ -298,9 +297,9 @@ def liab_own(own_id):
                 flash(f"Unknown Error in updating profile")
             else:
                 flash(f"Profile Updated Successfully")
-        elif check_own_email(form.email.data, owner.owner_id):
+        elif email_check:
             flash(f"Email {form.email.data} is already taken!")
-        elif check_own_phone(form.phone_number.data, owner.owner_id):
+        elif phone_check:
             flash(f"Mobile number {form.phone_number.data} is already taken!")
 
         return redirect(url_for('owner.liab_own',own_id=own_id))

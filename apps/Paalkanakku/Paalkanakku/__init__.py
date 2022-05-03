@@ -4,7 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from sqlalchemy import MetaData
-from datetime import datetime, timedelta
+from datetime import datetime
+from flask_crontab import Crontab
 
 try:
     from Paalkanakku.errors_pages.handlers import error_pages
@@ -18,7 +19,7 @@ except:
 today_date = datetime.date(datetime.today())
 
 app = Flask(__name__)
-
+crontab = Crontab(app)
 
 ############################
 ###DATABASE Setup
@@ -52,7 +53,6 @@ login_manager.login_view = 'users.login'
 app.config['RECAPTCHA_PUBLIC_KEY'] = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' #Key generated from google API. 1 Million hit per month
 app.config['RECAPTCHA_PRIVATE_KEY'] = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe' #6LcDM4YfAAAAABUHmHnvUbpPxS7-rTJLlCDPsyR4
 app.config['RECAPTCHA_OPTIONS']= {'theme':'dark'}
-
 
 try:
     from Paalkanakku.customers.views import customer
