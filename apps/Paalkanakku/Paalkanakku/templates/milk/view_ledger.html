@@ -98,7 +98,9 @@
          <td>{{ data[5] }}</td>
          <td>{{ data[6] }}</td>
          <td>{{ data[7] }}</td>
-         <td>{{"%.2f"| format(price - milking_charge)}}</td>
+         <td>{{ data[8] }}</td>
+         {% set service_charge = data[5] + data[6] + data[7] + data[8]  %}
+         <td>{{"%.2f"| format(price - milking_charge - service_charge)}}</td>
 
         {% endif %}
          {% endfor %}
@@ -140,4 +142,8 @@
 
 </script>
 
+
+
 {% endblock %}
+
+

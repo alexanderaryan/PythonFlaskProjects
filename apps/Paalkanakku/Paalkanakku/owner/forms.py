@@ -51,8 +51,10 @@ class EditUserForm(FlaskForm):
 
     # date = DateField('Date', validators=[DataRequired()])
 
-    dairy_loan = IntegerField("DairyLoan",validators=[validators.Optional()])
-    kcc_loan = IntegerField("KCCLoan",validators=[validators.Optional()])
+    dairy_loan = IntegerField("DairyLoan",validators=[validators.Optional()],
+                              filters = [lambda x: x or None])
+    kcc_loan = IntegerField("KCCLoan",validators=[validators.Optional()],
+                            filters = [lambda x: x or None])
 
     country = StringField("Country", validators=[])
     state = StringField("State", validators=[])

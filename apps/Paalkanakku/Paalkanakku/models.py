@@ -147,6 +147,7 @@ class Milk(db.Model,UserMixin):
     fodder = db.Column(db.Integer)
     advance = db.Column(db.Integer)
     loan = db.Column(db.Integer)
+    dr_service = db.Column(db.Integer)
 
     __table_args__ = (UniqueConstraint('event_id','owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
                      )
@@ -154,7 +155,8 @@ class Milk(db.Model,UserMixin):
     def __init__(self,owner_id,milker,milked_date,milked_time,litre,ml,price,
                  fodder=0,
                  advance=0,
-                 loan=0):
+                 loan=0,
+                 dr_service=0):
 
         self.owner_id=owner_id
         #self.name=name
@@ -165,6 +167,7 @@ class Milk(db.Model,UserMixin):
         self.loan = loan
         self.fodder = fodder
         self.advance = advance
+        self.dr_service = dr_service
         if milked_time == "am":
             self.am_litre = self.litre_conv(litre,ml)
         else:
@@ -178,7 +181,7 @@ class Milk(db.Model,UserMixin):
         return float(str(l) + '.' + str(ml))
 
     def owner_details(self):
-        return CowOwner.query.filter(CowOwner.owner_id==self.owner_id).first()
+        return CowOwner.query.filter(CowOwner.owner_id == self.owner_id).first()
 
 
 """class Ledger(db.Model,UserMixin):

@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, \
     BooleanField, SelectMultipleField, FloatField, SelectField, DateField, FieldList, FormField,\
     MonthField, RadioField
-from wtforms import DecimalRangeField,DateField
+from wtforms import DecimalRangeField,DateField, validators
 from wtforms.validators import DataRequired, Email, EqualTo, Length, NumberRange
 from wtforms import ValidationError
 
@@ -41,9 +41,18 @@ class DailyData(FlaskForm):
                       validators=[NumberRange(min=0, max=999, message='Max 3 digits')],
                       default=0
                       )
-    fodder = IntegerField("Fodder", default="0")
-    loan = IntegerField("Loan", default="0")
-    advance = IntegerField("Advance", default="0")
+    fodder = IntegerField("Fodder", default=0,
+                          validators=[validators.Optional()],
+                          filters = [lambda x: x or 0])
+    loan = IntegerField("Loan", default=0,
+                        validators=[validators.Optional()],
+                        filters=[lambda x: x or 0])
+    advance = IntegerField("Advance", default=0,
+                           validators=[validators.Optional()],
+                           filters=[lambda x: x or 0])
+    dr_service = IntegerField("Dr_Service", default=0,
+                              validators=[validators.Optional()],
+                              filters=[lambda x: x or 0])
 
 
 class AddDailyData(FlaskForm):

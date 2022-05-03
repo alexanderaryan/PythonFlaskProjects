@@ -64,10 +64,10 @@
       <hr class="d-block d-md-none">
       <ul class="navbar-nav">
           <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle en" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a id="link" class="nav-link dropdown-toggle en" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Customers
           </a>
-          <a class="nav-link dropdown-toggle tn" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a id="link" class="nav-link dropdown-toggle tn" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             வாடிக்கையாளர்கள்
           </a>
           <div class="dropdown-menu" id="dd_items" aria-labelledby="navbarDropdownMenuLink">
@@ -82,10 +82,10 @@
 
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle en" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a id="link" class="nav-link dropdown-toggle en" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Milkers
         </a>
-            <a class="nav-link dropdown-toggle tn" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a id="link" class="nav-link dropdown-toggle tn" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             கறவைக்காரர்கள்
         </a>
         <div class="dropdown-menu" id="dd_items" aria-labelledby="navbarDropdownMenuLink">
@@ -101,10 +101,10 @@
 
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle en" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a id="link" class="nav-link dropdown-toggle en" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         MilkLedger
         </a>
-            <a class="nav-link dropdown-toggle tn" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a id="link" class="nav-link dropdown-toggle tn" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         பால்கணக்கு
         </a>
         <div class="dropdown-menu" id="dd_items" aria-labelledby="navbarDropdownMenuLink">
@@ -155,7 +155,7 @@
   <div class="collapse navbar-collapse justify-content-end order-3" id="navbar-list-9">
       <hr id="hr_logo"  class="d-block d-md-none"  style="border-top: 10px solid #007bff;">
           <li class="nav-item dropdown" style="list-style-type: none;">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a id="link" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img src="{{url_for('static',filename='profile_pics/'+current_user.profile_image)}}" width="40" height="40" class="rounded-circle">
           </a>
           <div class="dropdown-menu" id="dd_items" aria-labelledby="navbarDropdownMenuLink">
@@ -173,7 +173,7 @@
 </nav>
 
 
-    <div class="container">
+    <div class="container-fluid">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <div id="preloader">
@@ -257,6 +257,14 @@ function lang_func() {
         el.style.backgroundColor="#2ab934";
         el.style.borderColor="#2ab934";
         }
+     for (let el of document.querySelectorAll("#link")){
+        el.style.color="#2ab934";
+        }
+     for (let el of document.querySelectorAll('.btn-primary, .btn-rounded')){
+        el.style.backgroundColor="#2ab934";
+        el.style.borderColor="#2ab934";
+        }
+
     for (let el of document.querySelectorAll('.btn-outline-primary')){
         el.style.borderColor="#2ab934";
         el.style.color="#2ab934";
@@ -278,7 +286,8 @@ function lang_func() {
     document.getElementById("font_logo").style.border="solid #007bff";
     document.getElementById("hr_logo").style.borderTop= "10px solid #007bff";
 
-    for (let el of document.querySelectorAll('.btn-primary')){
+
+    for (let el of document.querySelectorAll('.btn-primary, .btn-rounded')){
         el.style.backgroundColor="#007bff";
         el.style.borderColor="#007bff";
         }
@@ -287,6 +296,11 @@ function lang_func() {
         el.style.borderColor="#007bff";
         el.style.color="#007bff";
         }
+
+      for (let el of document.querySelectorAll("#link")){
+        el.style.color="#007bff";
+        }
+
    for (let el of document.querySelectorAll('.form-control')){
         el.style.borderColor="#007bff";
         }

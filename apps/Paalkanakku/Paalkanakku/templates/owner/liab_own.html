@@ -22,11 +22,8 @@
 <div class="container rounded bg-white mt-5 mb-5">
 <form method="POST" action="" enctype="multipart/form-data">
 {{form.hidden_tag()}}
-
-
-
     <div class="row">
-        <div class="col-md-3 border-right">
+        <div class="col-lg-4 col-md-12 col-xl-4 col-sm-12 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
 
 
@@ -110,11 +107,25 @@
 
 <hr>
                 <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
-                    <div class="d-flex flex-column"> <span class="articles">Cows</span> <span class="number1">{{form.cows.data}}</span> </div>
-                    <div class="d-flex flex-column"> <span class="followers">KCC Loan</span> <span class="number2">{{form.kcc_loan.data}}</span> </div>
-                    <div class="d-flex flex-column"> <span class="rating">Dairy Loan</span> <span class="number3">{{form.dairy_loan.data}}</span> </div>
+                    <div class="d-flex flex-column">
+                        <span class="en articles">Cows</span>
+                        <span class="tn articles">மாடுகள்</span>
+                        <span class="number1">{{form.cows.data}}</span>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <span class="en followers">KCC Loan</span>
+                        <span class="tn followers">கேசிசி லோன்</span>
+                        <span class="number2">{{form.kcc_loan.data}}</span>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <span class="en rating">Dairy Loan</span>
+                        <span class="tn rating">டைரி  லோன்</span>
+                        <span class="number3">{{form.dairy_loan.data}}</span>
+                    </div>
                 </div>
-                <div class="button mt-2 d-flex flex-row align-items-center"> <a href="{{url_for('owner.list_own')}}" class="btn btn-sm btn-outline-primary w-100">Back</a>
+                <div class="button mt-2 d-flex flex-row align-items-center">
+                    <a href="{{url_for('owner.list_own')}}" class=" en btn btn-sm btn-outline-primary w-100">Back</a>
+                    <a href="{{url_for('owner.list_own')}}" class=" tn btn btn-sm btn-outline-primary w-100">பின்</a>
 <!--                    <button class="btn btn-sm btn-primary w-100 ml-2">EDIT</button> -->
                 </div>
             </div>
@@ -127,66 +138,87 @@
 
         </div>
 
-        <div class="col-md-5 border-right">
+        <div class="col-md-12 col-lg-4 col-md-3 col-xl-4 col-sm-12  border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Profile Settings</h4>
+                    <h4 class="en text-right">Profile Settings</h4>
+                    <h4 class="tn text-right">சுயவிவர அமைப்புகள்</h4>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-md-6"><label class="labels">Name</label>
+                    <div class="col-md-6"><label class="en labels">Name</label>
+                        <label class="tn labels">பெயர்</label>
                         {{form.name(class="form-control",id="trans")}}</div>
-                    <div class="col-md-6"><label class="labels">Surname</label>
+                    <div class="col-md-6"><label class="en labels">Surname</label>
+                        <label class="tn labels">குடும்ப பெயர்</label>
                         {{form.surname(class="form-control",id="trans",placeholder="surname")}}</div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-12">
-                        <label class="labels">Mobile Number</label>
+                        <label class="en labels">Mobile Number</label>
+                        <label class="tn labels">கைபேசி எண்</label>
                         {{form.phone_number(class="form-control",id="trans",placeholder="enter phone number")}}
                     </div>
                     <div class="col-md-12">
-                        <label class="labels">Address Line 1</label>
+                        <label class="en labels">Address Line 1</label>
+                        <label class="tn labels">முகவரி வரி 1</label>
                         {{form.place(class="form-control",id="trans",placeholder="enter address line 1")}}
                     </div>
                     <div class="col-md-12">
-                        <label class="labels">Address Line 2</label>
+                        <label class="en labels">Address Line 2</label>
+                        <label class="tn labels">முகவரி வரி 2</label>
                         {{form.address_line2(class="form-control",id="trans",placeholder="enter address line 2")}}
                     </div>
                     <div class="col-md-12">
-                        <label class="labels">Postcode</label>
+                        <label class="en labels">Postcode</label>
+                        <label class="tn labels">அஞ்சல் குறியீடு</label>
                         {{form.pincode(class="form-control",id="trans", placeholder="Enter Pincode" )}}
                     </div>
 <!--                    <div class="col-md-12"><label class="labels">Area</label><input type="text" class="form-control",id="trans" placeholder="enter address line 2" value=""></div>-->
                     <div class="col-md-12">
-                        <label class="labels">Email ID</label>
+                        <label class="en labels">Email ID</label>
+                        <label class="tn labels">மின்னஞ்சல்</label>
                         {{form.email(class="form-control",placeholder="enter email id")}}
                     </div>
 <!--                    <div class="col-md-12"><label class="labels">Education</label><input type="text" class="form-control",id="trans" placeholder="education" value=""></div>-->
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-6"><label class="labels">Country</label>
+                    <div class="col-md-6"><label class="en labels">Country</label>
+                        <label class="tn labels">நாடு</label>
                         {{form.country(class="form-control",id="trans",placeholder="இந்தியா")}}</div>
-                    <div class="col-md-6"><label class="labels">State/Region</label>
+                    <div class="col-md-6"><label class="en labels">State/Region</label>
+                        <label class="tn labels">மாநிலம்</label>
                         {{form.state(class="form-control",id="trans",placeholder="தமிழ் நாடு")}}</div>
                 </div>
                 <div class="mt-5 text-center">{{form.submit(class="btn btn-primary profile-button")}}</div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-12 col-lg-4 col-md-3 col-xl-4 col-sm-12 ">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center experience">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Loan Details</h4>
+                    <h4 class="en text-right">Loan Details</h4>
+                        <h4 class="tn text-right">லோன் விவரங்கள்</h4>
                 </div>
 <!--                    <span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span>-->
                 </div><br>
-                <div class="col-md-12"><label class="labels">{{form.cows.label}}</label>
-                    {{form.cows(class="form-control",id="trans")}}</div> <br>
-                <div class="col-md-12"><label class="labels">{{form.dairy_loan.label}}</label>
-                    {{form.dairy_loan(class="form-control",id="trans", placeholder="Enter Dairy Loan")}}</div> <br>
-                <div class="col-md-12"><label class="labels">{{form.kcc_loan.label}}</label>
-                    {{form.kcc_loan(class="form-control",id="trans", placeholder="Enter KCC Loan")}}</div> <br>
+                <div class="col-md-12">
+                    <label class="en labels">{{form.cows.label}}</label>
+                    <label class="tn labels">மாடுகள் </label>
+                    {{form.cows(class="form-control",id="trans")}}
+                </div> <br>
+                <div class="col-md-12">
+                    <label class="en labels">{{form.dairy_loan.label}}</label>
+                    <label class="tn labels">டைரி  லோன்</label>
+                    {{form.dairy_loan(class="form-control",id="trans", placeholder="Enter Dairy Loan")}}
+                </div> <br>
+                <div class="col-md-12">
+                    <label class="en labels">{{form.kcc_loan.label}}</label>
+                    <label class="tn labels">கேசிசி லோன்</label>
+                    {{form.kcc_loan(class="form-control",id="trans", placeholder="Enter KCC Loan")}}
+                </div> <br>
             </div>
         </div>
+</form>
     </div>
 </div>
 </div>
