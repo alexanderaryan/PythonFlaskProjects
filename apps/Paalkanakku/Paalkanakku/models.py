@@ -88,10 +88,10 @@ class CowOwner(db.Model, UserMixin):
 
     #Adding after 2.0
     surname = db.Column(db.String(64),index=True)
-    phone_number = db.Column(db.Integer,unique=True)
+    phone_number = db.Column(db.Integer)
     address_line2 = db.Column(db.String(64),index=True)
     pincode = db.Column(db.Integer)
-    email = db.Column(db.String(64), unique=True, index=True)
+    email = db.Column(db.String(64), index=True)
     dairy_loan = db.Column(db.Integer)
     kcc_loan = db.Column(db.Integer)
     country = db.Column(db.String(64))

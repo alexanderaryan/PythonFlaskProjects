@@ -56,9 +56,9 @@
 <!--                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">&ndash;&gt;-->
                 <div class="image">
                  {% if profile_image %}
-                        <img src="{{profile_image}}" alt="No Porfile pic" class="pic" >
+                        <img src="{{profile_image}}" class="pic circle responsive-img" alt="No Porfile pic">
                  {% else %}
-                        <img class="pic" src= "/static/images/default_cust.jpg" class="rounded" width="155">
+                        <img class="pic circle responsive-img rounded" src= "/static/images/default_cust.jpg" width="155">
                  {% endif %}
                     {{form.picture(class="form-control uploadProfileInput", id="newProfilePhoto",style="display:none;")}}
                       <label class="upload-file-block" for="newProfilePhoto">
