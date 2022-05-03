@@ -235,7 +235,7 @@ def liab_own(own_id):
 
     owner_query = CowOwner.query.filter(CowOwner.owner_id == own_id)
     owner = owner_query.first_or_404()
-    print (owner.place)
+    owner_list = owner_query.all()
     print(owner.name)
 
     print ("Form validation",form.validate_on_submit())
@@ -252,28 +252,45 @@ def liab_own(own_id):
         print (check_own_email(form.email.data, owner.owner_id),"1")
         print (check_own_phone(form.phone_number.data, owner.owner_id),"2")
         if not check_own_email(form.email.data, owner.owner_id) and not check_own_phone(form.phone_number.data, owner.owner_id):
-            owner.name = form.name.data
-            owner.surname = form.surname.data
-            owner.place = form.place.data
-            owner.cows = form.cows.data
-            owner.phone_number = form.phone_number.data
-            owner.ad_2 = form.address_line2.data
-            owner.pincode = form.pincode.data
-            owner.dairy_loan = form.dairy_loan.data
-            owner.kcc_loan = form.kcc_loan.data
-            owner.email = form.email.data
-            owner.country = form.country.data
-            owner.state = form.state.data
-            for own in milker_of_owner:
-                owner.milker_id=milker_of_owner[1]
+            CowOwner.query.filter(CowOwner.owner_id == own_id).update({
+                'name': form.name.data,
+                'surname': form.surname.data,
+                'place': form.place.data,
+                'cows': form.cows.data,
+                'phone_number': form.phone_number.data,
+                'address_line2': form.address_line2.data,
+                'pincode': form.pincode.data,
+                'dairy_loan': form.dairy_loan.data,
+                'kcc_loan': form.kcc_loan.data,
+                'email': form.email.data,
+                'country': form.country.data,
+                'state': form.state.data,
+
+            })
+            # for own in owner_list:
+            #     own.name = form.name.data
+            #     own.surname = form.surname.data
+            #     own.place = form.place.data
+            #     own.cows = form.cows.data
+            #     own.phone_number = form.phone_number.data
+            #     own.ad_2 = form.address_line2.data
+            #     own.pincode = form.pincode.data
+            #     own.dairy_loan = form.dairy_loan.data
+            #     own.kcc_loan = form.kcc_loan.data
+            #     own.email = form.email.data
+            #     own.country = form.country.data
+            #     own.state = form.state.data
+            # # for own in milker_of_owner:
+            # #     owner.milker_id=milker_of_owner[1]
 
             if form.picture.data:
-
-                ownername = owner.owner_id
-                pic = add_profile_pic(form.picture.data, ownername)
-                owner.profile_pic_name = pic
-
-
+                owner_name = owner.owner_id
+                pic = add_profile_pic(form.picture.data, owner_name)
+                CowOwner.query.filter(CowOwner.owner_id == own_id).update({
+                    'profile_pic': pic
+                }
+                )
+                # own.profile_pic_name = pic
             try:
                 db.session.commit()
             except:
@@ -311,7 +328,6 @@ def liab_own(own_id):
     for error,message in form.errors.items():
         print (error,message,form.pincode.data)
         flash(f"{error.capitalize()} : {message[0]}", category='error')
-
 
     profile_image = url_for('static', filename='profile_pics/' + owner.profile_pic_name) if owner.profile_pic_name else None
 
