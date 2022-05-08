@@ -94,22 +94,23 @@ class whole_month_data():
         self.last_day_of_month = nxt_mnth - timedelta(days=nxt_mnth.day)
         print(self.last_day_of_month)
         print("after", self.last_day_of_month, self.first_day_of_month)
+        self.milk_data_query = Milk.query.with_entities(Milk.owner_id,
+                                                   func.coalesce(func.sum(Milk.am_litre), 0.0).label('AM_Total'),
+                                                   func.coalesce(func.sum(Milk.pm_litre), 0.0).label('PM_Total'),
+                                                   func.coalesce(func.sum(Milk.am_litre * Milk.price), 0.0).label(
+                                                       'AM_Total_Price'),
+                                                   func.coalesce(func.sum(Milk.pm_litre * Milk.price), 0.0).label(
+                                                       'PM_Total_Price'),
+                                                   func.coalesce(func.sum(Milk.fodder), 0.0).label('Fodder'),
+                                                   func.coalesce(func.sum(Milk.loan), 0.0).label('Loan'),
+                                                   func.coalesce(func.sum(Milk.advance), 0.0).label('Advance'),
+                                                   func.coalesce(func.sum(Milk.dr_service), 0.0).label('Dr_service')). \
+            filter(Milk.milked_date.between(self.first_day_of_month, self.last_day_of_month))
 
     def ledger_calc(self):
         """To return monthly legderdata"""
 
-        milk_data = Milk.query.with_entities(Milk.owner_id,
-                                             func.coalesce(func.sum(Milk.am_litre), 0.0).label('AM_Total'),
-                                             func.coalesce(func.sum(Milk.pm_litre), 0.0).label('PM_Total'),
-                        func.coalesce(func.sum(Milk.am_litre*Milk.price), 0.0).label('AM_Total_Price'),
-                    func.coalesce(func.sum(Milk.pm_litre*Milk.price), 0.0).label('PM_Total_Price'),
-        func.coalesce(func.sum(Milk.fodder), 0.0).label('Fodder'),
-        func.coalesce(func.sum(Milk.loan), 0.0).label('Loan'),
-        func.coalesce(func.sum(Milk.advance), 0.0).label('Advance'),
-        func.coalesce(func.sum(Milk.dr_service), 0.0).label('Dr_service')).\
-            filter(Milk.milked_date.between( self.first_day_of_month,self.last_day_of_month)).\
-            group_by(Milk.owner_id).\
-            order_by(Milk.owner_id).all()
+        milk_data = self.milk_data_query.group_by(Milk.owner_id).order_by(Milk.owner_id).all()
         print ("whole",milk_data)
         return milk_data
 
@@ -130,27 +131,21 @@ def customer_set(active=False):
     milker_ids = milker_data()[1]
     try:
         if not active:
-            customer = (CowOwner.query.with_entities(CowOwner.owner_id,
-                                                     CowOwner.name+' '+CowOwner.surname,
-                                                     CowOwner.place,
-                                                     CowOwner.profile_pic_name).\
+            customer = (CowOwner.query.\
                    filter(CowOwner.milker_id.in_(milker_ids)).group_by(CowOwner.owner_id).\
                    order_by(CowOwner.place, CowOwner.name).all())
         else:
-            customer = (CowOwner.query.with_entities(CowOwner.owner_id,
-                                                     CowOwner.name+' '+CowOwner.surname,
-                                                     CowOwner.place,
-                                                     CowOwner.profile_pic_name).\
+            customer = (CowOwner.query.\
                             filter(CowOwner.milker_id.in_(milker_ids),CowOwner.active == True).group_by(CowOwner.owner_id). \
                             order_by(CowOwner.place, CowOwner.name).all())
     except:
         print ('CowOwner table is empty')
-        customer = None
+        customer = []
 
     return customer
 
 
-@milk.route('/daily/<modified_day>/<milked_time>',methods=["GET","POST"])
+@milk.route('/daily/<modified_day>/<milked_time>',methods=["GET", "POST"])
 @login_required
 def add_daily_data(modified_day=None,milked_time=None):
 
@@ -160,7 +155,7 @@ def add_daily_data(modified_day=None,milked_time=None):
     print (type(form.daily_data),len(form.daily_data))
     print(type(form.milked_time))
     print("Form", form.daily_data)
-    print ("Modified_day",modified_day,type(modified_day))
+    print("Modified_day",modified_day,type(modified_day))
 
     print(len(form.daily_data), "Printing form")
 
@@ -201,7 +196,7 @@ def add_daily_data(modified_day=None,milked_time=None):
         customers = customer_set()
 
     #print("Length", len(customers), len(milk_data_for_today))
-    print ("customer",customer_set)
+    print ("customers", customers)
 
     print(form.data, "data of form")
 
@@ -216,7 +211,6 @@ def add_daily_data(modified_day=None,milked_time=None):
 
             with open(sheet_config, 'w') as yaml_file:
                 yaml_file.write(yaml.dump(data, default_flow_style=False))
-
 
         print ("inside form",milk_data_check(form.milked_date.data,form.milked_time.data))
         milk_data = milk_data_check(form.milked_date.data,form.milked_time.data)
@@ -267,7 +261,9 @@ def add_daily_data(modified_day=None,milked_time=None):
                         db.session.add(m)
                     db.session.commit()
             print (form.milked_date.data)
-            return redirect(url_for('milk.add_daily_data',modified_day=form.milked_date.data,milked_time=form.milked_time.data))
+            return redirect(url_for('milk.add_daily_data',
+                                    modified_day=form.milked_date.data,
+                                    milked_time=form.milked_time.data))
 
     for error,message in form.errors.items():
         flash(f"{error.capitalize()} : {message[0]}", category='error')
@@ -331,7 +327,6 @@ def milk_ledger_view(month=None):
         with open(sheet_config, "a+") as w:
             data = yaml.dump(yaml_data, w)
 
-
     if form.validate_on_submit():
         print (form.month.data)
         monthly_ledger = ledger_obj.ledger_calc()
@@ -357,15 +352,16 @@ def milk_ledger_view(month=None):
                            customer_set=customer_set(),
                            sheet_url=sheet_url)
 
-@crontab.job(minute="05", hour="0", day="*", month="*", day_of_week="*")
-def my_scheduled_job():
-    last_day_of_month = whole_month_data(today_date).last_day_of_month
-    print("last", last_day_of_month, datetime.combine(today_date, datetime.min.time()))
-    if today_date == last_day_of_month:
-        print("Hello there")
-    prev_month_due = [(ledger[0], ledger[3] + ledger[4]
-                       - ledger[5]
-                       - ledger[6]
-                       - ledger[7]
-                       - ledger[8] - milking_charge) for ledger in whole_month_data(today_date).ledger_calc()]
-    print(prev_month_due)
+
+# @crontab.job(minute="1", hour="*", day="*", month="*", day_of_week="*")
+# def my_scheduled_job():
+#     last_day_of_month = whole_month_data(today_date).last_day_of_month
+#     print("last", last_day_of_month, datetime.combine(today_date, datetime.min.time()))
+#     if today_date == last_day_of_month:
+#         print("Hello there")
+#     prev_month_due = [(ledger[0], ledger[3] + ledger[4]
+#                        - ledger[5]
+#                        - ledger[6]
+#                        - ledger[7]
+#                        - ledger[8] - milking_charge) for ledger in whole_month_data(today_date).ledger_calc()]
+#     print(prev_month_due)

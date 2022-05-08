@@ -51,6 +51,7 @@
 
 </form>
           {% if monthly_ledger %}
+
     <div class="table-responsive" >
   <table class="table table-striped" id="sortTable">
 
@@ -75,10 +76,17 @@
 
      {% for data in monthly_ledger%}
      {% for cust in customer_set %}
-     {% if cust[0]==data[0]%}
+
+     {% if cust.owner_id==data[0]%}
+        {% if cust.surname %}
+            {% set fullname = cust.name+' '+ cust.surname %}
+        {% else %}
+            {% set fullname = cust.name%}
+        {% endif %}
+
      <tr>
-         <td>{{cust[2]}}</td>
-         <td>{{cust[1]}}</td>
+         <td>{{cust.place}}</td>
+         <td>{{fullname}}</td>
          <!--{% if data[4] == 'am' %}
             {% set am_milk = data[3] %}
             {% set pm_milk = 00 %}

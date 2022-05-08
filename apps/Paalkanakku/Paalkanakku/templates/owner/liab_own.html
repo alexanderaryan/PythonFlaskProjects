@@ -25,32 +25,8 @@
     <div class="row">
         <div class="col-lg-4 col-md-12 col-xl-4 col-sm-12 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-
-
-
-<!--    <div class="profile-pic-wrapper">-->
-<!--  <div class="pic-holder">-->
-<!--    &lt;!&ndash; uploaded pic shown here &ndash;&gt;-->
-<!--    <img id="profilePic" class="pic" src="https://source.unsplash.com/random/150x150">-->
-
-<!--    <Input class="uploadProfileInput" type="file" name="profile_pic" id="newProfilePhoto" accept="image/*" />-->
-<!--    <label for="newProfilePhoto" class="upload-file-block">-->
-<!--      <div class="text-center">-->
-<!--        <div class="mb-2">-->
-<!--          <i class="fa fa-camera fa-2x"></i>-->
-<!--        </div>-->
-<!--        <div class="text-uppercase">-->
-<!--          Update <br /> Profile Photo-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </label>-->
-<!--  </div>-->
-<!--    </div>-->
-
-
         <div class="profile-pic-wrapper">
             <div class="pic-holder">
-<!--                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">&ndash;&gt;-->
                 <div class="image">
                  {% if profile_image %}
                         <img src="{{profile_image}}" class="pic circle responsive-img" alt="No Porfile pic">
@@ -98,7 +74,7 @@
         {% if milker_names %}
             {% for milker in milker_names %}
         <span class="font-weight-bold">
-                {{milker[0]}}
+                {{milker.name}}
             </span><br>
             {% endfor %}
         {% else %}
@@ -106,22 +82,37 @@
         {% endif %}
 
 <hr>
-                <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
+                <div class="p-2 mt-2 bg-primary d-flex rounded text-white stats" style="justify-content:space-around;">
                     <div class="d-flex flex-column">
                         <span class="en articles">Cows</span>
-                        <span class="tn articles">மாடுகள்</span>
+                        <span class="tn articles">மாடுகள் எண்ணிக்கை</span>
                         <span class="number1">{{form.cows.data}}</span>
+                        <span class="en followers">Fodder</span>
+                        <span class="tn followers">புண்ணாக்கு</span>
+                        <span class="number2">{{loan_details_for_month[5]}}</span>
+                        <span class="en followers">Dr_service</span>
+                        <span class="tn followers">மருத்துவச் செலவு</span>
+                        <span class="number2">{{loan_details_for_month[8]}}</span>
                     </div>
+
                     <div class="d-flex flex-column">
                         <span class="en followers">KCC Loan</span>
                         <span class="tn followers">கேசிசி லோன்</span>
                         <span class="number2">{{form.kcc_loan.data}}</span>
+                        <span class="en followers">Loan</span>
+                        <span class="tn followers">கடன்</span>
+                        <span class="number2">{{loan_details_for_month[6]}}</span>
                     </div>
+
                     <div class="d-flex flex-column">
                         <span class="en rating">Dairy Loan</span>
-                        <span class="tn rating">டைரி  லோன்</span>
+                        <span class="tn rating">டைரி லோன்</span>
                         <span class="number3">{{form.dairy_loan.data}}</span>
+                        <span class="en followers">Advance</span>
+                        <span class="tn followers">முன்பணம்</span>
+                        <span class="number2">{{loan_details_for_month[7]}}</span>
                     </div>
+
                 </div>
                 <div class="button mt-2 d-flex flex-row align-items-center">
                     <a href="{{url_for('owner.list_own')}}" class=" en btn btn-sm btn-outline-primary w-100">Back</a>
