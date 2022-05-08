@@ -112,7 +112,7 @@
                  id="daily_data-"+ (looping | string) +"-owner_id",class="form-control")}}
              </td>
              <td>
-                 <a href="" class="btn btn-default btn-rounded" data-toggle="modal"
+                 <a href="" id="link" data-toggle="modal"
                     data-target="#modalLoginAvatar-{{values.owner_id}}">{{values.owner_id}}
                  </a>
              </td>
@@ -232,18 +232,22 @@
 
 
         {% for values in customer_set%}
-
         {% set looping = loop.index-1 %}
+      {% if values.surname %}
+     {% set fullname = values.name+' '+ values.surname %}
+                  {% else %}
+                {% set fullname = values.name%}
+                  {% endif %}
 
      <tr>
 
-                  <td hidden>{{form.daily_data[0].owner_id(value=values[0],readonly=True,id="daily_data-"+ (looping | string) +"-owner_id",class="form-control")}}</td>
-         <td><a href="" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#modalLoginAvatar-{{values[0]}}">
-                 {{values[0]}}</a>
+                  <td hidden>{{form.daily_data[0].owner_id(value=values.owner_id,readonly=True,id="daily_data-"+ (looping | string) +"-owner_id",class="form-control")}}</td>
+         <td><a href="" id="link" data-toggle="modal" data-target="#modalLoginAvatar-{{values.owner_id}}">
+                 {{values.owner_id}}</a>
              </td>
 
         <!--Modal: Login with Avatar Form-->
-        <div class="modal fade" id="modalLoginAvatar-{{values[0]}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        <div class="modal fade" id="modalLoginAvatar-{{values.owner_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
           aria-hidden="true">
           <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
             <!--Content-->
@@ -251,16 +255,20 @@
 
               <!--Header-->
               <div class="modal-header">
-                <img src="{{url_for('static', filename='profile_pics/' + values[3])
-                 if values[3]
+                <img src="{{url_for('static', filename='profile_pics/' + values.profile_pic_name)
+                 if values.profile_pic_name
                          else '/static/images/default_cust.jpg'}}" alt="avatar" width=100%; class="rounded-circle img-responsive">
               </div>
               <!--Body-->
               <div class="modal-body text-center mb-1">
+                {% if values.surname %}
 
-                <h5 class="mt-1 mb-2">{{values[1]}}</h5>
+                  <h5 class="mt-1 mb-2">{{fullname }}</h5>
+                  {% else %}
+                <h5 class="mt-1 mb-2">{{fullname }}</h5>
+                  {% endif %}
 
-                <div class="md-form ml-0 mr-0">
+                            <div class="md-form ml-0 mr-0">
 <!--                  <input type="password" type="text" id="form29" class="form-control form-control-sm validate ml-0">-->
 <!--                  <label data-error="wrong" data-success="right" for="form29" class="ml-0">Enter password</label>-->
                     <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].fodder.label}}</label>
@@ -304,10 +312,10 @@
         </div>
 
 
-         <td hidden>{{form.daily_data[0].place(value=values[2],readonly=True,id="daily_data-"+ (looping | string) +"-place",class="form-control")}}</td>
-         <td>{{values[2]}}</td>
+         <td hidden>{{form.daily_data[0].place(value=values.place,readonly=True,id="daily_data-"+ (looping | string) +"-place",class="form-control")}}</td>
+         <td>{{values.place}}</td>
          <td hidden >{{form.daily_data[0].cust_name(value=values[1],readonly=True,id="daily_data-"+ (looping | string) +"-cust_name",class="form-control")}}</td>
-         <td>{{values[1]}}</td>
+         <td>{{fullname}}</td>
          {% if no_milker != True %}
          <td>{{ form.daily_data[0].milker(option="2",
              id="daily_data-"+ (looping | string) +"-milker",class="form-control")

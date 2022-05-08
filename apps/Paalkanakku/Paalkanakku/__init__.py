@@ -5,7 +5,10 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from sqlalchemy import MetaData
 from datetime import datetime
+#Scheduler Components
 from flask_crontab import Crontab
+from apscheduler.schedulers.background import BackgroundScheduler
+
 
 try:
     from Paalkanakku.errors_pages.handlers import error_pages
@@ -19,7 +22,11 @@ except:
 today_date = datetime.date(datetime.today())
 
 app = Flask(__name__)
+#Scheduler Components
 crontab = Crontab(app)
+sched = BackgroundScheduler(daemon=True)
+
+
 
 ############################
 ###DATABASE Setup
@@ -27,7 +34,7 @@ crontab = Crontab(app)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir,'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#app.config["SQLALCHEMY_ECHO"] = True
+# app.config["SQLALCHEMY_ECHO"] = True
 
 convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -80,3 +87,7 @@ app.register_blueprint(milk)
 app.register_blueprint(error_pages)
 #app.register_blueprint(google_blueprint, url_prefix="/login")
 #gcc = gspread.oauth(credentials_filename=cred_filename)
+
+#Scheduler Components
+import Paalkanakku.cronjobs.cronjob
+sched.start()

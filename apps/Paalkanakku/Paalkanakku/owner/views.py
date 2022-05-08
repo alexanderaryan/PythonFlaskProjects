@@ -1,15 +1,17 @@
 
 try:
     from Paalkanakku import app, db, today_date
-    from Paalkanakku.models import Milkers, CowOwner
+    from Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.owner.forms import AddCustForm, DeleteCustForm, EditUserForm
     from Paalkanakku.users.views import add_profile_pic
+    from Paalkanakku.milkdata.views import whole_month_data
 
 except:
     from Paalkanakku.Paalkanakku import app, db, today_date
-    from Paalkanakku.Paalkanakku.models import Milkers, CowOwner
+    from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.Paalkanakku.owner.forms import AddCustForm, DeleteCustForm
     from Paalkanakku.Paalkanakku.users.views import add_profile_pic
+    from Paalkanakku.Paalkanakku.milkdata.views import whole_month_data
 
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
@@ -148,6 +150,7 @@ def list_own():
     print (form.data,"sdsd")
     print(form.validate_on_submit(), "v")
     error = []
+    owner_list = CowOwner.query.order_by(CowOwner.owner_id).all()
     if form.validate_on_submit():
         owner_id_del = form.checkbox.raw_data
         if owner_id_del:
@@ -208,10 +211,11 @@ def list_own():
 
                         return redirect(url_for('owner.list_own'))
 
+
     for error,message in form.errors.items():
         flash(f"{error.capitalize()} : {message[0]}", category='error')
 
-    owner_list = CowOwner.query.order_by(CowOwner.owner_id).all()
+
     header = ['✓', 'CustomerId', 'Name', 'Place', 'Number of Cows','Milker','Active']
     tm_header = ['✓', 'வா.என்', 'பெயர்', 'ஊர்', 'கறவை மாடுகள்', 'க.என்', 'செயல்பாடு']
     return render_template('owner/list_own.html',
@@ -228,8 +232,7 @@ def liab_own(own_id):
 
     form = EditUserForm()
     day = today_date
-    milker_names=None
-
+    # milker_names=None
     print (own_id)
     # form.milker_id.choices = milker_choice()
 
@@ -241,9 +244,15 @@ def liab_own(own_id):
     print (form.kcc_loan.data,"kcc")
     print(form.dairy_loan.data, "dairy")
 
-    milker_of_owner = [own.milker_id for own in owner_query.all()]
-    milker_names = Milkers.query.with_entities(Milkers.name). \
-        filter(Milkers.milker_id.in_(milker_of_owner)).all()
+    milker_names = owner.milker_list()
+    # milker_of_owner = [own.milker_id for own in owner_query.all()]
+    # milker_names = Milkers.query.\
+    #     filter(Milkers.milker_id.in_(milker_of_owner)).all()
+
+    month = today_date.replace(day=1)
+    ledger_obj = whole_month_data(month)
+    loan_details_for_month = ledger_obj.milk_data_query.filter(Milk.owner_id == own_id).first()
+    print (loan_details_for_month)
 
     if form.validate_on_submit():
         print(form.email.data, "email")
@@ -266,21 +275,6 @@ def liab_own(own_id):
                 'state': form.state.data,
 
             })
-            # for own in owner_list:
-            #     own.name = form.name.data
-            #     own.surname = form.surname.data
-            #     own.place = form.place.data
-            #     own.cows = form.cows.data
-            #     own.phone_number = form.phone_number.data
-            #     own.ad_2 = form.address_line2.data
-            #     own.pincode = form.pincode.data
-            #     own.dairy_loan = form.dairy_loan.data
-            #     own.kcc_loan = form.kcc_loan.data
-            #     own.email = form.email.data
-            #     own.country = form.country.data
-            #     own.state = form.state.data
-            # # for own in milker_of_owner:
-            # #     owner.milker_id=milker_of_owner[1]
 
             if form.picture.data:
                 owner_name = owner.owner_id
@@ -314,10 +308,11 @@ def liab_own(own_id):
         form.pincode.data = owner.pincode
         form.phone_number.data = owner.phone_number
         form.address_line2.data = owner.address_line2
-        form.kcc_loan.data = owner.kcc_loan
-        form.dairy_loan.data = owner.dairy_loan
+        form.kcc_loan.data = owner.kcc_loan if owner.kcc_loan else 0
+        form.dairy_loan.data = owner.dairy_loan if owner.dairy_loan else 0
         form.country.data = owner.country
         form.state.data = owner.state
+        milker_names = owner.milker_list()
 
 
 
@@ -336,4 +331,5 @@ def liab_own(own_id):
                            profile_image=profile_image,
                            flash=form.errors,
                            milker_names=milker_names,
+                           loan_details_for_month=loan_details_for_month,
                            owner=owner)

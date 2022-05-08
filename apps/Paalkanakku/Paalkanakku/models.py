@@ -129,7 +129,9 @@ class CowOwner(db.Model, UserMixin):
         return self.milk.all()
 
     def milker_list(self):
-        return self.milker_id
+        owner_query=CowOwner.query.with_entities(CowOwner.milker_id).filter(CowOwner.owner_id==self.owner_id)
+        milker_of_owner = [own.milker_id for own in owner_query.all()]
+        return Milkers.query.filter(Milkers.milker_id.in_(milker_of_owner)).all()
 
 
 class Milk(db.Model,UserMixin):
