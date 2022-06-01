@@ -42,7 +42,9 @@ def config_data():
 
     return data
 
+
 milking_charge = config_data()['milking_charge']
+
 
 def milk_data_check(date,milked_time):
 
@@ -83,7 +85,7 @@ def utility_processor():
     return dict(milk_price=milk_price)
 
 
-class whole_month_data():
+class WholeMonthData:
 
     def __init__(self,month):
         print("before",month)
@@ -311,8 +313,10 @@ def milk_ledger_view(month=None):
     else:
         month = datetime.strptime(month, '%Y-%m-%d').date()
 
-    ledger_obj= whole_month_data(month)
+    ledger_obj= WholeMonthData(month)
     monthly_ledger = ledger_obj.ledger_calc()
+    first = ledger_obj.first_day_of_month
+    last = ledger_obj.last_day_of_month
 
     print("mon", type(month))
     print("data", monthly_ledger)
@@ -332,9 +336,7 @@ def milk_ledger_view(month=None):
         monthly_ledger = ledger_obj.ledger_calc()
         print ("mon",form.month.data)
         print ("data",monthly_ledger)
-        mon = google_backup.add_data_to_google(date_object=month,
-                                         first=ledger_obj.first_day_of_month,
-                                         last=ledger_obj.last_day_of_month)
+        mon = google_backup.add_data_to_google(date_object=month, first=first, last=last)
         flash(f"The data is backed up for {mon}")
         return redirect(url_for("milk.milk_ledger_view", month=form.month.data))
 
@@ -355,7 +357,7 @@ def milk_ledger_view(month=None):
 
 # @crontab.job(minute="1", hour="*", day="*", month="*", day_of_week="*")
 # def my_scheduled_job():
-#     last_day_of_month = whole_month_data(today_date).last_day_of_month
+#     last_day_of_month = WholeMonthData(today_date).last_day_of_month
 #     print("last", last_day_of_month, datetime.combine(today_date, datetime.min.time()))
 #     if today_date == last_day_of_month:
 #         print("Hello there")
@@ -363,5 +365,52 @@ def milk_ledger_view(month=None):
 #                        - ledger[5]
 #                        - ledger[6]
 #                        - ledger[7]
-#                        - ledger[8] - milking_charge) for ledger in whole_month_data(today_date).ledger_calc()]
+#                        - ledger[8] - milking_charge) for ledger in WholeMonthData(today_date).ledger_calc()]
 #     print(prev_month_due)
+
+@milk.route('/invoice',methods=["GET","POST"])
+@login_required
+def invoice_view():
+
+    month = today_date.replace(day=1)
+
+    ledger_obj= WholeMonthData(month)
+    first = ledger_obj.first_day_of_month
+    last = ledger_obj.last_day_of_month
+
+    user_bill = google_backup.MilkData(first, last)
+    per_user_bill = {}
+    customer = customer_set()
+    for c in customer:
+        milk_data = user_bill.milk_data_customer_wise(c.owner_id)
+        print(c.owner_id)
+        print(milk_data)
+        am=sum(data.am_litre for data in milk_data)
+        pm=sum(data.pm_litre for data in milk_data)
+        pm = sum(data.pm_litre for data in milk_data)
+        fodder = sum(data.fodder for data in milk_data)
+        loan = sum(data.loan for data in milk_data)
+        advance = sum(filter(None,[data.advance for data in milk_data]))
+        dr_service = sum(filter(None,[data.dr_service for data in milk_data]))
+        total = sum(filter(None, [(data.am_litre+data.pm_litre)*data.price for data in milk_data]))
+
+        per_user_bill[c.owner_id] = {'milk_data': milk_data,
+                                     'am':am,
+                                     'pm':pm,
+                                     'fodder':fodder,
+                                     'loan':loan,
+                                     'advance':advance,
+                                     'dr_service':dr_service,
+                                     'total':total}
+
+
+    header = ['Date', 'Morn', 'Evng', 'Fodder', 'Loan', 'Advance', 'Dr_service', 'Debit']
+    tm_header = ['தேதி','காலை', 'மாலை','புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
+
+
+    return render_template('milk/invoice.html',
+                           per_user_bill=per_user_bill,
+                           header=header,
+                           milking_charge=milking_charge,
+                           tm_header=tm_header,
+                           customer_set=customer)

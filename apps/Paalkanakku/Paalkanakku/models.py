@@ -150,6 +150,9 @@ class Milk(db.Model,UserMixin):
     advance = db.Column(db.Integer)
     loan = db.Column(db.Integer)
     dr_service = db.Column(db.Integer)
+    dairy_loan = db.Column(db.Integer)
+    kcc_loan = db.Column(db.Integer)
+    loan_id = db.Column(db.Integer, db.ForeignKey('loan.loan_id'), nullable=True)
 
     __table_args__ = (UniqueConstraint('event_id','owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
                      )
@@ -158,7 +161,9 @@ class Milk(db.Model,UserMixin):
                  fodder=0,
                  advance=0,
                  loan=0,
-                 dr_service=0):
+                 dr_service=0,
+                 dairy_loan=0,
+                 kcc_loan=0):
 
         self.owner_id=owner_id
         #self.name=name
@@ -170,6 +175,8 @@ class Milk(db.Model,UserMixin):
         self.fodder = fodder
         self.advance = advance
         self.dr_service = dr_service
+        self.dairy_loan = dairy_loan
+        self.kcc_loan = kcc_loan
         if milked_time == "am":
             self.am_litre = self.litre_conv(litre,ml)
         else:
@@ -184,6 +191,9 @@ class Milk(db.Model,UserMixin):
 
     def owner_details(self):
         return CowOwner.query.filter(CowOwner.owner_id == self.owner_id).first()
+
+    def loan_details(self,loan_id):
+        return Milk.query.all()
 
 
 """class Ledger(db.Model,UserMixin):
@@ -238,3 +248,20 @@ class Cows(db.Model):
     def __repr__(self):
         return f"{self.owners.name} is the owner of Cows : {self.cows}"
 
+
+class Loan(db.Model):
+
+    __tablename__ = "loan"
+
+    loan_id = db.Column(db.Integer, primary_key=True)
+    loan_amount = db.Column(db.Integer)
+    loan_type =  db.Column(db.String(64))
+    # loan_remaining = db.Column(db.Integer)
+    owner_id = db.Column(db.Integer, db.ForeignKey('owners.owner_id'), nullable=False)
+    owner = db.relationship('CowOwner', backref='loan', lazy='dynamic')
+
+    def __init__(self, loan_amount, loan_type, owner_id, loan_remaining):
+        self.loan_amount = loan_amount
+        self.loan_type = loan_type
+        self.owner_id = owner_id
+        # self.loan_remaining = loan_remaining
