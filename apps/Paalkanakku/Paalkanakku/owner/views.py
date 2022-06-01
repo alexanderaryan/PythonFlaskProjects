@@ -4,14 +4,14 @@ try:
     from Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.owner.forms import AddCustForm, DeleteCustForm, EditUserForm
     from Paalkanakku.users.views import add_profile_pic
-    from Paalkanakku.milkdata.views import whole_month_data
+    from Paalkanakku.milkdata.views import WholeMonthData
 
 except:
     from Paalkanakku.Paalkanakku import app, db, today_date
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.Paalkanakku.owner.forms import AddCustForm, DeleteCustForm
     from Paalkanakku.Paalkanakku.users.views import add_profile_pic
-    from Paalkanakku.Paalkanakku.milkdata.views import whole_month_data
+    from Paalkanakku.Paalkanakku.milkdata.views import WholeMonthData
 
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
@@ -250,7 +250,7 @@ def liab_own(own_id):
     #     filter(Milkers.milker_id.in_(milker_of_owner)).all()
 
     month = today_date.replace(day=1)
-    ledger_obj = whole_month_data(month)
+    ledger_obj = WholeMonthData(month)
     loan_details_for_month = ledger_obj.milk_data_query.filter(Milk.owner_id == own_id).first()
     print (loan_details_for_month)
 

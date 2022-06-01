@@ -25,10 +25,15 @@
               <h2 class="text-uppercase text-center mb-5 en">Milk Ledger</h2>
                 <h2 class="text-uppercase text-center mb-5 tn">பால் பேரேடு</h2>
 
+                                <div class="d-flex" style="justify-content: left;">
+           <a class="btn btn-success btn-lg text-body en"  href="{{ url_for('milk.invoice_view') }}" > Bill </a>
+                    <a class="btn btn-success btn-lg text-body tn"  href="{{ url_for('milk.invoice_view') }}"> பில்</a>
+
                 <div class="d-flex" style="justify-content: right;">
            <a class="btn btn-success btn-lg text-body en"  href={{sheet_url}}> Google Backup </a>
                     <a class="btn btn-success btn-lg text-body tn"  href={{sheet_url}}> Google காப்புப்பிரதி</a>
-    </div><br>
+                </div></div>
+                <br>
 
                 <br>
 {{form.hidden_tag()}}
@@ -49,7 +54,6 @@
 <!--                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body")}}-->
 <!--    </div><br>-->
 
-</form>
           {% if monthly_ledger %}
 
     <div class="table-responsive" >
@@ -76,7 +80,6 @@
 
      {% for data in monthly_ledger%}
      {% for cust in customer_set %}
-
      {% if cust.owner_id==data[0]%}
         {% if cust.surname %}
             {% set fullname = cust.name+' '+ cust.surname %}
@@ -98,10 +101,10 @@
 <!--         <td>{{"%.3f"| format(data[2])}}</td>-->
 
          {% set milk = data[1] + data[2] %}
-         <td>{{"%.3f"| format(milk)}}</td>
+         <td>{{"%.3f" | format(milk)}}</td>
 <!--         <td>{{"%.2f"| format(data[3])}}</td>-->
 <!--         <td>{{"%.2f"| format(data[4])}}</td>-->
-         <td>{{"%.2f"| format(milking_charge) }}</td>
+         <td>{{"%.2f" | format(milking_charge) }}</td>
          {% set price = data[3] + data[4] %}
          <td>{{ data[5] }}</td>
          <td>{{ data[6] }}</td>
@@ -109,7 +112,6 @@
          <td>{{ data[8] }}</td>
          {% set service_charge = data[5] + data[6] + data[7] + data[8]  %}
          <td>{{"%.2f"| format(price - milking_charge - service_charge)}}</td>
-
         {% endif %}
          {% endfor %}
      {% endfor %}
@@ -138,9 +140,7 @@
                 </div>
 </div>
           </form>
-
       </div>
-
 </section>
 <script>
     document.getElementById('milkmonth').setAttribute("min","2022-01");

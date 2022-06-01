@@ -314,7 +314,7 @@
 
          <td hidden>{{form.daily_data[0].place(value=values.place,readonly=True,id="daily_data-"+ (looping | string) +"-place",class="form-control")}}</td>
          <td>{{values.place}}</td>
-         <td hidden >{{form.daily_data[0].cust_name(value=values[1],readonly=True,id="daily_data-"+ (looping | string) +"-cust_name",class="form-control")}}</td>
+         <td hidden >{{form.daily_data[0].cust_name(value=fullname,readonly=True,id="daily_data-"+ (looping | string) +"-cust_name",class="form-control")}}</td>
          <td>{{fullname}}</td>
          {% if no_milker != True %}
          <td>{{ form.daily_data[0].milker(option="2",

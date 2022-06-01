@@ -64,22 +64,39 @@ def worksheet_check(sh,month):
     return worksheet
 
 
-def milk_data_query(first,last):
+class MilkData:
 
-    milk_data = Milk.query.with_entities(Milk.event_id, Milk.owner_id, Milk.milker_id, Milk.milked_date,
-                                         Milk.am_litre,
-                                         Milk.pm_litre,
-                                         Milk.price). \
-        filter(Milk.milked_date.between(first, last)). \
-        order_by(Milk.milked_date).all()
+    def __init__(self,first,last):
+        self.first = first
+        self.last = last
+        self.milk_data_query = Milk.query.filter(Milk.milked_date.between(first, last))
 
-    milk_data = list(map(list, milk_data))
-    for ind, n in enumerate(milk_data):
-        kl = datetime.strftime(n[3], '%Y-%m-%d')
-        print(kl)
-        milk_data[ind][3] = kl
+    def milk_data_date_wise(self):
 
-    return milk_data
+        milk_data = self.milk_data_query.\
+            order_by(Milk.milked_date).all()
+
+        # milk_data = list(map(list, milk_data))
+        # for ind, n in enumerate(milk_data):
+        #     kl = datetime.strftime(n[3], '%Y-%m-%d')
+        #     milk_data[ind][3] = kl
+
+        return milk_data
+
+    def milk_data_customer_wise(self,owner_id):
+
+        milk_data = self.milk_data_query. \
+            order_by( Milk.owner_id, Milk.milked_date).\
+            filter(Milk.owner_id == owner_id). \
+            all()
+
+
+        # milk_data = list(map(list, milk_data))
+        # for ind, n in enumerate(milk_data):
+        #     kl = datetime.strftime(n[3], '%Y-%m-%d')
+        #     milk_data[ind][3] = kl
+
+        return milk_data
 
 
 def add_data_to_google(date_object, first, last):
@@ -90,7 +107,7 @@ def add_data_to_google(date_object, first, last):
     print("month", month)
     sh = spreadsheet_check(year)
     worksheet = worksheet_check(sh, month)
-    #milk_data = whole_month_data(month)
+    #milk_data = WholeMonthData(month)
     worksheet.clear()
     print (f"worksheet_cleared")
     worksheet.append_row(Milk.__table__.columns.keys())
@@ -118,10 +135,16 @@ def add_data_to_google(date_object, first, last):
     #     }
     # })
     print(f"Title added")
-    milk_data = milk_data_query(first,last)
+    milk_obj = MilkData(first,last)
+    milk_data = milk_obj.milk_data_date_wise()
     print (milk_data)
-
-    worksheet.append_rows(milk_data)
+    data = [[d.event_id,d.owner_id,
+           d.milker_id,datetime.strftime(d.milked_date,"%d-%m-%Y"),
+           d.am_litre,d.pm_litre,
+           d.price,d.fodder,d.advance,
+           d.loan,d.dr_service] for d in milk_data]
+    print (data)
+    worksheet.append_rows(data)
     return month
     # print("man eo",worksheet.range(1,1, worksheet.row_count, worksheet.col_count))
     #
@@ -146,7 +169,7 @@ def add_data_to_google(date_object, first, last):
     # worksheet.update_title("Feb 2022")
 # worksheet = sh.worksheets()
 # print (worksheet[0].title)
-# print (whole_month_data(datetime.date(datetime.today()).replace(day=1)))
+# print (WholeMonthData(datetime.date(datetime.today()).replace(day=1)))
 #
 # attributes = inspect.getmembers(Milk, lambda a:not(inspect.isroutine(a)))
 # print ([a for a in attributes if not(a[0].startswith('__') and a[0].endswith('__'))])

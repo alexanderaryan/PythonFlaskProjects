@@ -89,5 +89,8 @@ app.register_blueprint(error_pages)
 #gcc = gspread.oauth(credentials_filename=cred_filename)
 
 #Scheduler Components
-import Paalkanakku.cronjobs.cronjob
+try:
+    import Paalkanakku.cronjobs.cronjob
+except:
+    import Paalkanakku.Paalkanakku.cronjobs.cronjob
 sched.start()

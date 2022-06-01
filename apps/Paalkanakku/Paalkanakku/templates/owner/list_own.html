@@ -117,13 +117,13 @@
                     <div class="d-flex flex-column">
                         <span class="en followers">KCC Loan</span>
                         <span class="tn followers">கேசிசி லோன்</span>
-                        <span class="number2">{{values.kcc_loan}}</span>
+                        <span class="number2">{{values.kcc_loan if values.kcc_loan else 0}}</span>
                     </div>
 
                     <div class="d-flex flex-column">
                         <span class="en rating">Dairy Loan</span>
                         <span class="tn rating">டைரி லோன்</span>
-                        <span class="number3">{{values.dairy_loan}}</span>
+                        <span class="number3">{{values.dairy_loan if values.dairy_loan else 0}}</span>
                     </div>
 
                 </div>

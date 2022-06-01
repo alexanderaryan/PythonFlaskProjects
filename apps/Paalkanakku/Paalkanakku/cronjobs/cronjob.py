@@ -3,20 +3,20 @@ from datetime import timedelta
 try:
     from Paalkanakku import today_date, crontab, sched, db
     from Paalkanakku.models import Milkers, CowOwner, Milk
-    from Paalkanakku.milkdata.views import whole_month_data, price
+    from Paalkanakku.milkdata.views import WholeMonthData, price
     from Paalkanakku.milkdata.views import milking_charge
     from Paalkanakku.milkdata import google_backup
 except:
     from Paalkanakku.Paalkanakku import app, db, today_date, crontab, sched
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
-    from Paalkanakku.Paalkanakku.milkdata.views import whole_month_data, price
+    from Paalkanakku.Paalkanakku.milkdata.views import WholeMonthData, price
     from Paalkanakku.Paalkanakku.milkdata.views import milking_charge
     from Paalkanakku.Paalkanakku.milkdata import google_backup
 
 
 def my_scheduled_job():
 
-    ledger_obj = whole_month_data(today_date.replace(day=1))
+    ledger_obj = WholeMonthData(today_date.replace(day=1))
     last_day_of_month = ledger_obj.last_day_of_month
     if today_date == last_day_of_month:
         print("Hello there")
@@ -54,7 +54,7 @@ def my_scheduled_job():
 def google_backup_cron():
 
     month = today_date.replace(day=1)
-    ledger_obj = whole_month_data(month)
+    ledger_obj = WholeMonthData(month)
     last_day_of_month = ledger_obj.last_day_of_month
     mon = google_backup.add_data_to_google(date_object=month,
                                          first=ledger_obj.first_day_of_month,
