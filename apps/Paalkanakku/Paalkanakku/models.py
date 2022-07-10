@@ -153,6 +153,7 @@ class Milk(db.Model,UserMixin):
     dairy_loan = db.Column(db.Integer)
     kcc_loan = db.Column(db.Integer)
     loan_id = db.Column(db.Integer, db.ForeignKey('loan.loan_id'), nullable=True)
+    loan_payment = db.Column(db.Integer)
 
     __table_args__ = (UniqueConstraint('event_id','owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
                      )
@@ -163,7 +164,9 @@ class Milk(db.Model,UserMixin):
                  loan=0,
                  dr_service=0,
                  dairy_loan=0,
-                 kcc_loan=0):
+                 kcc_loan=0,
+                 load_id=None,
+                 loan_payment=0):
 
         self.owner_id=owner_id
         #self.name=name
@@ -177,6 +180,8 @@ class Milk(db.Model,UserMixin):
         self.dr_service = dr_service
         self.dairy_loan = dairy_loan
         self.kcc_loan = kcc_loan
+        # self.loan_id = loan_id
+        self.loan_payment = loan_payment
         if milked_time == "am":
             self.am_litre = self.litre_conv(litre,ml)
         else:
@@ -256,12 +261,24 @@ class Loan(db.Model):
     loan_id = db.Column(db.Integer, primary_key=True)
     loan_amount = db.Column(db.Integer)
     loan_type =  db.Column(db.String(64))
-    # loan_remaining = db.Column(db.Integer)
+    loan_start_date = db.Column(db.DateTime, default=datetime.utcnow)
+    loan_end_date = db.Column(db.DateTime, default=datetime.utcnow)
     owner_id = db.Column(db.Integer, db.ForeignKey('owners.owner_id'), nullable=False)
-    owner = db.relationship('CowOwner', backref='loan', lazy='dynamic')
+    owner = db.relationship('CowOwner', backref='loan', lazy=True)
 
-    def __init__(self, loan_amount, loan_type, owner_id, loan_remaining):
+    def __init__(self, loan_amount, loan_type, owner_id, loan_start_date, loan_end_date):
         self.loan_amount = loan_amount
         self.loan_type = loan_type
         self.owner_id = owner_id
+        self.loan_start_date = loan_start_date
+        self.loan_end_date = loan_end_date
         # self.loan_remaining = loan_remaining
+
+    def __repr__(self):
+        return f"{self.loan_id}"
+
+    def loan_details(self):
+        daily_loan_ledger = Milk.query.filter(Milk.loan_id == self.loan_id).all()
+        # print (daily_loan_ledger)
+        daily_loan_ledger = 100
+        return {self.loan_type: [self.loan_id,self.loan_amount, daily_loan_ledger]}

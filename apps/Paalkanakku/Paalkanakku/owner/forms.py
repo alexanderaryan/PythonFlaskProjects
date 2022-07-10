@@ -31,6 +31,17 @@ class DeleteCustForm(FlaskForm):
     submit = SubmitField('Update')
 
 
+class AddLoanForm(FlaskForm):
+
+    loan_amount = IntegerField('Loan Amount',validators=[DataRequired(),NumberRange(min=1000,message='Min. Loan is 1000')])
+    loan_type = SelectField('Type',choices=[('dairy', 'Dairy'), ('kcc', 'KCC')])
+    loan_start_date = DateField("LoanStartDate",validators=[DataRequired()])
+    loan_end_date = DateField("LoanEndDate",validators=[DataRequired()])
+    # owner_id = db.Column(db.Integer, db.ForeignKey('owners.owner_id'), nullable=False)
+    #checkbox = SelectField(u'Delete',choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
+    submit_loan = SubmitField('Update')
+
+
 class EditUserForm(FlaskForm):
 
     name = StringField('Name', validators=[DataRequired(),Length(max=30,message="Min 5 / Max 30 characters")])
@@ -70,5 +81,20 @@ class EditUserForm(FlaskForm):
     # dr_service = IntegerField("Doctor Service", validators=[])
     # advance = IntegerField("Advance", validators=[])
     # loan = IntegerField("Debt", validators=[])
+    loan_amount = IntegerField('Loan Amount',
+                               validators=[validators.Optional()],
+                               filters = [lambda x: x or 0])
+    loan_type = SelectField('Type', choices=[('dairy', 'Dairy'), ('kcc', 'KCC')],
+                            validators=[validators.Optional()],
+                            filters=[lambda x: x or 0]
+                            )
+    loan_start_date = DateField("LoanStartDate",
+                                validators=[validators.Optional()],
+                                filters=[lambda x: x or 0]
+                                )
+    loan_end_date = DateField("LoanEndDate",
+                              validators=[validators.Optional()],
+                              filters=[lambda x: x or 0]
+                              )
 
-    submit = SubmitField('Save Profile')
+    edit_submit = SubmitField('Save Profile')

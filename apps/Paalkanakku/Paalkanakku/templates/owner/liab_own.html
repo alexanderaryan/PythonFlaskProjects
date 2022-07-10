@@ -180,42 +180,158 @@
                         <label class="tn labels">மாநிலம்</label>
                         {{form.state(class="form-control",id="trans",placeholder="தமிழ் நாடு")}}</div>
                 </div>
-                <div class="mt-5 text-center">{{form.submit(class="btn btn-primary profile-button")}}</div>
+                <div class="mt-5 text-center">{{form.edit_submit(class="btn btn-primary profile-button")}}</div>
+
             </div>
         </div>
+    </form>
         <div class="col-md-12 col-lg-4 col-md-3 col-xl-4 col-sm-12 ">
             <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center experience">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="en text-right">Loan Details</h4>
-                        <h4 class="tn text-right">லோன் விவரங்கள்</h4>
-                </div>
-<!--                    <span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span>-->
-                </div><br>
                 <div class="col-md-12">
                     <label class="en labels">{{form.cows.label}}</label>
                     <label class="tn labels">மாடுகள் </label>
                     {{form.cows(class="form-control",id="trans")}}
                 </div> <br>
+
+                <div class="d-flex justify-content-between align-items-center experience">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="en text-right">Loan Details</h4>
+                        <h4 class="tn text-right">லோன் விவரங்கள்</h4>
+                        <a href="" id="link" data-toggle="modal"
+                           data-target="#modalLoginAvatar-{{owner_id}}"
+                           class="btn btn-sm btn-outline-primary"
+                           style="border-radius: 50%;">
+                        <span class="fas fa-plus"></span>
+                    </a>
+
+        <!--Modal: Login with Avatar Form-->
+        <div class="modal fade" id="modalLoginAvatar-{{owner_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+            <!--Content-->
+            <div class="modal-content">
+              <!--Header-->
+              <div class="modal-header" style="align-self: center;">
+                Loan
+              </div>
+              <!--Body-->
+              <div class="modal-body text-center mb-1">
+
+                <h5 class="mt-1 mb-2">
+                    {{form.name.data}}
+                    {% if form.surname.data %}
+                    {{form.surname.data}}
+                    {% endif %}</h5>
+                <label data-error="wrong" data-success="right" class="ml-0 en">LoanType</label>
+                    <label data-error="wrong" data-success="right" class="ml-0 tn">லோன்வகை</label>
+                <div class="md-form ml-0 mr-0">
+                   {{form.loan_type}}
+                </div>
+
+                  <label data-error="wrong" data-success="right" class="ml-0 en">Loan Start Date</label>
+                    <label data-error="wrong" data-success="right" class="ml-0 tn">தொடங்கிய தேதி</label>
+                  <div class="md-form ml-0 mr-0">
+                      {{form.loan_start_date}}
+                  </div>
+                    <label data-error="wrong" data-success="right" class="ml-0 en">Loan End Date</label>
+                    <label data-error="wrong" data-success="right" class="ml-0 tn">முடியும் தேதி</label>
+                <div class="md-form ml-0 mr-0">
+                    {{form.loan_end_date}}
+                </div>
+                  <label data-error="wrong" data-success="right" class="ml-0 en">Loan Amount</label>
+                  <label data-error="wrong" data-success="right" class="ml-0 tn">லோன் தொகை</label>
+                <div class="md-form ml-0 mr-0">
+                {{form.loan_amount}}
+                </div>
+
+                <div class="text-center mt-4">
+                    {{form.edit_submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body en justify-content-center",value="Add")}}
+                    {{form.edit_submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body tn justify-content-center",value="சேர்")}}
+                </div>
+              </div>
+            </div>
+            <!--/.Content-->
+          </div>
+        </div>
+
+
+                </div>
+<!--                    <span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span>-->
+                </div><br>
+
+
                 <div class="col-md-12">
+                {%if loan_data %}
+                {%for loan in loan_data %}
+                {% for loan_type, loan_amount in loan.items() %}
+                    {% set sub_color = "orange"%}
+                {% if loan_type == "dairy" %}
+                    {% set loan_element_id = "dairy_" + loan_amount[0] | string %}
                     <label class="en labels">{{form.dairy_loan.label}}</label>
                     <label class="tn labels">டைரி  லோன்</label>
-                    {{form.dairy_loan(class="form-control",id="trans", placeholder="Enter Dairy Loan")}}
-                </div> <br>
-                <div class="col-md-12">
+                    <div id={{loan_element_id}} ></div>
+                    {% set main_color = "blue"%}
+                    {% elif loan_type == 'kcc' %}
+                    {% set loan_element_id = "kcc_" + loan_amount[0] | string %}
                     <label class="en labels">{{form.kcc_loan.label}}</label>
                     <label class="tn labels">கேசிசி லோன்</label>
-                    {{form.kcc_loan(class="form-control",id="trans", placeholder="Enter KCC Loan")}}
+                    <div id={{loan_element_id}} ></div>
+                    {% set main_color = "green"%}
+                {% endif %}
+                <script type="text/javascript">
+                      google.charts.load("current", {packages:["corechart"]});
+                      google.charts.setOnLoadCallback(drawChart);
+                      function drawChart() {
+                        var data = google.visualization.arrayToDataTable([
+                          ['Loan', 'Sum'],
+                          ['Total',    {{loan_amount[1]}}],
+                          ['Paid',     {{loan_amount[2]}}],
+                        ]);
+
+                        var options = {
+                          title: '{{loan_amount[0]}}',
+                          pieHole: 0.4,
+                          slices: {
+                            0: { color: '{{main_color}}' },
+                            1: { color: '{{sub_color}}' }
+                            }
+                        };
+
+                        var chart = new google.visualization.PieChart(document.getElementById('{{loan_element_id}}'));
+                        chart.draw(data, options);
+                      }
+                    </script>
+
+                {% endfor %}
+                {% endfor %}
+                {% endif %}
+<!--                        {{form.dairy_loan(class="form-control",id="trans", placeholder="Enter Dairy Loan")}}-->
                 </div> <br>
+
+
+
+
+<!--                <div class="col-md-12">-->
+<!--                    <label class="en labels">{{form.kcc_loan.label}}</label>-->
+<!--                    <label class="tn labels">கேசிசி லோன்</label>-->
+<!--                    <div id="donutchart_2" ></div>-->
+<!--                    <div id="donutchart_3" ></div>-->
+<!--                    <br>-->
+<!--                    {{form.kcc_loan(class="form-control",id="trans", placeholder="Enter KCC Loan")}}-->
+<!--                </div> <br>-->
+
+
+
+
+
+
             </div>
         </div>
-</form>
+
     </div>
 </div>
 </div>
 </div>
-
-
 
 
 {% endblock %}
