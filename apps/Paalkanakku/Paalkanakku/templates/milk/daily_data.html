@@ -159,6 +159,13 @@
                 <div class="md-form ml-0 mr-0">
                 {{ form.daily_data[0].advance(value=values.dr_service if values.dr_service != none else 0,
                  id="daily_data-"+ (looping | string) +"-dr_service",class="form-control") }}
+                    <div class="col-6">
+                        <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].dr_service.label}}</label>
+                  <label data-error="wrong" data-success="right" class="ml-0 tn">மருத்துவச் செலவு</label>
+                <div class="md-form ml-0 mr-0">
+                {{ form.daily_data[0].advance(value=values.dr_service if values.dr_service != none else 0,
+                 id="daily_data-"+ (looping | string) +"-dr_service",class="form-control") }}
+                </div>
                 </div>
 
                 <div class="text-center mt-4">
@@ -297,7 +304,6 @@
                     class="form-control form-control-sm validate ml-0",
                     placeholder="Dr_Fees"
                     ) }}
-
                 </div>
 
                 <div class="text-center mt-4">

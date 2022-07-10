@@ -11,11 +11,16 @@ from wtforms import ValidationError
 from flask_login import current_user
 
 try:
-    from Paalkanakku.models import Milkers
+    from Paalkanakku.models import Milkers, Loan
     from Paalkanakku.milkers.forms import milker_data
 except:
-    from Paalkanakku.Paalkanakku.models import Milkers
+    from Paalkanakku.Paalkanakku.models import Milkers, Loan
     from Paalkanakku.Paalkanakku.milkers.forms import milker_data
+
+
+def loan_details():
+    loan_dict=Loan.query.all()
+    print (loan_dict)
 
 
 class DailyData(FlaskForm):
@@ -53,7 +58,12 @@ class DailyData(FlaskForm):
     dr_service = IntegerField("Dr_Service", default=0,
                               validators=[validators.Optional()],
                               filters=[lambda x: x or 0])
-
+    loan_amount = IntegerField("Loan_amount", default=0,
+                              validators=[validators.Optional()],
+                              filters=[lambda x: x or 0])
+    loan_id = SelectField("Loan Id", choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')],
+                              validators=[validators.Optional()],
+                              filters=[lambda x: x or 0])
 
 class AddDailyData(FlaskForm):
 
