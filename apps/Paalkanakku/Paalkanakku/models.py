@@ -1,4 +1,5 @@
 from sqlalchemy import UniqueConstraint
+from sqlalchemy.orm import validates
 #from sqlalchemy.orm import validates
 try:
     from Paalkanakku import db, login_manager
@@ -152,8 +153,8 @@ class Milk(db.Model,UserMixin):
     dr_service = db.Column(db.Integer)
     dairy_loan = db.Column(db.Integer)
     kcc_loan = db.Column(db.Integer)
-    loan_id = db.Column(db.Integer, db.ForeignKey('loan.loan_id'), nullable=True)
-    loan_payment = db.Column(db.Integer)
+    # loan_id = db.Column(db.Integer, db.ForeignKey('loan.loan_id'), nullable=True)
+    # loan_payment = db.Column(db.Integer)
 
     __table_args__ = (UniqueConstraint('event_id','owner_id', 'milker_id','milked_date', name='_daily_milk_data'),
                      )
@@ -165,7 +166,7 @@ class Milk(db.Model,UserMixin):
                  dr_service=0,
                  dairy_loan=0,
                  kcc_loan=0,
-                 load_id=None,
+                 loan_id=None,
                  loan_payment=0):
 
         self.owner_id=owner_id
@@ -181,7 +182,7 @@ class Milk(db.Model,UserMixin):
         self.dairy_loan = dairy_loan
         self.kcc_loan = kcc_loan
         # self.loan_id = loan_id
-        self.loan_payment = loan_payment
+        # self.loan_payment = loan_payment
         if milked_time == "am":
             self.am_litre = self.litre_conv(litre,ml)
         else:
@@ -265,6 +266,7 @@ class Loan(db.Model):
     loan_end_date = db.Column(db.DateTime, default=datetime.utcnow)
     owner_id = db.Column(db.Integer, db.ForeignKey('owners.owner_id'), nullable=False)
     owner = db.relationship('CowOwner', backref='loan', lazy=True)
+    active = db.Column(db.Boolean, unique=False, default=True)
 
     def __init__(self, loan_amount, loan_type, owner_id, loan_start_date, loan_end_date):
         self.loan_amount = loan_amount
@@ -277,8 +279,54 @@ class Loan(db.Model):
     def __repr__(self):
         return f"{self.loan_id}"
 
+    @staticmethod
+    def all_loan():
+        return Loan.query.all()
+
     def loan_details(self):
         daily_loan_ledger = Milk.query.filter(Milk.loan_id == self.loan_id).all()
-        # print (daily_loan_ledger)
+        print (daily_loan_ledger,"Loan Ledger")
         daily_loan_ledger = 100
         return {self.loan_type: [self.loan_id,self.loan_amount, daily_loan_ledger]}
+
+    @staticmethod
+    def owners_with_loan():
+        owners=Loan.query.with_entities(Loan.owner_id).filter(Loan.active == True).distinct().all()
+        return [owners_id for tup in owners for owners_id in tup]
+
+
+class LoanLedger(db.Model):
+
+    __tablename__ = "loanledger"
+
+    loan_payment_id = db.Column(db.Integer, primary_key=True)
+    loan_id = db.Column(db.Integer, db.ForeignKey('loan.loan_id'), nullable=False)
+    loan_payment = db.Column(db.Integer, nullable=False)
+    loan_payment_time = db.Column(db.DateTime, default=datetime.utcnow)
+    owner_id = db.Column(db.Integer, db.ForeignKey('owners.owner_id'), nullable=False)
+    loan = db.relationship('Loan', backref='loan', lazy=True)
+
+    def __init__(self, loan_id, loan_payment, loan_payment_time,owner_id):
+        self.loan_id = loan_id
+        self.loan_payment = loan_payment
+        self.loan_payment_time = loan_payment_time
+        self.owner_id = owner_id
+        # self.loan_remaining = loan_remaining
+
+    def __repr__(self):
+        return f"{self.loan_id}"
+
+    @staticmethod
+    def all_loan():
+        return LoanLedger.query.all()
+
+    def loan_details(self):
+        daily_loan_ledger = Milk.query.filter(Milk.loan_id == self.loan_id).all()
+        print (daily_loan_ledger,"Loan Ledger")
+        daily_loan_ledger = 100
+        return {self.loan_type: [self.loan_id,self.loan_amount, daily_loan_ledger]}
+
+    @staticmethod
+    def owners_with_loan():
+        owners=Loan.query.with_entities(Loan.owner_id).filter(Loan.active == True).distinct().all()
+        return [owners_id for tup in owners for owners_id in tup]
