@@ -242,7 +242,7 @@ def liab_own(own_id):
     print(form.dairy_loan.data, "dairy")
     print (loan_ids,"Loan Details")
     loan_data = [loan_id.loan_details() for loan_id in loan_ids]
-    print (loan_data)
+    print (loan_data,"loan data")
 
     milker_names = owner.milker_list()
     # milker_of_owner = [own.milker_id for own in owner_query.all()]
@@ -351,4 +351,5 @@ def liab_own(own_id):
                            milker_names=milker_names,
                            loan_details_for_month=loan_details_for_month,
                            owner=owner,
-                           loan_data=loan_data)
+                           loan_data=loan_data
+                           )

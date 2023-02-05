@@ -159,14 +159,49 @@
                 <div class="md-form ml-0 mr-0">
                 {{ form.daily_data[0].advance(value=values.dr_service if values.dr_service != none else 0,
                  id="daily_data-"+ (looping | string) +"-dr_service",class="form-control") }}
-                    <div class="col-6">
-                        <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].dr_service.label}}</label>
-                  <label data-error="wrong" data-success="right" class="ml-0 tn">மருத்துவச் செலவு</label>
+                    {% if values.owner_id in owners_with_load %}
+                   <div class="row">
+
+                       <div class="col-4">
+                        <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].loan_id.label}}</label>
+                  <label data-error="wrong" data-success="right" class="ml-0 tn">எண்</label>
                 <div class="md-form ml-0 mr-0">
-                {{ form.daily_data[0].advance(value=values.dr_service if values.dr_service != none else 0,
-                 id="daily_data-"+ (looping | string) +"-dr_service",class="form-control") }}
+<!--                {{ form.daily_data[0].loan_id(id="daily_data-"+ (looping | string) +"-loan_id",class="form-control") }}-->
+                    <select
+                            class="form-control" id= "{{'daily_data-' + (looping | string) + '-loan_id'}}"
+                    name="daily_data-0-loan_id" style="border-color: rgb(42, 185, 52);"
+                    onchange="loan_id_change(event)">
+
+                    {%for loan_id in loan_details %}
+                    {%if loan_id.owner_id == values.owner_id %}
+                        <option value="{{loan_id.loan_id}}">{{loan_id.loan_id |string +" | " + loan_id.loan_type}}</option>
+                    {% endif %}
+                    {% endfor %}
+
+                    </select>
                 </div>
                 </div>
+                    <div class="col-4">
+                        <label data-error="wrong" data-success="right" class="ml-0 en">Debt</label>
+                  <label data-error="wrong" data-success="right" class="ml-0 tn">கடன்</label>
+                <div class="md-form ml-0 mr-0">
+                    <input type="text" readonly class="form-control"
+                       id="{{"total_loan_"+values.owner_id | string}}"
+                       name="total_loan"
+                       value=""><br><br>
+                </div>
+                </div>
+                    <div class="col-4">
+                        <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].loan_amount.label}}</label>
+                  <label data-error="wrong" data-success="right" class="ml-0 tn">வரவு</label>
+                <div class="md-form ml-0 mr-0">
+
+                {{ form.daily_data[0].loan_amount(value=values.loan_payment if values.loan_payment != none else 0,
+                    id="daily_data-"+ (looping | string) +"-loan_amount",class="form-control") }}
+                </div>
+                </div>
+                   </div>
+                    {% endif %}
 
                 <div class="text-center mt-4">
                     {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body en justify-content-center")}}
@@ -305,6 +340,48 @@
                     placeholder="Dr_Fees"
                     ) }}
                 </div>
+                  {% if values.owner_id in owners_with_load %}
+                   <div class="row">
+
+                       <div class="col-4">
+                        <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].loan_id.label}}</label>
+                  <label data-error="wrong" data-success="right" class="ml-0 tn">எண்</label>
+                <div class="md-form ml-0 mr-0">
+<!--                {{ form.daily_data[0].loan_id(id="daily_data-"+ (looping | string) +"-loan_id",class="form-control") }}-->
+                    <select
+                            class="form-control" id= "{{'daily_data-' + (looping | string) + '-loan_id'}}"
+                    name="daily_data-0-loan_id" style="border-color: rgb(42, 185, 52);"
+                    onchange="loan_id_change(event)">
+                        {%for loan_id in loan_details %}
+                    {%if loan_id.owner_id == values.owner_id %}
+                        <option value="{{loan_id.loan_id}}">{{loan_id.loan_id |string +" | " + loan_id.loan_type}}</option>
+                    {% endif %}
+                    {% endfor %}
+
+                    </select>
+                </div>
+                </div>
+                    <div class="col-4">
+                        <label data-error="wrong" data-success="right" class="ml-0 en">Debt</label>
+                  <label data-error="wrong" data-success="right" class="ml-0 tn">கடன்</label>
+                <div class="md-form ml-0 mr-0">
+                <input type="text" readonly class="form-control"
+                       id="{{"total_loan_"+values.owner_id | string}}" name="total_loan" value="">
+                    <br><br>
+                </div>
+                </div>
+                    <div class="col-4">
+                        <label data-error="wrong" data-success="right" class="ml-0 en">
+                            {{form.daily_data[0].loan_amount.label}}</label>
+                  <label data-error="wrong" data-success="right" class="ml-0 tn">வரவு</label>
+                <div class="md-form ml-0 mr-0">
+                {{ form.daily_data[0].loan_amount(value=values.loan_payment if values.loan_payment != none else 0,
+                    id="daily_data-"+ (looping | string) +"-loan_amount",class="form-control") }}
+                </div>
+                </div>
+                   </div>
+                    {% endif %}
+
 
                 <div class="text-center mt-4">
                         {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body en justify-content-center")}}
@@ -352,5 +429,54 @@
       </div>
 </section>
 
+<script>
+//To handle loan id values on select
+loan_id = document.querySelectorAll('[id $= "-loan_id"]');
+Array.prototype.forEach.call(loan_id, loan_id_amount);
 
+function loan_id_amount(element, iterator) {
+    var loan_amount =  document.getElementById('total_loan');
+    var x = 2;
+    console.log(element.value);
+    try {
+    {% for loan in loan_details%}
+    console.log(element.value, {{loan.loan_id | string}} ,{{ loan.loan_amount | string}});
+    if ( element.value == {{loan.loan_id}} ){
+    console.log({{loan.loan_id + loan.loan_amount}});
+    document.getElementById('total_loan_'+{{loan.owner_id}}).value = "{{loan.loan_amount}}";
+    }
+    {% endfor %}
+    }
+    catch(err) {
+        document.getElementById("total_loan").innerHTML = err.message;
+    }
+
+
+}
+
+
+function loan_id_change(event) {
+    var loan_amount =  document.getElementById('total_loan');
+    var element = event.value;
+    var x = 2;
+    console.log(event.target.value);
+    try {
+    {% for loan in loan_details%}
+    console.log(event.target.value, {{loan.loan_id | string}} ,{{ loan.loan_amount | string}});
+    if ( event.target.value == {{loan.loan_id}} ){
+    console.log({{loan.loan_id + loan.loan_amount}});
+    document.getElementById('total_loan_'+{{loan.owner_id}}).value = "{{loan.loan_amount}}";
+    }
+    {% endfor %}
+    }
+    catch(err) {
+        document.getElementById("total_loan").innerHTML = err.message;
+    }
+
+
+}
+
+
+</script>
 {% endblock %}
+

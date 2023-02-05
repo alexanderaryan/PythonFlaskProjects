@@ -244,7 +244,7 @@ function lang_func() {
     var checkbox = document.getElementById("langbtn");
     check = checkbox.checked;
 
-    console.log("check func called"+check);
+    //console.log("check func called"+check);
 
     //debugger;
     localStorage.setItem("langbtn", checkbox.checked=check);
@@ -324,7 +324,7 @@ polls = document.querySelectorAll('[id ^= "daily_data-"]');
 Array.prototype.forEach.call(polls, callback);
 
 function callback(element, iterator) {
-    //console.log(element.id);
+    ////console.log(element.id);
     //debugger;
     document.getElementById(element.id).setAttribute("name",element.id);
 }
@@ -335,9 +335,9 @@ function handler(e){
   //time = document.getElementsByName("milked_time");
   time = document.querySelector('input[name="milked_time"]:checked').value;
 
-  console.log(time);
+  //console.log(time);
   date=document.getElementById("milked_date").value;
-  console.log(date);
+  //console.log(date);
   debugger;
   location.href = "{{url_for('milk.add_daily_data', modified_day = 'date',milked_time='mt')}}".replace('date',date).replace('mt',time);
   //location.href = Flask.url_for('milk.add_daily_data'', {modified_day: e.target.value});
@@ -348,9 +348,9 @@ function month_handler(e){
   //time = document.getElementsByName("milked_time");
   //time = document.querySelector('input[name="milked_time"]:checked').value;
 
-  //console.log(time);
+  ////console.log(time);
   month=document.getElementById("milkmonth").value+'-01';
-  console.log(month);
+  //console.log(month);
   ////debugger;
   location.href = "{{url_for('milk.milk_ledger_view', month = 'month')}}".replace('month',month);
   //location.href = Flask.url_for('milk.add_daily_data'', {modified_day: e.target.value});
@@ -362,12 +362,15 @@ milker_id = document.querySelectorAll('[id $= "milker"]');
 Array.prototype.forEach.call(milker_id, milker_id_change);
 
 function milker_id_change(element, iterator) {
-    console.log(element.attributes.option.nodeValue);
-    console.log(element.attributes);
+    //console.log(element.attributes.option.nodeValue);
+    //console.log(element.attributes);
     //debugger;
-    console.log(element.attributes.option);
+    //console.log(element.attributes.option);
     $(element).val(element.attributes.option.nodeValue);
 }
+
+
+
 
 
 //To handle 3 digit millilitres
@@ -375,13 +378,13 @@ ml_id = document.querySelectorAll('[id $= "-ml"]');
 Array.prototype.forEach.call(ml_id, ml_id_change);
 
 function ml_id_change(element, iterator) {
-    console.log(element.attributes.value.nodeValue);
-    console.log(pad(element.attributes.value.nodeValue,3));
+    //console.log(element.attributes.value.nodeValue);
+    //console.log(pad(element.attributes.value.nodeValue,3));
     function pad(num, size) {
     num = num.toString();
-    console.log(num);
+    //console.log(num);
     while (num.length < size) num = num+"0";
-    console.log(num);
+    //console.log(num);
     return num;
     }
     //debugger;
@@ -396,7 +399,7 @@ Array.prototype.forEach.call(milked_time, milked_time_change);
 function milked_time_change(element, iterator) {
 
     var host = window.location.href;
-    console.log(window.location.href,window.location.href.slice(-2));
+    //console.log(window.location.href,window.location.href.slice(-2));
     if (host.slice(-2) == "pm" ){
         document.getElementById('milked_time-1').checked = true;
     }
