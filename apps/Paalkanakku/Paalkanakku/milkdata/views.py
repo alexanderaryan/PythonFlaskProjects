@@ -282,6 +282,7 @@ def add_daily_data(modified_day=None, milked_time=None):
 
     for error, message in form.errors.items():
         print ("error",form.errors.items())
+        print (form.loan_id.data)
         for m in message:
             flash(f"{error.capitalize()} : {m}", category='error')
 

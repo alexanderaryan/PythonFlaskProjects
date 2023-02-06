@@ -284,10 +284,12 @@ class Loan(db.Model):
         return Loan.query.all()
 
     def loan_details(self):
-        daily_loan_ledger = Milk.query.filter(Milk.loan_id == self.loan_id).all()
-        print (daily_loan_ledger,"Loan Ledger")
-        daily_loan_ledger = 100
-        return {self.loan_type: [self.loan_id,self.loan_amount, daily_loan_ledger]}
+        from sqlalchemy import func
+        total_paid = LoanLedger.query.with_entities(func.coalesce(func.sum(LoanLedger.loan_payment), 0.0).label("Amount")).\
+            filter(LoanLedger.loan_id == self.loan_id).first()
+        print (total_paid,"Loan Ledger")
+        # total_paid = 100
+        return {self.loan_type: [self.loan_id,self.loan_amount, total_paid[0]]}
 
     @staticmethod
     def owners_with_loan():
