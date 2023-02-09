@@ -6,12 +6,12 @@ import yaml
 try:
     from Paalkanakku import app, db, today_date, crontab
     from Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger
-    from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data
+    from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data, loan_choice
     from Paalkanakku.milkdata import google_backup
     from Paalkanakku.config import sheet_config
 except:
     from Paalkanakku.Paalkanakku import app, db, today_date, crontab
-    from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger
+    from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger, loan_choice
     from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData, DailyData
     from Paalkanakku.Paalkanakku.milkdata import google_backup
     from Paalkanakku.Paalkanakku.config import sheet_config
@@ -152,6 +152,7 @@ def add_daily_data(modified_day=None, milked_time=None):
     print(type(form.daily_data), len(form.daily_data))
     print(type(form.milked_time))
     print("Form", form.daily_data)
+    form.daily_data[0].loan_id.choices=loan_choice()
     print("Modified_day", modified_day, type(modified_day))
 
     print(len(form.daily_data), "Printing form")
@@ -203,6 +204,7 @@ def add_daily_data(modified_day=None, milked_time=None):
 
     if form.validate_on_submit():
         print ("Where")
+        print([(f.loan_id.data, f.loan_amount.data) for f in form.daily_data], "Form")
         if form.milking_charge.data:
             data = config_data()
             print(data['milking_charge'])
@@ -281,8 +283,9 @@ def add_daily_data(modified_day=None, milked_time=None):
                                     milked_time=form.milked_time.data))
 
     for error, message in form.errors.items():
-        print ("error",form.errors.items())
-        print (form.loan_id.data)
+        print([(f.loan_id.data,f.loan_amount.data) for f in form.daily_data],"Form")
+        print ([f.loan_id.data for f in form.daily_data])
+        flash (form.daily_data)
         for m in message:
             flash(f"{error.capitalize()} : {m}", category='error')
 
