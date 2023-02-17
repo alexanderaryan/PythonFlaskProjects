@@ -213,7 +213,7 @@ def list_own():
         flash(f"{error.capitalize()} : {message[0]}", category='error')
 
     header = ['✓', 'CustomerId', 'Name', 'Place', 'Number of Cows', 'Milker', 'Active']
-    tm_header = ['✓', 'வா.என்', 'பெயர்', 'ஊர்', 'கறவை மாடுகள்', 'க.என்', 'செயல்பாடு']
+    tm_header = ['✓', 'வா.எண்', 'பெயர்', 'ஊர்', 'கறவை மாடுகள்', 'க.எண்', 'செயல்பாடு']
     return render_template('owner/list_own.html',
                            header=header,
                            tm_header=tm_header,

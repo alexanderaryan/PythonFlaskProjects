@@ -7,12 +7,14 @@ try:
     from Paalkanakku import app, db, today_date, crontab
     from Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger
     from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data, loan_choice
+    from Paalkanakku.owner.forms import LoanLedgerForm
     from Paalkanakku.milkdata import google_backup
     from Paalkanakku.config import sheet_config
 except:
     from Paalkanakku.Paalkanakku import app, db, today_date, crontab
-    from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger, loan_choice
-    from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData, DailyData
+    from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger
+    from Paalkanakku.Paalkanakku.owner.forms import LoanLedgerForm
+    from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data, loan_choice
     from Paalkanakku.Paalkanakku.milkdata import google_backup
     from Paalkanakku.Paalkanakku.config import sheet_config
 
@@ -267,12 +269,17 @@ def add_daily_data(modified_day=None, milked_time=None):
                         m.advance = each.advance.data
                         m.dr_service = each.dr_service.data
                         if each.loan_amount.data:
+                            remaining = LoanLedger.remaining(each.loan_id.data)
+                            if remaining is None:
+                                print ("No remaining Loan found")
+                                remaining = Loan.loan_data(each.loan_id.data).loan_amount;
+                            print (type(remaining),remaining, "reaming")
                             print(each.loan_amount.data, "payment done for ", each.loan_id.data)
                             loan_data=LoanLedger(
                                 loan_id=each.loan_id.data,
                                 loan_payment=each.loan_amount.data,
                                 loan_payment_time=form.milked_date.data,
-                                owner_id=each.owner_id.data
+                                loan_remaining=remaining-each.loan_amount.data
                                                  )
                             db.session.add(loan_data)
                         db.session.add(m)
@@ -297,7 +304,7 @@ def add_daily_data(modified_day=None, milked_time=None):
                    daily_data_form.ml.label,
                    ]
     header = milk_header
-    tm_header = ['வா.என்', 'ஊர்', 'பெயர்', 'லிட்டர்', 'மில்லி']
+    tm_header = ['வா.எண்', 'ஊர்', 'பெயர்', 'லிட்டர்', 'மில்லி']
     print("days", modified_day, day, milk_data_for_today, milked_time)
     for n in milk_data_for_today:
         print(n.milker_id, n.owner_id, n.am_litre, n.pm_litre)
@@ -430,3 +437,43 @@ def invoice_view():
                            milking_charge=milking_charge,
                            tm_header=tm_header,
                            customer_set=customer)
+
+
+@milk.route('/loan_ledger/<loan_id>', methods=["GET", "POST"])
+@login_required
+def loan_ledger(loan_id=None):
+    form = LoanLedgerForm()
+    loan_ledger_data = LoanLedger.query.filter(LoanLedger.loan_id == loan_id).all()
+    loan_data = Loan.loan_data(loan_id)
+
+    if not loan_ledger_data:
+        loan_ledger_data = None
+    owner_details = CowOwner.query.filter(CowOwner.owner_id == loan_data.owner_id).first()
+
+    print(form.data, "fro be")
+    if form.validate_on_submit():
+        print (form.data,"froo")
+        if form.delete.data:
+            loan = LoanLedger.query.filter(LoanLedger.loan_payment_id == form.payment_id.data).delete()
+            try:
+                db.session.commit()
+            except:
+                flash(f"Some error in deleting the loan payment.")
+            else:
+                print (loan,"Loan id deleted")
+                LoanLedger.query.filter(LoanLedger.loan_payment_id > form.payment_id.data).\
+                    update({'loan_remaining': LoanLedger.loan_remaining+form.credit.data})
+                db.session.commit()
+                return redirect(url_for('milk.loan_ledger',loan_id=loan_id))
+    print ("loan_data",loan_data)
+    header = ["Loan Id", "Payment Date", "Credit", "Remaining"]
+    tm_header = ['லோன் எண்', 'கட்டணத் தேதி', 'வரவு ', 'மீதம் ']
+    return render_template('loan/loan_ledger.html',
+                           loan_id=loan_id,
+                           owner_details=owner_details,
+                           header=header,
+                           loan_data=loan_data,
+                           tm_header=tm_header,
+                           loan_ledger_data=loan_ledger_data,
+                           form=form,
+                           flash=flash)

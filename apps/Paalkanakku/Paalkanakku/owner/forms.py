@@ -24,6 +24,14 @@ class AddCustForm(FlaskForm):
     submit = SubmitField('Add')
 
 
+class LoanLedgerForm(FlaskForm):
+
+    loan_payment_date = DateField("Payment Date", validators=[DataRequired()])
+    payment_id = IntegerField("PaymentId", validators=[DataRequired()])
+    credit = IntegerField('Credit',validators=[DataRequired()])
+    submit = SubmitField('Save')
+    delete = SubmitField('Confirm')
+
 class DeleteCustForm(FlaskForm):
 
     checkbox = BooleanField("Delete")
