@@ -1,10 +1,155 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+
+{% with messages = get_flashed_messages()%}
+        {% if messages %}
+        {% for mess in messages%}
+
+        <div class="snackbar show alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>{{error}}</strong>  {{ mess }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+<link href="/static/css/invoice.css" rel="stylesheet">
+<div class="container rounded bg-white mt-5 mb-5">
+
+      <div class="row d-flex justify-content-center align-items-center h-100">
+          <form class="card" method="POST" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5 en">Loan Leger</h2>
+              <h2 class="text-uppercase text-center mb-5 tn">கடன் பேரேடு </h2>
+{% if owner_details %}
+ <header class="clearfix">
+    <h1 class="text-uppercase text-center mb-5 en">{{loan_id}} : {{loan_data.loan_type}} : {{loan_data.loan_amount}}</h1>
+            <h1 class="text-uppercase text-center mb-5 tn">{{loan_id}} : {{loan_data.loan_type}} : {{loan_data.loan_amount}}</h1>
+        <div id="company" class="clearfix">
+        <div>Company Name</div>
+        <div>455 Foggy Heights,<br /> AZ 85004, US</div>
+        <div>(602) 519-0450</div>
+        <div><a href="mailto:company@example.com">company@example.com</a></div>
+      </div>
+      <div id="project">
+<!--        <div><span>PROJECT</span> Website development</div>-->
+        <div><span> NAME</span> {{owner_details.name}}</div>
+        <div><span>PLACE</span>
+            {{owner_details.place}}
+        </div>
+        <div><span>PHONE</span> {{owner_details.phone_number}}</div>
+        <div><span>EMAIL</span> <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{owner_details.email}}">{{owner_details.email}}</a></div>
+          <div><span>Loan ID</span> {{loan_data.loan_id}}</a></div>
+          <div><span>Loan Type</span> {{loan_data.loan_type}}</a></div>
+          <div><span>Total </span> {{loan_data.loan_amount}}</a></div>
+          <div><span>Status </span> {{"YES" if loan_data.active else "NO"}}</a></div>
+          <div><span>Valid From </span> {{loan_data.loan_start_date.strftime("%D")}}</a></div>
+          <div><span>Due By </span> {{loan_data.loan_end_date.strftime("%D")}}</a></div>
+      </div>
+    </header>
+    {% endif %}
+                <div class="table-responsive" >
+          <table class="table table-striped" id="sortTable">
+
+          <thead>
+            <tr>
+              {% for col_no in range(header|length) %}
+              <th scope="col" class="thead-dark en">
+                {{ header[col_no] }}
+              </th>
+              {% endfor %}
+            </tr>
+            <tr>
+          {% for col_no in range(header|length) %}
+              <th scope="col" class="thead-dark tn">
+                {{ tm_header[col_no] }}
+              </th>
+              {% endfor %}
+            </tr>
+          </thead>
+<tbody>
+        {% if loan_ledger_data %}
+
+                 {% for values in loan_ledger_data%}
+        <form method="POST" action="" enctype="multipart/form-data" name="loan_ledger">
+                {{form.hidden_tag()}}
+                 <tr style="text-align: center;">
+                     <td style="display:none;">{{form.payment_id(value=values.loan_payment_id)}}</td>
+                    <td>{{values.loan_id}}</td>
+                     <td>{{form.loan_payment_date(value=values.loan_payment_time.strftime("%Y-%m-%d"),
+                         id="pd_id"+values.loan_payment_id | string,
+                         class="form-control form-control-lg")}}</td>
+                     <td>{{form.credit(value=values.loan_payment,id="id"+values.loan_payment_id | string,
+                         class="form-control form-control-lg")}}</td>
+                     <td>{{ values.loan_remaining }}</td>
+                     <td><button class="btn btn-sm btn-danger" type="button" id="del_{{values.loan_payment_id}}"
+                                 onclick="deleteItem({{values.loan_payment_id}})">Delete</button>
+                     <button class="btn btn-sm btn-info " id="save_{{values.loan_payment_id}}"
+                             disabled value="save" type="input" name="submit" >Save</button>
+                     <button class="btn btn-sm btn-danger" type="button" id=cancel_{{values.loan_payment_id}}
+                             onclick="cancelDel({{values.loan_payment_id}})" style="display: none;">Cancel</button>
+                     <button class="btn btn-sm btn-primary" id=con_{{values.loan_payment_id}}
+                             onclick="cancelDel({{values.loan_payment_id}})" style="display: none;"
+                     type="input" name="delete" value="delete">Confirm</button>
+
+                      </td>
+                 </tr>
+            </form>
+                {% endfor %}
+        {% else %}
+          <tr>
+                <h1>No Loan Payments Made</h1>
+            </tr>
+        {% endif %}
+          </tbody>
+  </table>
+</div>
+<!--    <div class="d-flex justify-content-center">-->
+<!--                  {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body en justify-content-center")}}-->
+<!--                    {{form.submit(class="btn btn-success btn-block btn-lg gradient-custom-4 text-body tn justify-content-center",value="புதுப்பி")}}-->
+<!--                </div><br>-->
+        <div class="d-flex justify-content-center">
+    <a href="{{ url_for('owner.liab_own',own_id=loan_data.owner_id) }}" class="btn btn-secondary en">Back</a>
+                </div>
+        <div class="d-flex justify-content-center">
+    <a href="{{ url_for('owner.liab_own',own_id=loan_data.owner_id) }}" class="btn btn-secondary tn">பின் செல் </a>
+                </div>
+            </div>
+
+      </div>
+
+        <hr>
+
+            </div>
+          </form>
+      </div>
+
+</section>
+
+<script>
+
+function deleteItem(id) {
+
+    document.getElementById('del_'+id).hidden = true;
+    document.getElementById('save_'+id).hidden = true;
+    document.getElementById('cancel_'+id).style.display = 'inherit';
+    document.getElementById('con_'+id).style.display = 'inherit';
+}
+
+
+function cancelDel(id) {
+
+    document.getElementById('del_'+id).hidden = false;
+    document.getElementById('save_'+id).hidden = false;
+    document.getElementById('cancel_'+id).style.display = 'None';
+    document.getElementById('con_'+id).style.display = 'None';
+}
+
+</script>
+{% endblock %}
+

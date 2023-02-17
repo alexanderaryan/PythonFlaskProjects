@@ -283,6 +283,11 @@ class Loan(db.Model):
     def all_loan():
         return Loan.query.all()
 
+    @staticmethod
+    def loan_data(loan_id):
+        loan_data=Loan.query.filter(Loan.loan_id == loan_id).first()
+        return loan_data
+
     def loan_details(self):
         from sqlalchemy import func
         total_paid = LoanLedger.query.with_entities(func.coalesce(func.sum(LoanLedger.loan_payment), 0.0).label("Amount")).\
@@ -305,22 +310,23 @@ class LoanLedger(db.Model):
     loan_id = db.Column(db.Integer, db.ForeignKey('loan.loan_id'), nullable=False)
     loan_payment = db.Column(db.Integer, nullable=False)
     loan_payment_time = db.Column(db.DateTime, default=datetime.utcnow)
-    owner_id = db.Column(db.Integer, db.ForeignKey('owners.owner_id'), nullable=False)
+    loan_remaining = db.Column(db.Integer, nullable=False)
     loan = db.relationship('Loan', backref='loan', lazy=True)
 
-    def __init__(self, loan_id, loan_payment, loan_payment_time,owner_id):
+    def __init__(self, loan_id, loan_payment, loan_payment_time,loan_remaining):
         self.loan_id = loan_id
         self.loan_payment = loan_payment
         self.loan_payment_time = loan_payment_time
-        self.owner_id = owner_id
-        # self.loan_remaining = loan_remaining
+        self.loan_remaining = loan_remaining
 
     def __repr__(self):
-        return f"{self.loan_id}"
+        return f"{self.loan_payment_id}"
 
     @staticmethod
-    def all_loan():
-        return LoanLedger.query.all()
+    def remaining(loan_id):
+        from sqlalchemy import func
+        return db.session.query(func.min(LoanLedger.loan_remaining)).\
+            filter(LoanLedger.loan_id == loan_id).first()[0]
 
     def loan_details(self):
         daily_loan_ledger = Milk.query.filter(Milk.loan_id == self.loan_id).all()

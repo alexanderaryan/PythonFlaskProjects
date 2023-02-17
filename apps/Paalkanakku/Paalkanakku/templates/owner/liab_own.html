@@ -263,19 +263,22 @@
                 <div class="col-md-12">
                 {%if loan_data %}
                 {%for loan in loan_data %}
+
                 {% for loan_type, loan_amount in loan.items() %}
                     {% set sub_color = "orange"%}
                 {% if loan_type == "dairy" %}
                     {% set loan_element_id = "dairy_" + loan_amount[0] | string %}
                     <label class="en labels">{{form.dairy_loan.label}}</label>
                     <label class="tn labels">டைரி  லோன்</label>
-                    <div id={{ loan_element_id }} ></div>
+                    <div id={{ loan_element_id }} >
+
+                    </div>
                     {% set main_color = "blue"%}
                     {% elif loan_type == 'kcc' %}
                     {% set loan_element_id = "kcc_" + loan_amount[0] | string %}
                     <label class="en labels">{{form.kcc_loan.label}}</label>
                     <label class="tn labels">கேசிசி லோன்</label>
-                    <div id={{loan_element_id}} ></div>
+                   <div id={{loan_element_id}}> <a href="{{url_for('milk.loan_ledger',loan_id=loan_amount[0])}}"></a></div>
                     {% set main_color = "green"%}
                 {% endif %}
                 <script type="text/javascript">
@@ -284,12 +287,12 @@
                       function drawChart() {
                         var data = google.visualization.arrayToDataTable([
                           ['Loan', 'Sum'],
-                          ['Total',    {{loan_amount[1]}}],
-                          ['Paid',     {{loan_amount[2]}}],
+                          ['Remaining', {{loan_amount[1]-loan_amount[2] if loan_amount[1]-loan_amount[2]>=0 else loan_amount[1]}}] ,
+                          ['Paid', {{loan_amount[2]}}],
                         ]);
 
                         var options = {
-                          title: '{{loan_amount[0]}}',
+                          title: '{{loan_amount[0]}} : {{loan_amount[1]}}',
                           pieHole: 0.4,
                           slices: {
                             0: { color: '{{main_color}}' },
@@ -299,6 +302,10 @@
 
                         var chart = new google.visualization.PieChart(document.getElementById('{{loan_element_id}}'));
                         chart.draw(data, options);
+                        google.visualization.events.addListener(chart, 'select', function() {
+    var row = chart.getSelection()[0].row;
+    open("{{url_for('milk.loan_ledger',loan_id=loan_amount[0])}}","_self");
+  });
                       }
                     </script>
 
@@ -307,23 +314,6 @@
                 {% endif %}
 <!--                        {{form.dairy_loan(class="form-control",id="trans", placeholder="Enter Dairy Loan")}}-->
                 </div> <br>
-
-
-
-
-<!--                <div class="col-md-12">-->
-<!--                    <label class="en labels">{{form.kcc_loan.label}}</label>-->
-<!--                    <label class="tn labels">கேசிசி லோன்</label>-->
-<!--                    <div id="donutchart_2" ></div>-->
-<!--                    <div id="donutchart_3" ></div>-->
-<!--                    <br>-->
-<!--                    {{form.kcc_loan(class="form-control",id="trans", placeholder="Enter KCC Loan")}}-->
-<!--                </div> <br>-->
-
-
-
-
-
 
             </div>
         </div>
