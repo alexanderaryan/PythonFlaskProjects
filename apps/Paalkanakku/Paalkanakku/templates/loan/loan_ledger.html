@@ -19,8 +19,9 @@
 
 
 <link href="/static/css/invoice.css" rel="stylesheet">
-<div class="container rounded bg-white mt-5 mb-5">
+<section style="background-size: cover;background-repeat: no-repeat;background-image: url('https://images.unsplash.com/photo-1596733430284-f7437764b1a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');">
 
+<div class="container rounded bg-white mt-5 mb-5">
       <div class="row d-flex justify-content-center align-items-center h-100">
           <form class="card" method="POST" style="border-radius: 15px;">
             <div class="card-body p-5">
@@ -81,11 +82,16 @@
                  <tr style="text-align: center;">
                      <td style="display:none;">{{form.payment_id(value=values.loan_payment_id)}}</td>
                     <td>{{values.loan_id}}</td>
-                     <td>{{form.loan_payment_date(value=values.loan_payment_time.strftime("%Y-%m-%d"),
-                         id="pd_id"+values.loan_payment_id | string,
-                         class="form-control form-control-lg")}}</td>
-                     <td>{{form.credit(value=values.loan_payment,id="id"+values.loan_payment_id | string,
-                         class="form-control form-control-lg")}}</td>
+                     <td id="td_pd{{values.loan_payment_id}}" onclick="change({{values.loan_payment_id}},'pd')">
+                         {{values.loan_payment_time.strftime("%Y-%m-%d")}}</td>
+                     <td style="display:none;" id="pd_id{{values.loan_payment_id}}">{{form.loan_payment_date(value=values.loan_payment_time.strftime("%Y-%m-%d"),
+                         class="form-control form-control-lg"
+                         )}}</td>
+                     <td id="td_cre{{values.loan_payment_id}}" onclick="change({{values.loan_payment_id}},'cd')">
+                         {{values.loan_payment}}</td>
+                     <td style="display:none;" id="id{{values.loan_payment_id}}">{{form.credit(value=values.loan_payment,
+                         class="form-control form-control-lg"
+                         )}}</td>
                      <td>{{ values.loan_remaining }}</td>
                      <td><button class="btn btn-sm btn-danger" type="button" id="del_{{values.loan_payment_id}}"
                                  onclick="deleteItem({{values.loan_payment_id}})">Delete</button>
@@ -120,11 +126,8 @@
     <a href="{{ url_for('owner.liab_own',own_id=loan_data.owner_id) }}" class="btn btn-secondary tn">பின் செல் </a>
                 </div>
             </div>
-
       </div>
-
         <hr>
-
             </div>
           </form>
       </div>
@@ -148,7 +151,32 @@ function cancelDel(id) {
     document.getElementById('save_'+id).hidden = false;
     document.getElementById('cancel_'+id).style.display = 'None';
     document.getElementById('con_'+id).style.display = 'None';
+    document.getElementById('pd_id'+id).style.display = 'none';
+    document.getElementById('td_pd'+id).style.display = 'revert';
+    document.getElementById('id'+id).style.display = 'none';
+    document.getElementById('td_cre'+id).style.display = 'revert';
+
 }
+
+
+function change(id, ele) {
+        if (ele == 'pd') {
+        document.getElementById('pd_id'+id).style.display = 'inherit';
+        document.getElementById('td_pd'+id).style.display = 'none';
+        }
+        else if (ele == 'cd') {
+        document.getElementById('id'+id).style.display = 'inherit';
+        document.getElementById('td_cre'+id).style.display = 'none';
+        }
+        document.getElementById('save_'+id).disabled = false;
+        document.getElementById('del_'+id).hidden = true;
+        document.getElementById('cancel_'+id).style.display = 'inherit';
+    }
+function changeback() {
+    this.removeAttribute("contentEditable");
+}
+
+
 
 </script>
 {% endblock %}

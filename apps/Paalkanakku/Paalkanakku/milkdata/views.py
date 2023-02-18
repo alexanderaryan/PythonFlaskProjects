@@ -282,6 +282,7 @@ def add_daily_data(modified_day=None, milked_time=None):
                                 loan_remaining=remaining-each.loan_amount.data
                                                  )
                             db.session.add(loan_data)
+                            db.session.commit()
                         db.session.add(m)
                     db.session.commit()
             print(form.milked_date.data)
@@ -454,20 +455,54 @@ def loan_ledger(loan_id=None):
     if form.validate_on_submit():
         print (form.data,"froo")
         if form.delete.data:
-            loan = LoanLedger.query.filter(LoanLedger.loan_payment_id == form.payment_id.data).delete()
+            LoanLedger.query.filter(LoanLedger.loan_payment_id == form.payment_id.data).delete()
             try:
                 db.session.commit()
             except:
                 flash(f"Some error in deleting the loan payment.")
             else:
-                print (loan,"Loan id deleted")
                 LoanLedger.query.filter(LoanLedger.loan_payment_id > form.payment_id.data).\
                     update({'loan_remaining': LoanLedger.loan_remaining+form.credit.data})
                 db.session.commit()
+                flash(f"Loan payment id deleted successfully")
                 return redirect(url_for('milk.loan_ledger',loan_id=loan_id))
+
+        elif form.submit.data:
+            loan_item = LoanLedger.query.filter(LoanLedger.loan_payment_id == form.payment_id.data).first()
+            if loan_item.loan_payment_id == form.payment_id.data:
+                print (loan_item.loan_payment < form.credit.data,"cond",loan_item.loan_payment,form.credit.data)
+                if loan_item.loan_payment < form.credit.data:
+                    additional_amount = form.credit.data - loan_item.loan_payment
+                    loan_item.loan_remaining -= additional_amount
+                    LoanLedger.query.filter(LoanLedger.loan_payment_id > form.payment_id.data). \
+                        update(
+                        {'loan_remaining': LoanLedger.loan_remaining - additional_amount})
+                else:
+                    extra_amount = loan_item.loan_payment - form.credit.data
+                    print (extra_amount,"extra")
+                    loan_item.loan_remaining += extra_amount
+                    LoanLedger.query.filter(LoanLedger.loan_payment_id > form.payment_id.data). \
+                        update(
+                        {'loan_remaining': LoanLedger.loan_remaining + extra_amount})
+                loan_item.loan_payment = form.credit.data
+                loan_item.loan_payment_time = form.loan_payment_date.data
+                db.session.add(loan_item)
+
+            #     update({'loan_payment': form.credit.data,
+            #             'loan_payment_time': form.loan_payment_date.data,
+            #             'loan_remaining': LoanLedger.loan_remaining + form.credit.data - LoanLedger.loan_payment})
+            # LoanLedger.query.filter(LoanLedger.loan_payment_id > form.payment_id.data). \
+            #     update({'loan_remaining': LoanLedger.loan_remaining + form.credit.data})
+            try:
+                db.session.commit()
+            except:
+                flash(f"Some error in updating the loan payment.")
+            else:
+                flash(f"Loan payment id updated successfully")
+
     print ("loan_data",loan_data)
-    header = ["Loan Id", "Payment Date", "Credit", "Remaining"]
-    tm_header = ['லோன் எண்', 'கட்டணத் தேதி', 'வரவு ', 'மீதம் ']
+    header = ["Loan Id", "Payment Date", "Credit", "Remaining",""]
+    tm_header = ['லோன் எண்', 'கட்டணத் தேதி', 'வரவு ', 'மீதம்',""]
     return render_template('loan/loan_ledger.html',
                            loan_id=loan_id,
                            owner_details=owner_details,
