@@ -159,7 +159,7 @@
                 <div class="md-form ml-0 mr-0">
                 {{ form.daily_data[0].advance(value=values.dr_service if values.dr_service != none else 0,
                  id="daily_data-"+ (looping | string) +"-dr_service",class="form-control") }}
-                    {% if values.owner_id in owners_with_load %}
+                    {% if values.owner_id in owners_with_loan %}
                    <div class="row">
 
                        <div class="col-4">
@@ -339,7 +339,7 @@
                     placeholder="Dr_Fees"
                     ) }}
                 </div>
-                  {% if values.owner_id in owners_with_load %}
+                  {% if values.owner_id in owners_with_loan %}
                    <div class="row">
 
                        <div class="col-4">
