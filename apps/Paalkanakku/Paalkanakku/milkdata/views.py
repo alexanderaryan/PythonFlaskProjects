@@ -110,7 +110,33 @@ class WholeMonthData:
     def ledger_calc(self):
         """To return monthly legderdata"""
 
+        print (self.milk_data_query.group_by(Milk.owner_id).order_by(Milk.owner_id))
         milk_data = self.milk_data_query.group_by(Milk.owner_id).order_by(Milk.owner_id).all()
+        loan_data = LoanLedger.query.with_entities(Loan.owner_id,
+                                                   func.coalesce(func.sum(LoanLedger.loan_payment), 0.0).
+                                                   label('Loan_Total')).\
+            join(Loan).\
+            filter(LoanLedger.loan_payment_time.between(self.first_day_of_month, self.last_day_of_month)).\
+            group_by(Loan.owner_id).order_by(LoanLedger.owner_id).all()
+        print(loan_data, "Loan data n")
+        print(self.first_day_of_month, self.last_day_of_month)
+        if milk_data and loan_data:
+            whole_data=[]
+            common_elements = set([x[0] for x in milk_data]).intersection(set([y[0] for y in loan_data]))
+            milk_data_new = list(map(list,milk_data))
+            loan_data_new = list(map(list,loan_data))
+            for m in milk_data_new:
+                for l in loan_data_new:
+                    if m[0] == l[0] and m[0] in common_elements and l[0] in common_elements:
+                        m.append(l[1])
+                        whole_data.append(m)
+                    elif m[0] not in common_elements:
+                        m.append(0)
+                        whole_data.append(m)
+                        break
+            print (whole_data, "whole data")
+            milk_data = whole_data
+
         print("whole", milk_data)
         return milk_data
 
@@ -124,20 +150,23 @@ class WholeMonthData:
 
     return milkers,milker_ids"""
 
+
 def customer_set(active=False):
     """
     To give the set of customers added in the Owners Table
     """
     milker_ids = milker_data()[1]
+    print (milker_ids,"inside customer set", active)
     try:
         if not active:
             customer = (CowOwner.query. \
                         filter(CowOwner.milker_id.in_(milker_ids)).group_by(CowOwner.owner_id). \
                         order_by(CowOwner.place, CowOwner.name).all())
         else:
+
             customer = (CowOwner.query. \
-                        filter(CowOwner.milker_id.in_(milker_ids), CowOwner.active == True).group_by(CowOwner.owner_id). \
-                        order_by(CowOwner.place, CowOwner.name).all())
+                        filter(CowOwner.milker_id.in_(milker_ids),CowOwner.active == True).group_by(CowOwner.owner_id). \
+                        order_by(CowOwner.place, CowOwner.name).all())  #Do not change == for cowowner.active
     except:
         print('CowOwner table is empty')
         customer = []
@@ -156,7 +185,6 @@ def add_daily_data(modified_day=None, milked_time=None):
     print("Form", form.daily_data)
     form.daily_data[0].loan_id.choices=loan_choice()
     print("Modified_day", modified_day, type(modified_day))
-
     print(len(form.daily_data), "Printing form")
 
     if modified_day == "None":
@@ -184,19 +212,21 @@ def add_daily_data(modified_day=None, milked_time=None):
     loan_details = Loan.all_loan()
     print("Loan data", loan_details)
 
-    owners_with_load = Loan.owners_with_loan()
-    print (owners_with_load)
+    owners_with_loan = Loan.owners_with_loan()
+    print(owners_with_loan)
     for n in milk_data_for_today:
         print("milker", n.milker_id, n.am_litre, n.pm_litre)
     if not milk_data_for_today:
+        print ("inn")
         if not no_milker:
             form.daily_data[0].milker.choices = milker_data(False)[2]
-            print(milker_data(False)[2])
+            print(milker_data(False)[2],"h")
+        print ("out")
         customers = customer_set(True)
     else:
         if not no_milker:
             form.daily_data[0].milker.choices = milker_data()[2]
-            print(milker_data(False)[2])
+            print(milker_data(False)[2],"g")
         customers = customer_set()
 
     # print("Length", len(customers), len(milk_data_for_today))
@@ -239,6 +269,22 @@ def add_daily_data(modified_day=None, milked_time=None):
                     #loan_id=each_cust.loan_id.data,
                     #loan_payment=each_cust.loan_amount.data
                 )
+                if each_cust.loan_amount.data:
+                    print(each_cust.loan_amount.data,"loan data")
+                    remaining = LoanLedger.remaining(each_cust.loan_id.data)
+                    if remaining is None:
+                        print("No remaining Loan found")
+                        remaining = Loan.loan_data(each_cust.loan_id.data).loan_amount;
+                    print(type(remaining), remaining, "reaming")
+                    print(each_cust.loan_amount.data, "payment done for ", each_cust.loan_id.data)
+                    loan_data = LoanLedger(
+                        loan_id=each_cust.loan_id.data,
+                        loan_payment=each_cust.loan_amount.data,
+                        loan_payment_time=form.milked_date.data,
+                        loan_remaining=remaining - each_cust.loan_amount.data,
+                        owner_id=each_cust.owner_id.data
+                    )
+                    db.session.add(loan_data)
                 db.session.add(milk_data)
             print("committing")
             db.session.commit()
@@ -277,6 +323,7 @@ def add_daily_data(modified_day=None, milked_time=None):
                             print(each.loan_amount.data, "payment done for ", each.loan_id.data)
                             loan_data=LoanLedger(
                                 loan_id=each.loan_id.data,
+                                owner_id=each.owner_id.data,
                                 loan_payment=each.loan_amount.data,
                                 loan_payment_time=form.milked_date.data,
                                 loan_remaining=remaining-each.loan_amount.data
@@ -325,7 +372,7 @@ def add_daily_data(modified_day=None, milked_time=None):
                            milked_time=milked_time,
                            customer_set=customers,
                            loan_details=loan_details,
-                           owners_with_load=owners_with_load,
+                           owners_with_loan=owners_with_loan,
                            flash=flash)
 
 

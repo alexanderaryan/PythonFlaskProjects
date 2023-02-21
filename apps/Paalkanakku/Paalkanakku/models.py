@@ -308,16 +308,21 @@ class LoanLedger(db.Model):
 
     loan_payment_id = db.Column(db.Integer, primary_key=True)
     loan_id = db.Column(db.Integer, db.ForeignKey('loan.loan_id'), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey('owners.owner_id'), nullable=False)
     loan_payment = db.Column(db.Integer, nullable=False)
     loan_payment_time = db.Column(db.DateTime, default=datetime.utcnow)
     loan_remaining = db.Column(db.Integer, nullable=False)
-    loan = db.relationship('Loan', backref='loan', lazy=True)
+    loan = db.relationship('Loan', backref='loanledger', lazy=True)
+    owner = db.relationship('CowOwner', backref='owner', lazy=True)
 
-    def __init__(self, loan_id, loan_payment, loan_payment_time,loan_remaining):
+    def __init__(self, loan_id,owner_id,
+                 loan_payment, loan_payment_time,
+                 loan_remaining):
         self.loan_id = loan_id
         self.loan_payment = loan_payment
         self.loan_payment_time = loan_payment_time
         self.loan_remaining = loan_remaining
+        self.owner_id = owner_id
 
     def __repr__(self):
         return f"{self.loan_payment_id}"
