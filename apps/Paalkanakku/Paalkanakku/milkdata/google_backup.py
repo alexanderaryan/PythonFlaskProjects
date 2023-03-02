@@ -2,15 +2,18 @@
 import gspread
 from datetime import datetime
 from flask_login import current_user
+from sqlalchemy import func
+from sqlalchemy.sql import text
+
 
 try:
 
-    from Paalkanakku.models import Milk
+    from Paalkanakku.models import Milk,LoanLedger
     from Paalkanakku import db
 
 except:
 
-    from Paalkanakku.Paalkanakku.models import Milk
+    from Paalkanakku.Paalkanakku.models import Milk,LoanLedger
     from Paalkanakku.Paalkanakku import db
 
 gc = gspread.service_account()
@@ -85,18 +88,45 @@ class MilkData:
 
     def milk_data_customer_wise(self,owner_id):
 
-        milk_data = self.milk_data_query. \
+        milk_data = self.milk_data_query.\
+            join(LoanLedger,Milk.owner_id == LoanLedger.owner_id).\
             order_by( Milk.owner_id, Milk.milked_date).\
             filter(Milk.owner_id == owner_id). \
             all()
-
-
+        #
+        # kk_data = db.session.query(Milk.owner_id,
+        #                            Milk.price,
+        #                            func.coalesce(func.sum(func.distinct(Milk.am_litre)), 0.0).label('AM_Total'),
+        #                            func.coalesce(func.sum(func.distinct(Milk.pm_litre)), 0.0).label('PM_Total'),
+        #                            func.coalesce(func.sum(func.distinct(Milk.am_litre) * Milk.price), 0.0).label(
+        #                                'AM_Total_Price'),
+        #                            func.coalesce(func.sum(func.distinct(Milk.pm_litre) * Milk.price), 0.0).label(
+        #                                'PM_Total_Price'),
+        #                            func.coalesce(func.sum(func.distinct(Milk.fodder)), 0.0).label('Fodder'),
+        #                            func.coalesce(func.sum(func.distinct(Milk.advance)), 0.0).label('Advance'),
+        #                            func.coalesce(func.sum(func.distinct(Milk.dr_service)), 0.0).label(
+        #                                'Dr_service'),
+        #                            func.coalesce((func.distinct(LoanLedger.loan_payment)), 0.0).label('Loan'),
+        #                            ).outerjoin(LoanLedger,Milk.owner_id == LoanLedger.owner_id).\
+        #     filter(Milk.owner_id == owner_id).distinct(). \
+        #     group_by(Milk.owner_id).\
+        #     all()
+        kk_data_cmd = """ select distinct * from loanledger join milk on milk.owner_id = loanledger.owner_id 
+        where milk.owner_id=1001 group by milk.event_id;"""
+        kk_data = db.session.execute(
+            text(kk_data_cmd),
+            {"db": "classicmodels"}
+        )
+        kk_data=kk_data.fetchall()
+        # print(kk_data, "kk data",len(kk_data))
+        kk_data = set(kk_data)
+        # print (kk_data,"kk data",len(set(kk_data)))
         # milk_data = list(map(list, milk_data))
         # for ind, n in enumerate(milk_data):
         #     kl = datetime.strftime(n[3], '%Y-%m-%d')
         #     milk_data[ind][3] = kl
 
-        return milk_data
+        return milk_data,kk_data
 
 
 def add_data_to_google(date_object, first, last):

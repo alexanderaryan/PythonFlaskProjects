@@ -1,5 +1,34 @@
 from datetime import datetime, timedelta
 
+
+#####################weasyprint
+from weasyprint import HTML
+import io
+
+###################pdf
+from flask import send_file,Response
+from fpdf import FPDF
+
+from borb.pdf.document import document
+from borb.pdf.page.page import Page
+from borb.pdf.canvas.layout.page_layout.multi_column_layout import SingleColumnLayout
+from decimal import Decimal
+from borb.pdf.canvas.layout.image.image import Image
+
+from borb.pdf.canvas.layout.table.fixed_column_width_table import FixedColumnWidthTable as Table
+from borb.pdf.canvas.layout.text.paragraph import Paragraph
+from borb.pdf.canvas.layout.layout_element import Alignment
+from datetime import datetime
+import random
+from borb.pdf.pdf import PDF
+from borb.pdf.canvas.color.color import HexColor, X11Color
+
+from borb.pdf.canvas.layout.table.fixed_column_width_table import FixedColumnWidthTable as Table
+from borb.pdf.canvas.layout.table.table import TableCell
+
+##################pdf
+
+
 from sqlalchemy import func
 import yaml
 
@@ -107,17 +136,24 @@ class WholeMonthData:
                                                             'Dr_service')). \
             filter(Milk.milked_date.between(self.first_day_of_month, self.last_day_of_month))
 
-    def ledger_calc(self):
+        self.loan_data_query = LoanLedger.query.with_entities(Loan.owner_id,
+                                                   func.coalesce(func.sum(LoanLedger.loan_payment), 0.0).
+                                                   label('Loan_Total')). \
+            join(Loan). \
+            filter(LoanLedger.loan_payment_time.between(self.first_day_of_month, self.last_day_of_month))
+
+    def ledger_calc(self, owner_id=None):
         """To return monthly legderdata"""
 
-        print (self.milk_data_query.group_by(Milk.owner_id).order_by(Milk.owner_id))
-        milk_data = self.milk_data_query.group_by(Milk.owner_id).order_by(Milk.owner_id).all()
-        loan_data = LoanLedger.query.with_entities(Loan.owner_id,
-                                                   func.coalesce(func.sum(LoanLedger.loan_payment), 0.0).
-                                                   label('Loan_Total')).\
-            join(Loan).\
-            filter(LoanLedger.loan_payment_time.between(self.first_day_of_month, self.last_day_of_month)).\
-            group_by(Loan.owner_id).order_by(LoanLedger.owner_id).all()
+        print(self.milk_data_query.group_by(Milk.owner_id).order_by(Milk.owner_id))
+        if owner_id:
+            milk_data = self.milk_data_query.filter(Milk.owner_id == owner_id).group_by(Milk.owner_id).\
+                order_by(Milk.owner_id).all()
+            loan_data = self.loan_data_query.filter(LoanLedger.owner_id == owner_id).group_by(Loan.owner_id).\
+                order_by(LoanLedger.owner_id).all()
+        else:
+            milk_data = self.milk_data_query.group_by(Milk.owner_id).order_by(Milk.owner_id).all()
+            loan_data = self.loan_data_query.group_by(Loan.owner_id).order_by(LoanLedger.owner_id).all()
         print(loan_data, "Loan data n")
         print(self.first_day_of_month, self.last_day_of_month)
         if milk_data and loan_data:
@@ -445,8 +481,8 @@ def milk_ledger_view(month=None):
 @milk.route('/invoice', methods=["GET", "POST"])
 @login_required
 def invoice_view():
-    month = today_date.replace(day=1)
 
+    month = today_date.replace(day=1)
     ledger_obj = WholeMonthData(month)
     first = ledger_obj.first_day_of_month
     last = ledger_obj.last_day_of_month
@@ -455,14 +491,16 @@ def invoice_view():
     per_user_bill = {}
     customer = customer_set()
     for c in customer:
-        milk_data = user_bill.milk_data_customer_wise(c.owner_id)
-        print(c.owner_id)
-        print(milk_data)
+        milk_data,kk_data = user_bill.milk_data_customer_wise(c.owner_id)
+        ledger_obj = WholeMonthData(month)
+        monthly_ledger = ledger_obj.ledger_calc(c.owner_id)
         am = sum(data.am_litre for data in milk_data)
         pm = sum(data.pm_litre for data in milk_data)
-        pm = sum(data.pm_litre for data in milk_data)
         fodder = sum(data.fodder for data in milk_data)
-        loan = sum(data.loan for data in milk_data)
+        try:
+            loan = monthly_ledger[0][9]
+        except IndexError:
+            loan = 0
         advance = sum(filter(None, [data.advance for data in milk_data]))
         dr_service = sum(filter(None, [data.dr_service for data in milk_data]))
         total = sum(filter(None, [(data.am_litre + data.pm_litre) * data.price for data in milk_data]))
@@ -559,3 +597,150 @@ def loan_ledger(loan_id=None):
                            loan_ledger_data=loan_ledger_data,
                            form=form,
                            flash=flash)
+
+
+@milk.route('/invoice_ledger_pfdf', methods=["GET", "POST"])
+@login_required
+def invoice_loan_ledger(loan_id=None):
+
+    """
+    This function will generate pdf of invoices to all the customers
+    """
+    pdf = FPDF()
+    pdf.add_page()
+
+    page_width = pdf.w - 2 * pdf.l_margin
+
+    pdf.set_font('Times', 'B', 14.0)
+    pdf.cell(page_width, 0.0, 'Employee Data', align='C')
+    pdf.ln(10)
+
+    pdf.set_font('Courier', '', 12)
+
+    col_width = page_width / 4
+
+    pdf.ln(1)
+
+    th = pdf.font_size
+
+    result = [{'emp_id':1,'emp_first_name':"Alex","emp_last_name":"M","emp_designation":"IT"},
+              {'emp_id':2,'emp_first_name':"Alex","emp_last_name":"M","emp_designation":"IT"},
+              {'emp_id':3,'emp_first_name':"Alex","emp_last_name":"M","emp_designation":"IT"},]
+    for row in result:
+        pdf.cell(col_width, th, str(row['emp_id']), border=1)
+        pdf.cell(col_width, th, row['emp_first_name'], border=1)
+        pdf.cell(col_width, th, row['emp_last_name'], border=1)
+        pdf.cell(col_width, th, row['emp_designation'], border=1)
+        pdf.ln(th)
+
+    pdf.ln(10)
+
+    pdf.set_font('Times', '', 10.0)
+    pdf.cell(page_width, 0.0, '- end of report -', align='C')
+
+
+    return Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf',
+                    headers={'Content-Disposition': 'attachment;filename=employee_report.pdf'})
+
+
+@milk.route('/invoice_ledger', methods=["GET", "POST"])
+@login_required
+def invoice_loan_led(loan_id=None):
+
+    """
+    This function will generate pdf of invoices to all the customers
+    """
+
+    html = HTML('Paalkanakku/templates/milk/invoice_weasy.html')
+
+    today = datetime.today().strftime("%B %-d, %Y")
+    invoice_number = 123
+    from_addr = {
+        'company_name': 'Python Tip',
+        'addr1': '12345 Sunny Road',
+        'addr2': 'Sunnyville, CA 12345'
+    }
+    to_addr = {
+        'company_name': 'Acme Corp',
+        'person_name': 'John Dilly',
+        'person_email': 'john@example.com'
+    }
+    items = [
+        {
+            'title': 'website design',
+            'charge': 300.00
+        }, {
+            'title': 'Hosting (3 months)',
+            'charge': 75.00
+        }, {
+            'title': 'Domain name (1 year)',
+            'charge': 10.00
+        }
+    ]
+    duedate = "August 1, 2018"
+    total = sum([i['charge'] for i in items])
+
+
+    #######################################
+
+    month = today_date.replace(day=1)
+    ledger_obj = WholeMonthData(month)
+    first = ledger_obj.first_day_of_month
+    last = ledger_obj.last_day_of_month
+
+    user_bill = google_backup.MilkData(first, last)
+    per_user_bill = {}
+    customer = customer_set()
+    for c in customer:
+        milk_data, kk_data = user_bill.milk_data_customer_wise(c.owner_id)
+        ledger_obj = WholeMonthData(month)
+        monthly_ledger = ledger_obj.ledger_calc(c.owner_id)
+        am = sum(data.am_litre for data in milk_data)
+        pm = sum(data.pm_litre for data in milk_data)
+        fodder = sum(data.fodder for data in milk_data)
+        try:
+            loan = monthly_ledger[0][9]
+        except IndexError:
+            loan = 0
+        advance = sum(filter(None, [data.advance for data in milk_data]))
+        dr_service = sum(filter(None, [data.dr_service for data in milk_data]))
+        total = sum(filter(None, [(data.am_litre + data.pm_litre) * data.price for data in milk_data]))
+
+        per_user_bill[c.owner_id] = {'milk_data': milk_data,
+                                     'am': am,
+                                     'pm': pm,
+                                     'fodder': fodder,
+                                     'loan': loan,
+                                     'advance': advance,
+                                     'dr_service': dr_service,
+                                     'total': total}
+
+    header = ['Date', 'Morn', 'Evng', 'Fodder', 'Loan', 'Advance', 'Dr_service', 'Debit']
+    tm_header = ['தேதி', 'காலை', 'மாலை', 'புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
+
+
+
+    ################################
+
+    rendered = render_template('milk/invoice_weasy.html',
+                               date=today,
+                               from_addr=from_addr,
+                               to_addr=to_addr,
+                               items=items,
+                               total=total,
+                               invoice_number=invoice_number,
+                               duedate=duedate,
+                               per_user_bill=per_user_bill,
+                               header=header,
+                               milking_charge=milking_charge,
+                               tm_header=tm_header,
+                               customer_set=customer
+                               )
+    html = HTML(string=rendered)
+    rendered_pdf = html.write_pdf()
+    # rendered_pdf = html.write_pdf('invoice.pdf')
+    return send_file(
+        io.BytesIO(rendered_pdf),
+            attachment_filename='invoice.pdf'
+        )
+    # return send_file("../invoice.pdf",attachment_filename="out.pdf",date=today)

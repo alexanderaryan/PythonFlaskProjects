@@ -16,6 +16,10 @@
     {% endwith %}
 
 <link href="/static/css/invoice.css" rel="stylesheet">
+
+        {% for name,data in per_user_bill.items() %}
+            {% for cust in customer_set %}
+                {% if cust.owner_id == name %}
 <section style="background-size: cover;background-repeat: no-repeat;background-image: url('https://images.unsplash.com/photo-1596733430284-f7437764b1a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');">
 
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -28,10 +32,6 @@
         <img src="/static/images/default_cust.jpg">
       </div>
 
-
-        {% for name,data in per_user_bill.items() %}
-            {% for cust in customer_set %}
-                {% if cust.owner_id == name %}
                 <header class="clearfix">
     <h1 class="text-uppercase text-center mb-5 en">{{cust.owner_id}}</h1>
             <h1 class="text-uppercase text-center mb-5 tn">{{cust.owner_id}} </h1>
@@ -185,6 +185,12 @@
       Invoice was created on a computer and is valid without the signature and seal.
     </footer>
         <hr>
+                            </div>
+          </form>
+      </div>
+</section>
+
+
         {% endfor %}
 
 <!--          <tr>-->
@@ -220,11 +226,6 @@
 <!--            <td colspan="4" class="grand total">GRAND TOTAL</td>-->
 <!--            <td class="grand total">$6,500.00</td>-->
 <!--          </tr>-->
-
-            </div>
-          </form>
-      </div>
-</section>
 
 
 {% endblock %}
