@@ -4,7 +4,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="UTF-8">
 
-    <title>பால் கணக்கு</title>
+    <title>Milk Ledger</title>
+
 
     <!-- For the bootstrap cdn and basic bootstrap js !-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -151,7 +152,7 @@
           <ul class="navbar-nav mx-lg-0 order-1 order-lg-2 me-2 logo">
           <li class="nav-item " style="display: flex;">
     <input type="search" id="form1" class="form-control" readonly placeholder={{ milk_price() }} aria-label="Search" />
-    <input type="button" class="btn btn-primary en" readonly maxlength="4" value="MilkRate">
+    <input type="button" class="btn btn-primary en" readonly maxlength="4" value="Milk Price">
               <input type="button" class="btn btn-primary tn" readonly value="பால் விலை">
           </li>
           </ul>
@@ -252,8 +253,10 @@ function lang_func() {
 
     for (let el of document.querySelectorAll('.en'))
          el.style.display='none';
+         document.title = 'Milk Ledger';
     for (let el of document.querySelectorAll('.tn'))
         el.style.display='revert';
+        document.title = 'பால் கணக்கு';
     document.getElementById("img_logo").src = "/static/images/Paalkanakku-logos_green.jpeg";
     document.getElementById("font_logo").style.color="#2ab934";
     document.getElementById("font_logo").style.border="solid #2ab934";
@@ -285,8 +288,10 @@ function lang_func() {
     else{
     for (let el of document.querySelectorAll('.tn'))
         el.style.display='none';
+        document.title = 'பால் கணக்கு';
     for (let el of document.querySelectorAll('.en'))
         el.style.display='revert';
+        document.title = 'Milk Ledger';
     document.getElementById("img_logo").src = "/static/images/Paalkanakku-logos.jpeg";
     document.getElementById("font_logo").style.color="#007bff";
     document.getElementById("font_logo").style.border="solid #007bff";

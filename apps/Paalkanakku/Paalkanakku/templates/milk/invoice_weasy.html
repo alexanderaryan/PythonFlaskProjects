@@ -2,259 +2,126 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>A simple, clean, and responsive HTML invoice template</title>
+    <title >Milk Ledger</title>
 
-  <style>
-  @page {
-    size: a4 portrait;
-    margin: 0mm 0mm 0mm 0mm;
-    counter-increment: page;
-  }
-  .invoice-box {
-    max-width: 800px;
-    margin: auto;
-    padding: 30px;
-    font-size: 16px;
-    line-height: 24px;
-    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-    color: #555;
-  }
+     <!-- For the bootstrap cdn and basic bootstrap js !-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 
-  .invoice-box table {
-    width: 100%;
-    line-height: inherit;
-    text-align: left;
-  }
 
-  .invoice-box table td {
-    padding: 5px;
-    vertical-align: top;
-  }
-
-  .invoice-box table tr td:nth-child(2) {
-    text-align: right;
-  }
-
-  .invoice-box table tr.top table td {
-    padding-bottom: 20px;
-  }
-
-  .invoice-box table tr.top table td.title {
-    font-size: 45px;
-    line-height: 45px;
-    color: #333;
-  }
-
-  .invoice-box table tr.information table td {
-    padding-bottom: 40px;
-  }
-
-  .invoice-box table tr.heading td {
-    background: #eee;
-    border-bottom: 1px solid #ddd;
-    font-weight: bold;
-  }
-
-  .invoice-box table tr.details td {
-    padding-bottom: 20px;
-  }
-
-  .invoice-box table tr.item td{
-    border-bottom: 1px solid #eee;
-  }
-
-  .invoice-box table tr.item.last td {
-    border-bottom: none;
-  }
-
-  .invoice-box table tr.total td:nth-child(2) {
-    border-top: 2px solid #eee;
-    font-weight: bold;
-  }
-
-  @media only screen and (max-width: 600px) {
-    .invoice-box table tr.top table td {
-      width: 100%;
-      display: block;
-      text-align: center;
-    }
-
-    .invoice-box table tr.information table td {
-      width: 100%;
-      display: block;
-      text-align: center;
-    }
-  }
-  div.divFooter {
-    position: fixed;
-    height: 30px;
-    background-color: purple;
-    bottom: 0;
-    width: 100%;
-    left: 0;
-  }
-
-  /** RTL **/
-  .rtl {
-    direction: rtl;
-    font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-  }
-
-  .rtl table {
-    text-align: right;
-  }
-
-  .rtl table tr td:nth-child(2) {
-    text-align: left;
-  }
-  </style>
+    <!--  For custom css -->
+      <link href="/static/css/invoice_weasy.css" rel="stylesheet">
 </head>
 
 <body>
-  <div class="invoice-box">
-    <table cellpadding="0" cellspacing="0">
-      <tr class="top">
-        <td colspan="2">
-          <table>
-            <tr>
-              <td class="title">
-                <img src="/static/images/default_cust.png" style="height: 100px;">
-              </td>
-              <td>
-                Invoice #: {{invoice_number}}<br>
-                Created: {{date}}<br>
-                Due: {{duedate}}
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-
-      <tr class="information">
-        <td colspan="2">
-          <table>
-            <tr>
-              <td>
-                {{from_addr['company_name']}}<br>
-                {{from_addr['addr1']}}<br>
-                {{from_addr['addr2']}}
-              </td>
-              <td>
-                {{to_addr['company_name']}}<br>
-                {{to_addr['person_name']}}<br>
-                {{to_addr['person_email']}}
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr class="heading">
-        <td>
-          Item
-        </td>
-        <td>
-          Price
-        </td>
-      </tr>
-
-      {% for item in items %}
-      <tr class="item">
-        <td>
-          {{item['title']}}
-        </td>
-        <td>
-          ${{item['charge']}}
-        </td>
-      </tr>
-      {% endfor %}
-
-      <tr class="total">
-        <td></td>
-        <td>
-           Total: ${{total}}
-        </td>
-      </tr>
-    </table>
-  </div>
-
-
-<!--  #################################-->
-
-
-
-
-        {% for name,data in per_user_bill.items() %}
+<input onclick="lang_func()" type="checkbox" style="display:None;" id="langbtn">
+{% for name,data in per_user_bill.items() %}
             {% for cust in customer_set %}
                 {% if cust.owner_id == name %}
-<section style="background-size: cover;background-repeat: no-repeat;background-image: url('https://images.unsplash.com/photo-1596733430284-f7437764b1a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');">
+            <div class="invoice-box" id="bill" >
+              <table cellpadding="0" cellspacing="0">
+                <tr class="top">
+                  <td colspan="2">
+                    <table>
+                      <header class="clearfix">
+                      <tr>
 
-      <div class="row d-flex justify-content-center align-items-center h-100">
-          <form class="card" method="POST" style="border-radius: 15px;">
-            <div class="card-body p-5">
+                       <div class="row">
+                            <div class="col-sm">
+                            <td></td>
 
-                <br>
+                            </div>
+                            <div class="col-sm">
+                            <td class="title text-center">
+                            <img src="/static/images/default_cust.jpg" style="height: 100px;">
+                             </td>
+                            </div>
+                            <div class="col-sm">
+                            <td></td>
+                            </div>
+                          </div>
 
-      <div id="logo">
-        <img src="/static/images/default_cust.jpg">
-      </div>
+                       </header>
+                      </tr>
+                      <tr>
+                        <header class="clearfix">
+                          <h1 class="text-uppercase text-center mb-5 ">{{cust.owner_id}}</h1>
+                        </header>
+                      </tr>
 
-                <header class="clearfix">
-    <h1 class="text-uppercase text-center mb-5 en">{{cust.owner_id}}</h1>
-            <h1 class="text-uppercase text-center mb-5 tn">{{cust.owner_id}} </h1>
-        <div id="company" class="clearfix">
-        <div>Company Name</div>
-        <div>455 Foggy Heights,<br /> AZ 85004, US</div>
-        <div>(602) 519-0450</div>
-        <div><a href="mailto:company@example.com">company@example.com</a></div>
-      </div>
-      <div id="project">
-<!--        <div><span>PROJECT</span> Website development</div>-->
-        <div><span>NAME</span> {{cust.name}}</div>
-        <div><span>PLACE</span>
-            {{cust.place}}
-        </div>
-        <div><span>PHONE</span> {{cust.phone_number}}</div>
-        <div><span>EMAIL</span> <a href="">{{cust.email}}</a></div>
-          <div><span>Dairy Loan</span> {{cust.dairy_loan}}</a></div>
-          <div><span>KCC Loan</span> {{cust.kcc_loan}}</a></div>
-      </div>
-    </header>
-    <main>
-      <table>
-        <thead>
-          <tr>
-        {% for col_no in range(header|length) %}
-      <th scope="col" class="thead-dark en">
-        {{ header[col_no] }}
-      </th>
-      {% endfor %}
-    </tr>
-    <tr>
-        {% for col_no in range(header|length) %}
-      <th scope="col" class="thead-dark tn">
-        {{ tm_header[col_no] }}
-      </th>
-      {% endfor %}
+                      <tr>
+                        <td>
 
-    </tr>
-        </thead>
-        <tbody>
+                        </td>
+                        <td>
+                          Invoice #: {{invoice_number}}<br>
+                          Created: {{date}}<br>
+          <!--                Due: {{duedate}}-->
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
 
-        {% for d in data['milk_data'] %}
-          <tr>
-            <td class="service">{{d.milked_date.strftime('%Y-%m-%d') }}</td>
-            <td class="desc">{{d.am_litre }}</td>
-            <td class="unit">{{d.pm_litre}}</td>
+                <tr class="information">
+                  <td colspan="2">
+                    <table>
+                      <tr>
+                        <td>
+                          {{from_addr['company_name']}}<br>
+                          {{from_addr['addr1']}}<br>
+                          {{from_addr['addr2']}}
+                        </td>
+                        <td>
+                          {{cust.name}}<br>
+                          {{cust.place}}<br>
+                          {% if cust.phone_number %}
+                          {{cust.phone_number}}<br>
+                          {% endif %}
+                          {% if cust.email %}
+                          {{cust.email}}<br>
+                          {% endif %}
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <table>
+                <tr class="heading">
+                  {% for col_no in range(header|length) %}
+                <td scope="col" class="thead-dark en">
+                  {{ header[col_no] }}
+                </td>
+                {% endfor %}
+              </tr>
+              <tr class="heading">
+                  {% for col_no in range(header|length) %}
+                <td scope="col" class="thead-dark tn">
+                  {{ tm_header[col_no] }}
+                </td>
+                {% endfor %}
+
+                </tr>
+
+
+               {% for d in data['milk_data'] %}
+          <tr class="item">
+            <td>{{d.milked_date.strftime('%Y-%m-%d') }}</td>
+            <td>{{d.am_litre }}</td>
+            <td>{{d.pm_litre}}</td>
               {% set price = (d.am_litre + d.pm_litre) * d.price %}
-            <td class="qty">{{d.fodder}}</td>
-              <td class="qty">{{d.loan}}</td>
-              <td class="qty">{{d.advance}}</td>
-              <td class="qty">{{d.dr_service}}</td>
-            <td class="total">{{"%.2f" | format(price) }}</td>
+            <td>{{d.fodder}}</td>
+              <td>{{d.loan}}</td>
+              <td>{{d.advance}}</td>
+              <td>{{d.dr_service}}</td>
+            <td>{{"%.2f" | format(price) }}</td>
             </td>
           </tr>
         {% endfor %}
-        <tr>
+          <tr class="item">
             <td class="en">Total</td>
             <td class="tn">மொத்தம்</td>
             <td>{{data['am']}}</td>
@@ -265,7 +132,7 @@
             <td>{{data['dr_service']}}</td>
             <td>{{data['total']}}</td>
         </tr>
-        <tr>
+                 <tr class="item">
             <td></td>
             <td></td>
             <td></td>
@@ -276,7 +143,7 @@
             <td class="tn">தீவனம்</td>
             <td>{{data['fodder']}}</td>
         </tr>
-        <tr>
+         <tr class="item">
             <td></td>
             <td></td>
             <td></td>
@@ -287,7 +154,7 @@
             <td class="tn">கடன்</td>
             <td>{{data['loan']}}</td>
         </tr>
-        <tr>
+         <tr class="item">
             <td></td>
             <td></td>
             <td></td>
@@ -298,7 +165,7 @@
             <td class="tn">முன்பணம்</td>
             <td>{{data['advance']}}</td>
         </tr>
-        <tr>
+         <tr class="item">
             <td></td>
             <td></td>
             <td></td>
@@ -309,7 +176,7 @@
             <td class="tn">மருத்துவச் செலவு</td>
             <td>{{data['dr_service']}}</td>
         </tr>
-        <tr>
+        <tr class="item">
             <td></td>
             <td></td>
             <td></td>
@@ -320,7 +187,7 @@
             <td class="tn">கறவைக்காசு</td>
             <td>{{milking_charge}}</td>
         </tr>
-        <tr>
+        <tr class="total">
             <td></td>
             <td></td>
             <td></td>
@@ -329,43 +196,118 @@
             <td></td>
             <td class="en"></td>
             <td class="tn"></td>
-            <td>{{"%.2f" | format(data['total'] -
+            <td >{{"%.2f" | format(data['total'] -
                 data['fodder'] -
                 data['loan'] -
                 data['advance'] -
                 data['dr_service'] -
                 milking_charge)}}</td>
         </tr>
-                {% endif %}
-            {% endfor %}
-         </tbody>
-      </table>
-      <div id="notices">
-        <div class="en">NOTICE:</div>
-          <div class="tn">அறிவிப்பு:</div>
-        <div class="notice en">Total bill due is deducted with sum of fodder, loan, advance, milking charge and doctor service. </div>
-          <div class="notice tn">தீவனம், கடன், முன்பணம், பால் கறக்கும் கட்டணம் மற்றும் மருத்துவர் சேவை ஆகியவற்றுடன் நிலுவையில் உள்ள மொத்த பில் கழிக்கப்படுகிறது.</div>
-      </div>
-    </main>
-    <footer>
-      Invoice was created on a computer and is valid without the signature and seal.
-    </footer>
-        <hr>
-                            </div>
-          </form>
-      </div>
-</section>
+
+              </table>
+
+              <div id="notices">
+                  <div class="en">NOTICE:</div>
+                    <div class="tn">அறிவிப்பு:</div>
+                  <div class="notice en">Total bill due is deducted with sum of fodder, loan, advance, milking charge and doctor service. </div>
+                    <div class="notice tn">தீவனம், கடன், முன்பணம், பால் கறக்கும் கட்டணம் மற்றும் மருத்துவர் சேவை ஆகியவற்றுடன் நிலுவையில் உள்ள மொத்த பில் கழிக்கப்படுகிறது.</div>
+                </div>
+
+            </div>
+
+      {% endif %}
 
 
-        {% endfor %}
+  {% endfor %}
+  {% endfor %}
 
 
+<!--  #################################-->
+
+<div class="divFooter"></div>
+<script>
+
+//To handle language
 
 
+function lang_func() {
+
+    //document.getElementById("langbtn").checked = checked;
+
+    var checkbox = document.getElementById("langbtn");
+    check = checkbox.checked;
+
+    //console.log("check func called"+check);
+
+    //debugger;
+    localStorage.setItem("langbtn", checkbox.checked=check);
+    if (check) {
+
+    for (let el of document.querySelectorAll('.en'))
+         el.style.display='none';
+         document.title = 'Milk Ledger';
+    for (let el of document.querySelectorAll('.tn'))
+        el.style.display='revert';
+        document.title = 'பால் கணக்கு';
+    //document.getElementsByClassName("btn-primary")
+    for (let el of document.querySelectorAll('.btn-primary')){
+        el.style.backgroundColor="#2ab934";
+        el.style.borderColor="#2ab934";
+        }
+     for (let el of document.querySelectorAll("#link")){
+        el.style.color="#2ab934";
+        }
+     for (let el of document.querySelectorAll('.btn-primary, .btn-rounded')){
+        el.style.backgroundColor="#2ab934";
+        el.style.borderColor="#2ab934";
+        }
+
+    for (let el of document.querySelectorAll('.btn-outline-primary')){
+        el.style.borderColor="#2ab934";
+        el.style.color="#2ab934";
+        }
+    for (let el of document.querySelectorAll('.form-control')){
+        el.style.borderColor="#2ab934";
+        }
+    for (let el of document.querySelectorAll('.btn-primary.tn, .dropdown-item.tn'))
+        el.style.display='flow-root';
+
+    }
+    else{
+    for (let el of document.querySelectorAll('.tn'))
+        el.style.display='none';
+        document.title = 'பால் கணக்கு';
+    for (let el of document.querySelectorAll('.en'))
+        el.style.display='revert';
+        document.title = 'Milk Ledger';
 
 
-<!--  ################################-->
+    for (let el of document.querySelectorAll('.btn-primary, .btn-rounded')){
+        el.style.backgroundColor="#007bff";
+        el.style.borderColor="#007bff";
+        }
 
-  <div class="divFooter"></div>
+    for (let el of document.querySelectorAll('.btn-outline-primary')){
+        el.style.borderColor="#007bff";
+        el.style.color="#007bff";
+        }
+
+      for (let el of document.querySelectorAll("#link")){
+        el.style.color="#007bff";
+        }
+
+   for (let el of document.querySelectorAll('.form-control')){
+        el.style.borderColor="#007bff";
+        }
+    for (let el of document.querySelectorAll('.btn-primary.en, .dropdown-item.en'))
+        el.style.display='flow-root';
+}
+}
+
+var checked = JSON.parse(localStorage.getItem("langbtn"));
+document.getElementById("langbtn").checked = checked;
+lang_func()
+
+</script>
 </body>
 </html>
