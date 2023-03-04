@@ -643,9 +643,9 @@ def invoice_loan_ledger(loan_id=None):
                     headers={'Content-Disposition': 'attachment;filename=employee_report.pdf'})
 
 
-@milk.route('/invoice_ledger', methods=["GET", "POST"])
+@milk.route('/invoice_ledger/<month>', methods=["GET", "POST"])
 @login_required
-def invoice_loan_led(loan_id=None):
+def invoice_loan_led(month=None):
 
     """
     This function will generate pdf of invoices to all the customers
@@ -656,9 +656,9 @@ def invoice_loan_led(loan_id=None):
     today = datetime.today().strftime("%B %-d, %Y")
     invoice_number = 123
     from_addr = {
-        'company_name': 'Python Tip',
-        'addr1': '12345 Sunny Road',
-        'addr2': 'Sunnyville, CA 12345'
+        'company_name': 'Company Name',
+        'addr1': '455 A. Vallalapatti,',
+        'addr2': 'Melur, Madurai 625301'
     }
     to_addr = {
         'company_name': 'Acme Corp',
@@ -683,7 +683,11 @@ def invoice_loan_led(loan_id=None):
 
     #######################################
 
-    month = today_date.replace(day=1)
+    if month == "None":
+        month = today_date.replace(day=1)
+    else:
+        month = datetime.strptime(month, '%Y-%m-%d').date()
+
     ledger_obj = WholeMonthData(month)
     first = ledger_obj.first_day_of_month
     last = ledger_obj.last_day_of_month
@@ -719,10 +723,9 @@ def invoice_loan_led(loan_id=None):
     tm_header = ['தேதி', 'காலை', 'மாலை', 'புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
 
 
-
     ################################
 
-    rendered = render_template('milk/invoice_weasy.html',
+    return render_template('milk/invoice_weasy.html',
                                date=today,
                                from_addr=from_addr,
                                to_addr=to_addr,
