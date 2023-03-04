@@ -23,7 +23,7 @@
       <div class="row d-flex justify-content-center align-items-center h-100">
           <form class="card" method="POST" style="border-radius: 15px;">
             <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5 en">Milk Ledger {{month}}</h2>
+              <h2 class="text-uppercase text-center mb-5 en">Milk Ledger</h2>
                 <h2 class="text-uppercase text-center mb-5 tn">பால் பேரேடு</h2>
 
                 <div class="container">
@@ -35,8 +35,8 @@
                         <div class="col"></div>
                     <div class="col">
 
-           <a class="btn btn-primary btn-lg text-body en"  style="justify-content: right;" href={{sheet_url}}> Google Backup </a>
-                    <a class="btn btn-success btn-lg text-body tn"  href={{sheet_url}}> Google காப்புப்பிரதி</a>
+           <a class="btn btn-primary btn-lg text-body en"  style="justify-content: right;" href={{sheet_url}}> See Google Backup </a>
+                    <a class="btn btn-success btn-lg text-body tn"  href={{sheet_url}}> கூகுள் காப்புப்பிரதியைக் காண</a>
                     </div>
                 </div>
                     </div>
@@ -94,8 +94,8 @@
         {% endif %}
 
      <tr>
-         <td>{{cust.place}}</td>
          <td>{{fullname}}</td>
+         <td>{{cust.place}}</td>
          <!--{% if data[4] == 'am' %}
             {% set am_milk = data[3] %}
             {% set pm_milk = 00 %}
@@ -117,7 +117,9 @@
          <td>{{ data[7] }}</td>
          <td>{{ data[8] }}</td>
          {% set service_charge = data[5] + data[9] + data[7] + data[8]  %}
-         <td>{{"%.2f"| format(price - milking_charge - service_charge)}}</td>
+         <td>
+             <a href="{{ url_for('milk.invoice_loan_led',month=month,customer=cust.owner_id ) }}">
+                {{"%.2f"| format(price - milking_charge - service_charge)}}</a></td>
         {% endif %}
          {% endfor %}
      {% endfor %}

@@ -187,7 +187,7 @@ class WholeMonthData:
     return milkers,milker_ids"""
 
 
-def customer_set(active=False):
+def customer_set(active=False,owner=None):
     """
     To give the set of customers added in the Owners Table
     """
@@ -195,9 +195,14 @@ def customer_set(active=False):
     print (milker_ids,"inside customer set", active)
     try:
         if not active:
-            customer = (CowOwner.query. \
-                        filter(CowOwner.milker_id.in_(milker_ids)).group_by(CowOwner.owner_id). \
+            if owner:
+                customer = (CowOwner.query. \
+                        filter(CowOwner.milker_id.in_(milker_ids)).filter(CowOwner.owner_id==owner).group_by(CowOwner.owner_id). \
                         order_by(CowOwner.place, CowOwner.name).all())
+            else:
+                customer = (CowOwner.query. \
+                            filter(CowOwner.milker_id.in_(milker_ids)).group_by(CowOwner.owner_id). \
+                            order_by(CowOwner.place, CowOwner.name).all())
         else:
 
             customer = (CowOwner.query. \
@@ -451,8 +456,8 @@ def milk_ledger_view(month=None):
         flash(f"The data is backed up for {mon}")
         return redirect(url_for("milk.milk_ledger_view", month=form.month.data))
 
-    header = ['Place', 'Name', 'Milk', 'M.Charge', 'Fodder', 'Loan', 'Advance', 'Dr_service', 'Debit']
-    tm_header = ['ஊர்', 'பெயர்', 'பால்', 'க.காசு', 'புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
+    header = [ 'Name','Place', 'Milk', 'M.Charge', 'Fodder', 'Loan', 'Advance', 'Dr_service', 'Debit']
+    tm_header = [ 'பெயர்', 'ஊர்','பால்', 'க.காசு', 'புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
 
     return render_template('milk/view_ledger.html',
                            form=form,
@@ -645,12 +650,14 @@ def invoice_loan_ledger(loan_id=None):
 
 @milk.route('/invoice_ledger/<month>', methods=["GET", "POST"])
 @login_required
-def invoice_loan_led(month=None):
+def invoice_loan_led(month=None,customer=None):
 
     """
     This function will generate pdf of invoices to all the customers
     """
 
+    customer = request.args.get('customer', None)
+    print (month,customer)
     html = HTML('Paalkanakku/templates/milk/invoice_weasy.html')
 
     today = datetime.today().strftime("%B %-d, %Y")
@@ -680,7 +687,6 @@ def invoice_loan_led(month=None):
     duedate = "August 1, 2018"
     total = sum([i['charge'] for i in items])
 
-
     #######################################
 
     if month == "None":
@@ -694,7 +700,13 @@ def invoice_loan_led(month=None):
 
     user_bill = google_backup.MilkData(first, last)
     per_user_bill = {}
-    customer = customer_set()
+    if not customer:
+        print("dfdsfdf", customer)
+        customer = customer_set()
+    else:
+        print("ooioidoisd",customer)
+        customer = customer_set(owner=customer)
+        print("ooioidoisd")
     for c in customer:
         milk_data, kk_data = user_bill.milk_data_customer_wise(c.owner_id)
         ledger_obj = WholeMonthData(month)
@@ -746,4 +758,5 @@ def invoice_loan_led(month=None):
         io.BytesIO(rendered_pdf),
             attachment_filename='invoice.pdf'
         )
+    #If we need to change the button as downloading
     # return send_file("../invoice.pdf",attachment_filename="out.pdf",date=today)

@@ -17,6 +17,10 @@
 
 <body>
 <input onclick="lang_func()" type="checkbox" style="display:None;" id="langbtn">
+<center>
+    <button class="btn btn-primary hidden-print" onclick="myFunction()">
+        <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button>
+	    </center>
 {% for name,data in per_user_bill.items() %}
             {% for cust in customer_set %}
                 {% if cust.owner_id == name %}
@@ -212,7 +216,7 @@
                   <div class="notice en">Total bill due is deducted with sum of fodder, loan, advance, milking charge and doctor service. </div>
                     <div class="notice tn">தீவனம், கடன், முன்பணம், பால் கறக்கும் கட்டணம் மற்றும் மருத்துவர் சேவை ஆகியவற்றுடன் நிலுவையில் உள்ள மொத்த பில் கழிக்கப்படுகிறது.</div>
                 </div>
-
+<div class="divFooter"></div>
             </div>
 
       {% endif %}
@@ -224,8 +228,26 @@
 
 <!--  #################################-->
 
-<div class="divFooter"></div>
+
 <script>
+
+
+//To Print Function
+
+
+function myFunction() {
+    var print_button = document.getElementsByClassName("hidden-print");
+    for (var i=0;i<print_button.length;i+=1){
+      print_button[i].style.display = 'none';
+    }
+    window.print();
+    var print_button = document.getElementsByClassName("hidden-print");
+    for (var i=0;i<print_button.length;i+=1){
+      print_button[i].style.display = 'inherit';
+    }
+
+}
+
 
 //To handle language
 
