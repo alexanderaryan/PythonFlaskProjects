@@ -112,6 +112,7 @@ def price(date):
     if not milk_data:
         milk_data = Milk.query.with_entities(Milk.price, Milk.milked_date).order_by(Milk.milked_date.desc()).first()
 
+    print (milk_data)
     return milk_data[0] if milk_data is not None else "0.00"
 
 
