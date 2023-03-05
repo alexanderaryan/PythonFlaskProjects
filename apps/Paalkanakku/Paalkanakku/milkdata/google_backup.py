@@ -31,6 +31,7 @@ def to_del_all_spreadsheets(gc):
 
 def spreadsheet_check(sheet_name):
     try:
+        print ("HereMakka")
         sh = gc.open(sheet_name)
     except Exception as e:
         er = e.__class__.__name__

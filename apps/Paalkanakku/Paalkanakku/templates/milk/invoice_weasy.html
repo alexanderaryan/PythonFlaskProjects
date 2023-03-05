@@ -13,14 +13,35 @@
 
     <!--  For custom css -->
       <link href="/static/css/invoice_weasy.css" rel="stylesheet">
+
+    <!--    For font awesome items-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
 </head>
 
 <body>
 <input onclick="lang_func()" type="checkbox" style="display:None;" id="langbtn">
 <center>
-    <button class="btn btn-primary hidden-print" onclick="myFunction()">
-        <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button>
+    <table>
+        <tr>
+            <td>
+                <button class="btn btn-primary hidden-print" onclick="myFunction()">
+        <i class="fa fa-print" aria-hidden="true"></i> Print</button>
+            </td>
+            <td>
+
+            </td>
+            <td>
+              <a href="javascript:history.back()" class="btn btn-secondary en " id="back-button_en">Back</a>
+            </td>
+                <td>
+                    <a href="javascript:history.back()" class="btn btn-secondary tn "  id="back-button_tn">பின் செல்</a>
+                </td>
+        </tr>
+                </table>
 	    </center>
+
+
 {% for name,data in per_user_bill.items() %}
             {% for cust in customer_set %}
                 {% if cust.owner_id == name %}
@@ -237,14 +258,29 @@
 
 function myFunction() {
     var print_button = document.getElementsByClassName("hidden-print");
+    var en_lang_button = document.getElementById("back-button_en");
+    var tn_lang_button = document.getElementById("back-button_tn");
+    console.log(en_lang_button.style.display);
+    if (en_lang_button.style.display == 'none'){
+        console.log("En is none")
+        lang_button=en_lang_button;
+        miss_button=tn_lang_button;
+    }
+    else{
+        lang_button=tn_lang_button;
+        miss_button=en_lang_button;
+    }
     for (var i=0;i<print_button.length;i+=1){
       print_button[i].style.display = 'none';
     }
+    miss_button.style.display = 'none';
     window.print();
     var print_button = document.getElementsByClassName("hidden-print");
     for (var i=0;i<print_button.length;i+=1){
       print_button[i].style.display = 'inherit';
     }
+    lang_button.style.display="none"
+    miss_button.style.display = 'inherit';
 
 }
 
