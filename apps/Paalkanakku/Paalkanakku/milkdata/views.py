@@ -53,16 +53,28 @@ from flask_login import login_user, login_required, logout_user, current_user
 milk = Blueprint('milk', __name__)
 
 
-def check_google_sheet():
+def check_google_sheet(year=datetime.today().year):
     with open(sheet_config) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
-        print(data)
-        if data['gsheet_url'] is not None:
-            print(data['gsheet_url'])
-            sheet_url = data['gsheet_url']
+        print(data, "total file", year)
+        try:
+            sheet_url = data['gsheets_url'][year]
+            print ("inside",sheet_url,year)
             return sheet_url
-        else:
+        except KeyError:
+            print(f"KeyError, Year {year} sheet is yet to be created")
             return False
+        # else:
+        #     sheet_url = data['gsheets_url'][year]
+        #     return sheet_url
+        #
+        #
+        # if data['gsheets_url'][int(year)] is not None:
+        #     print(data['gsheets_url'])
+        #     sheet_url = data['gsheets_url']
+        #     return sheet_url
+        # else:
+        #     return False
 
 
 def config_data():
@@ -437,16 +449,31 @@ def milk_ledger_view(month=None):
     print("mon", type(month))
     print("data", monthly_ledger)
     # sheet_url = google_backup.spreadsheet_check(month.strftime("%Y")+"Paalkanakku").url
-    sheet_url = "dumm"
-    if check_google_sheet():
-        sheet_url = check_google_sheet()
-    else:
-        sheet_url = google_backup.spreadsheet_check(month.strftime("%Y") + "Paalkanakku").url
+    year = month.year
+    sheet_url = check_google_sheet(year=year)
+    print (year , "monthd")
+    if not sheet_url:
+        print ("No Sheet")
+        sheet_url = google_backup.spreadsheet_check(f"{year}Paalkanakku").url
         yaml_data = {'gsheet_url': sheet_url}
-        print("Sheet Not found")
-        with open(sheet_config, "a+") as w:
-            data = yaml.dump(yaml_data, w)
+        yaml_data = {'gsheet_url': {year: sheet_url}}
+        with open(sheet_config) as f:
+            sheet_data = yaml.load(f, Loader=yaml.FullLoader)
+        print("Sheet Not found,here")
+        sheet_data['gsheets_url'][year] = sheet_url
+        with open(sheet_config, 'w') as f:
+            yaml.dump(sheet_data, f)
 
+        # with open(sheet_config, "a+") as w:
+        #     data = yaml.dump(yaml_data, w)
+
+    for error, message in form.errors.items():
+        print([(f.loan_id.data,f.loan_amount.data) for f in form.daily_data],"Form")
+        print ([f.loan_id.data for f in form.daily_data])
+        flash (form.daily_data)
+        for m in message:
+            flash(f"{error.capitalize()} : {m}", category='error')
+    print (form.data,"errors")
     if form.validate_on_submit():
         print(form.month.data)
         monthly_ledger = ledger_obj.ledger_calc()
@@ -467,7 +494,8 @@ def milk_ledger_view(month=None):
                            header=header,
                            monthly_ledger=monthly_ledger,
                            customer_set=customer_set(),
-                           sheet_url=sheet_url)
+                           sheet_url=sheet_url,
+                           flash=flash)
 
 
 # @crontab.job(minute="1", hour="*", day="*", month="*", day_of_week="*")
@@ -483,51 +511,51 @@ def milk_ledger_view(month=None):
 #                        - ledger[8] - milking_charge) for ledger in WholeMonthData(today_date).ledger_calc()]
 #     print(prev_month_due)
 
-@milk.route('/invoice', methods=["GET", "POST"])
-@login_required
-def invoice_view():
-
-    month = today_date.replace(day=1)
-    ledger_obj = WholeMonthData(month)
-    first = ledger_obj.first_day_of_month
-    last = ledger_obj.last_day_of_month
-
-    user_bill = google_backup.MilkData(first, last)
-    per_user_bill = {}
-    customer = customer_set()
-    for c in customer:
-        milk_data,kk_data = user_bill.milk_data_customer_wise(c.owner_id)
-        ledger_obj = WholeMonthData(month)
-        monthly_ledger = ledger_obj.ledger_calc(c.owner_id)
-        am = sum(data.am_litre for data in milk_data)
-        pm = sum(data.pm_litre for data in milk_data)
-        fodder = sum(data.fodder for data in milk_data)
-        try:
-            loan = monthly_ledger[0][9]
-        except IndexError:
-            loan = 0
-        advance = sum(filter(None, [data.advance for data in milk_data]))
-        dr_service = sum(filter(None, [data.dr_service for data in milk_data]))
-        total = sum(filter(None, [(data.am_litre + data.pm_litre) * data.price for data in milk_data]))
-
-        per_user_bill[c.owner_id] = {'milk_data': milk_data,
-                                     'am': am,
-                                     'pm': pm,
-                                     'fodder': fodder,
-                                     'loan': loan,
-                                     'advance': advance,
-                                     'dr_service': dr_service,
-                                     'total': total}
-
-    header = ['Date', 'Morn', 'Evng', 'Fodder', 'Loan', 'Advance', 'Dr_service', 'Debit']
-    tm_header = ['தேதி', 'காலை', 'மாலை', 'புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
-
-    return render_template('milk/invoice.html',
-                           per_user_bill=per_user_bill,
-                           header=header,
-                           milking_charge=milking_charge,
-                           tm_header=tm_header,
-                           customer_set=customer)
+# @milk.route('/invoice', methods=["GET", "POST"])
+# @login_required
+# def invoice_view():
+#
+#     month = today_date.replace(day=1)
+#     ledger_obj = WholeMonthData(month)
+#     first = ledger_obj.first_day_of_month
+#     last = ledger_obj.last_day_of_month
+#
+#     user_bill = google_backup.MilkData(first, last)
+#     per_user_bill = {}
+#     customer = customer_set()
+#     for c in customer:
+#         milk_data,kk_data = user_bill.milk_data_customer_wise(c.owner_id)
+#         ledger_obj = WholeMonthData(month)
+#         monthly_ledger = ledger_obj.ledger_calc(c.owner_id)
+#         am = sum(data.am_litre for data in milk_data)
+#         pm = sum(data.pm_litre for data in milk_data)
+#         fodder = sum(data.fodder for data in milk_data)
+#         try:
+#             loan = monthly_ledger[0][9]
+#         except IndexError:
+#             loan = 0
+#         advance = sum(filter(None, [data.advance for data in milk_data]))
+#         dr_service = sum(filter(None, [data.dr_service for data in milk_data]))
+#         total = sum(filter(None, [(data.am_litre + data.pm_litre) * data.price for data in milk_data]))
+#
+#         per_user_bill[c.owner_id] = {'milk_data': milk_data,
+#                                      'am': am,
+#                                      'pm': pm,
+#                                      'fodder': fodder,
+#                                      'loan': loan,
+#                                      'advance': advance,
+#                                      'dr_service': dr_service,
+#                                      'total': total}
+#
+#     header = ['Date', 'Morn', 'Evng', 'Fodder', 'Loan', 'Advance', 'Dr_service', 'Debit']
+#     tm_header = ['தேதி', 'காலை', 'மாலை', 'புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
+#
+#     return render_template('milk/invoice.html',
+#                            per_user_bill=per_user_bill,
+#                            header=header,
+#                            milking_charge=milking_charge,
+#                            tm_header=tm_header,
+#                            customer_set=customer)
 
 
 @milk.route('/loan_ledger/<loan_id>', methods=["GET", "POST"])
@@ -603,54 +631,55 @@ def loan_ledger(loan_id=None):
                            form=form,
                            flash=flash)
 
-
-@milk.route('/invoice_ledger_pfdf', methods=["GET", "POST"])
-@login_required
-def invoice_loan_ledger(loan_id=None):
-
-    """
-    This function will generate pdf of invoices to all the customers
-    """
-    pdf = FPDF()
-    pdf.add_page()
-
-    page_width = pdf.w - 2 * pdf.l_margin
-
-    pdf.set_font('Times', 'B', 14.0)
-    pdf.cell(page_width, 0.0, 'Employee Data', align='C')
-    pdf.ln(10)
-
-    pdf.set_font('Courier', '', 12)
-
-    col_width = page_width / 4
-
-    pdf.ln(1)
-
-    th = pdf.font_size
-
-    result = [{'emp_id':1,'emp_first_name':"Alex","emp_last_name":"M","emp_designation":"IT"},
-              {'emp_id':2,'emp_first_name':"Alex","emp_last_name":"M","emp_designation":"IT"},
-              {'emp_id':3,'emp_first_name':"Alex","emp_last_name":"M","emp_designation":"IT"},]
-    for row in result:
-        pdf.cell(col_width, th, str(row['emp_id']), border=1)
-        pdf.cell(col_width, th, row['emp_first_name'], border=1)
-        pdf.cell(col_width, th, row['emp_last_name'], border=1)
-        pdf.cell(col_width, th, row['emp_designation'], border=1)
-        pdf.ln(th)
-
-    pdf.ln(10)
-
-    pdf.set_font('Times', '', 10.0)
-    pdf.cell(page_width, 0.0, '- end of report -', align='C')
-
-
-    return Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf',
-                    headers={'Content-Disposition': 'attachment;filename=employee_report.pdf'})
+#
+# @milk.route('/invoice_ledger_pfdf', methods=["GET", "POST"])
+# @login_required
+# def invoice_loan_ledger(loan_id=None):
+#
+#     """
+#     This function will generate pdf of invoices to all the customers
+#     """
+#     pdf = FPDF()
+#     pdf.add_page()
+#
+#     page_width = pdf.w - 2 * pdf.l_margin
+#
+#     pdf.set_font('Times', 'B', 14.0)
+#     pdf.cell(page_width, 0.0, 'Employee Data', align='C')
+#     pdf.ln(10)
+#
+#     pdf.set_font('Courier', '', 12)
+#
+#     col_width = page_width / 4
+#
+#     pdf.ln(1)
+#
+#     th = pdf.font_size
+#
+#     result = [{'emp_id':1,'emp_first_name':"Alex","emp_last_name":"M","emp_designation":"IT"},
+#               {'emp_id':2,'emp_first_name':"Alex","emp_last_name":"M","emp_designation":"IT"},
+#               {'emp_id':3,'emp_first_name':"Alex","emp_last_name":"M","emp_designation":"IT"},]
+#     for row in result:
+#         pdf.cell(col_width, th, str(row['emp_id']), border=1)
+#         pdf.cell(col_width, th, row['emp_first_name'], border=1)
+#         pdf.cell(col_width, th, row['emp_last_name'], border=1)
+#         pdf.cell(col_width, th, row['emp_designation'], border=1)
+#         pdf.ln(th)
+#
+#     pdf.ln(10)
+#
+#     pdf.set_font('Times', '', 10.0)
+#     pdf.cell(page_width, 0.0, '- end of report -', align='C')
+#
+#
+#     return Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf',
+#                     headers={'Content-Disposition': 'attachment;filename=employee_report.pdf'})
+#
 
 
 @milk.route('/invoice_ledger/<month>', methods=["GET", "POST"])
 @login_required
-def invoice_loan_led(month=None,customer=None):
+def invoice_loan_led(month=None, customer=None):
 
     """
     This function will generate pdf of invoices to all the customers
