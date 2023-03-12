@@ -34,14 +34,14 @@ import yaml
 
 try:
     from Paalkanakku import app, db, today_date, crontab
-    from Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger
+    from Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger, MilkCharge
     from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data, loan_choice
     from Paalkanakku.owner.forms import LoanLedgerForm
     from Paalkanakku.milkdata import google_backup
     from Paalkanakku.config import sheet_config
 except:
     from Paalkanakku.Paalkanakku import app, db, today_date, crontab
-    from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger
+    from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger, MilkCharge
     from Paalkanakku.Paalkanakku.owner.forms import LoanLedgerForm
     from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data, loan_choice
     from Paalkanakku.Paalkanakku.milkdata import google_backup
@@ -85,6 +85,20 @@ def config_data():
 
 
 milking_charge = config_data()['milking_charge']
+
+
+def milk_charge_check(month,year):
+
+    milk_charge = MilkCharge.query.filter(MilkCharge.milk_charge_month == month).\
+        filter(MilkCharge.milk_charge_year == year).first()
+    if not milk_charge:
+        print("milkcharge is not in table")
+    else:
+        print("milkcharge is in the table")
+
+    return milk_charge if milk_charge else False
+
+
 
 
 def milk_data_check(date, milked_time):
@@ -292,6 +306,32 @@ def add_daily_data(modified_day=None, milked_time=None):
         print ("Where")
         print([(f.loan_id.data, f.loan_amount.data) for f in form.daily_data], "Form")
         if form.milking_charge.data:
+
+            milk_charge = milk_charge_check(form.milked_date.data.month,
+                                     form.milked_date.data.year)
+            if milk_charge:
+                print (f"Milk charge is there for {form.milked_date.data.month} {form.milked_date.data.year}")
+                milk_charge.milk_charge = form.milking_charge.data
+                db.session.add(milk_charge)
+                try:
+                    db.session.commit()
+                except:
+                    print (f"Error in updating milk_charge for {form.milked_date.data.month} {form.milked_date.data.year}")
+                else:
+                    print (f"Milk charge successfully updated for {form.milked_date.data.month}"
+                           f" {form.milked_date.data.year}")
+            else:
+                milk_charge = MilkCharge(form.milking_charge.data, form.milked_date.data.month,
+                                     form.milked_date.data.year)
+                db.session.add(milk_charge)
+                try:
+                    db.session.commit()
+                except:
+                    print(
+                        f"Error in Adding milk_charge for {form.milked_date.data.month} {form.milked_date.data.year}")
+                else:
+                    print(f"Milk charge successfully updated for {form.milked_date.data.month}"
+                          f" {form.milked_date.data.year}")
             data = config_data()
             print(data['milking_charge'])
             data['milking_charge'] = form.milking_charge.data
@@ -411,14 +451,14 @@ def add_daily_data(modified_day=None, milked_time=None):
     for n in milk_data_for_today:
         print(n.milker_id, n.owner_id, n.am_litre, n.pm_litre)
 
-    milking_charge = config_data()['milking_charge']
+    milked_charge = milk_charge_check(day.month,day.year).milk_charge if milk_charge_check(day.month,day.year) else 0
 
     return render_template('milk/daily_data.html',
                            form=form,
                            day=day,
                            no_milker=no_milker,
                            modified_day=modified_day,
-                           milking_charge=milking_charge,
+                           milking_charge=milked_charge,
                            header=header,
                            tm_header=tm_header,
                            rate=rate,
@@ -452,9 +492,9 @@ def milk_ledger_view(month=None):
     # sheet_url = google_backup.spreadsheet_check(month.strftime("%Y")+"Paalkanakku").url
     year = month.year
     sheet_url = check_google_sheet(year=year)
-    print (year , "monthd")
+    print(year , "monthd")
     if not sheet_url:
-        print ("No Sheet")
+        print("No Sheet")
         sheet_url = google_backup.spreadsheet_check(f"{year}Paalkanakku").url
         yaml_data = {'gsheet_url': sheet_url}
         yaml_data = {'gsheet_url': {year: sheet_url}}
@@ -470,11 +510,11 @@ def milk_ledger_view(month=None):
 
     for error, message in form.errors.items():
         print([(f.loan_id.data,f.loan_amount.data) for f in form.daily_data],"Form")
-        print ([f.loan_id.data for f in form.daily_data])
-        flash (form.daily_data)
+        print([f.loan_id.data for f in form.daily_data])
+        flash(form.daily_data)
         for m in message:
             flash(f"{error.capitalize()} : {m}", category='error')
-    print (form.data,"errors")
+    print(form.data,"errors")
     if form.validate_on_submit():
         print(form.month.data)
         monthly_ledger = ledger_obj.ledger_calc()
@@ -484,13 +524,16 @@ def milk_ledger_view(month=None):
         flash(f"The data is backed up for {mon}")
         return redirect(url_for("milk.milk_ledger_view", month=form.month.data))
 
-    header = [ 'Name','Place', 'Milk', 'M.Charge', 'Fodder', 'Loan', 'Advance', 'Dr_service', 'Debit']
-    tm_header = [ 'பெயர்', 'ஊர்','பால்', 'க.காசு', 'புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
+    header = ['Na   me','Place', 'Milk', 'M.Charge', 'Fodder', 'Loan', 'Advance', 'Dr_service', 'Debit']
+    tm_header = ['பெயர்', 'ஊர்','பால்', 'க.காசு', 'புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
+
+    milked_charge = milk_charge_check(month.month, year).milk_charge if milk_charge_check(month.month, year) else 0
+    print (f"{month} {year} {milked_charge}","oioii")
 
     return render_template('milk/view_ledger.html',
                            form=form,
                            month=month,
-                           milking_charge=milking_charge,
+                           milking_charge=milked_charge,
                            tm_header=tm_header,
                            header=header,
                            monthly_ledger=monthly_ledger,
@@ -766,6 +809,7 @@ def invoice_loan_led(month=None, customer=None):
 
 
     ################################
+    milked_charge = milk_charge_check(month.month, month.year).milk_charge if milk_charge_check(month.month, month.year) else 0
 
     return render_template('milk/invoice_weasy.html',
                                date=today,
@@ -777,7 +821,7 @@ def invoice_loan_led(month=None, customer=None):
                                duedate=duedate,
                                per_user_bill=per_user_bill,
                                header=header,
-                               milking_charge=milking_charge,
+                               milking_charge=milked_charge,
                                tm_header=tm_header,
                                customer_set=customer
                                )

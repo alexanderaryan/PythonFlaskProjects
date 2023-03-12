@@ -4,13 +4,13 @@ try:
     from Paalkanakku import today_date, crontab, sched, db
     from Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.milkdata.views import WholeMonthData, price
-    from Paalkanakku.milkdata.views import milking_charge
+    from Paalkanakku.milkdata.views import milk_charge_check
     from Paalkanakku.milkdata import google_backup
 except:
     from Paalkanakku.Paalkanakku import app, db, today_date, crontab, sched
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk
     from Paalkanakku.Paalkanakku.milkdata.views import WholeMonthData, price
-    from Paalkanakku.Paalkanakku.milkdata.views import milking_charge
+    from Paalkanakku.Paalkanakku.milkdata.views import milk_charge_check
     from Paalkanakku.Paalkanakku.milkdata import google_backup
 
 
@@ -24,7 +24,7 @@ def my_scheduled_job():
                        - ledger[5]
                        - ledger[6]
                        - ledger[7]
-                       - ledger[8] - milking_charge) for ledger in ledger_obj.ledger_calc()]
+                       - ledger[8] - milk_charge_check(today_date.month, today_date.year)) for ledger in ledger_obj.ledger_calc()]
     print(prev_month_due)
 
     milk_price = price(today_date)

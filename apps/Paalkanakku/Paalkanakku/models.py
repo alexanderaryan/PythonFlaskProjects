@@ -343,3 +343,21 @@ class LoanLedger(db.Model):
     def owners_with_loan():
         owners=Loan.query.with_entities(Loan.owner_id).filter(Loan.active == True).distinct().all()
         return [owners_id for tup in owners for owners_id in tup]
+
+
+class MilkCharge(db.Model):
+
+    __tablename__ = "milkcharge"
+
+    id = db.Column(db.Integer, primary_key=True)
+    milk_charge = db.Column(db.Integer, nullable=False)
+    milk_charge_month = db.Column(db.String(20), nullable=False)
+    milk_charge_year = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, milk_charge, milk_charge_month, milk_charge_year):
+        self.milk_charge = milk_charge
+        self.milk_charge_month = milk_charge_month
+        self.milk_charge_year = milk_charge_year
+
+    def __repr__(self):
+        return f"{id}"
