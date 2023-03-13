@@ -371,14 +371,19 @@ def add_daily_data(modified_day=None, milked_time=None):
                         remaining = Loan.loan_data(each_cust.loan_id.data).loan_amount;
                     print(type(remaining), remaining, "reaming")
                     print(each_cust.loan_amount.data, "payment done for ", each_cust.loan_id.data)
-                    loan_data = LoanLedger(
-                        loan_id=each_cust.loan_id.data,
-                        loan_payment=each_cust.loan_amount.data,
-                        loan_payment_time=form.milked_date.data,
-                        loan_remaining=remaining - each_cust.loan_amount.data,
-                        owner_id=each_cust.owner_id.data
-                    )
-                    db.session.add(loan_data)
+                    print (each_cust.loan_amount.data < remaining)
+                    if each_cust.loan_amount.data < remaining:
+                        loan_data = LoanLedger(
+                            loan_id=each_cust.loan_id.data,
+                            loan_payment=each_cust.loan_amount.data,
+                            loan_payment_time=form.milked_date.data,
+                            loan_remaining=remaining - each_cust.loan_amount.data,
+                            owner_id=each_cust.owner_id.data
+                        )
+                        db.session.add(loan_data)
+                        db.session.commit()
+                    else:
+                        flash(f"Loan Payment for Loan ID exceeds remaining : {remaining}", category='error')
                 db.session.add(milk_data)
             print("committing")
             db.session.commit()
@@ -415,15 +420,19 @@ def add_daily_data(modified_day=None, milked_time=None):
                                 remaining = Loan.loan_data(each.loan_id.data).loan_amount;
                             print (type(remaining),remaining, "reaming")
                             print(each.loan_amount.data, "payment done for ", each.loan_id.data)
-                            loan_data=LoanLedger(
-                                loan_id=each.loan_id.data,
-                                owner_id=each.owner_id.data,
-                                loan_payment=each.loan_amount.data,
-                                loan_payment_time=form.milked_date.data,
-                                loan_remaining=remaining-each.loan_amount.data
-                                                 )
-                            db.session.add(loan_data)
-                            db.session.commit()
+                            print (each.loan_amount.data < remaining,"ejere")
+                            if each.loan_amount.data < remaining:
+                                loan_data=LoanLedger(
+                                    loan_id=each.loan_id.data,
+                                    owner_id=each.owner_id.data,
+                                    loan_payment=each.loan_amount.data,
+                                    loan_payment_time=form.milked_date.data,
+                                    loan_remaining=remaining-each.loan_amount.data
+                                                     )
+                                db.session.add(loan_data)
+                                db.session.commit()
+                            else:
+                                flash(f"Loan Payment for Loan ID exceeds remaining : {remaining}", category='error')
                         db.session.add(m)
                     db.session.commit()
             print(form.milked_date.data)
