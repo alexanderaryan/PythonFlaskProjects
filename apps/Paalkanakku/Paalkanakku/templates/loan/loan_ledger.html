@@ -90,7 +90,7 @@
                      <td id="td_cre{{values.loan_payment_id}}" onclick="change({{values.loan_payment_id}},'cd')">
                          {{values.loan_payment}}</td>
                      <td style="display:none;" id="id{{values.loan_payment_id}}">{{form.credit(value=values.loan_payment,
-                         class="form-control form-control-lg"
+                         class="form-control form-control-lg",max=values.loan_payment+max_payment
                          )}}</td>
                      <td>{{ values.loan_remaining }}</td>
                      <td><button class="btn btn-sm btn-danger" type="button" id="del_{{values.loan_payment_id}}"

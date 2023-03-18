@@ -32,10 +32,10 @@
 
             </td>
             <td>
-              <a href="javascript:history.back()" class="btn btn-secondary en " id="back-button_en">Back</a>
+              <a href="{{url_for('milk.milk_ledger_view',month=month )}}" class="btn btn-secondary en " id="back-button_en">Back</a>
             </td>
                 <td>
-                    <a href="javascript:history.back()" class="btn btn-secondary tn "  id="back-button_tn">பின் செல்</a>
+                    <a href="{{url_for('milk.milk_ledger_view',month=month )}}" class="btn btn-secondary tn "  id="back-button_tn">பின் செல்</a>
                 </td>
         </tr>
                 </table>
