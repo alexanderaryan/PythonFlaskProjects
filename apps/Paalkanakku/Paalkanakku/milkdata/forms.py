@@ -65,7 +65,8 @@ class DailyData(FlaskForm):
                               validators=[validators.Optional()],
                               filters=[lambda x: x or 0])
     loan_amount = IntegerField("Credit", default=0,
-                               validators=[validators.Optional()],
+                               validators=[validators.Optional(),
+                                           NumberRange(min=1, max=100000, message='Price should be greater than 0')],
                                filters=[lambda x: x or 0])
     loan_id = SelectField("Loan Id",choices=loan_choice(),coerce=int,
                           validators=[validators.Optional()])

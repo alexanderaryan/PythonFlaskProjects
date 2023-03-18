@@ -53,6 +53,19 @@ from flask_login import login_user, login_required, logout_user, current_user
 milk = Blueprint('milk', __name__)
 
 
+def max_loan_remaining(loan_id):
+
+    min_remaining_query = LoanLedger.query.filter(LoanLedger.loan_id == loan_id).order_by(LoanLedger.loan_remaining)
+    try:
+        min_remaining = min_remaining_query.first().loan_remaining
+        print(min_remaining)
+    except:
+        min_remaining = 0
+        print(min_remaining)
+    else:
+        return min_remaining
+
+
 def check_google_sheet(year=datetime.today().year):
     with open(sheet_config) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
@@ -421,8 +434,8 @@ def add_daily_data(modified_day=None, milked_time=None):
                             print (type(remaining),remaining, "reaming")
                             print(each.loan_amount.data, "payment done for ", each.loan_id.data)
                             print (each.loan_amount.data < remaining,"ejere")
-                            if each.loan_amount.data < remaining:
-                                loan_data=LoanLedger(
+                            if each.loan_amount.data <= remaining:
+                                loan_data = LoanLedger(
                                     loan_id=each.loan_id.data,
                                     owner_id=each.owner_id.data,
                                     loan_payment=each.loan_amount.data,
@@ -639,6 +652,7 @@ def loan_ledger(loan_id=None):
                 return redirect(url_for('milk.loan_ledger',loan_id=loan_id))
 
         elif form.submit.data:
+            print (form.payment_id.data,"paymentid")
             loan_item = LoanLedger.query.filter(LoanLedger.loan_payment_id == form.payment_id.data).first()
             if loan_item.loan_payment_id == form.payment_id.data:
                 print (loan_item.loan_payment < form.credit.data,"cond",loan_item.loan_payment,form.credit.data)
@@ -674,8 +688,12 @@ def loan_ledger(loan_id=None):
     print ("loan_data",loan_data)
     header = ["Loan Id", "Payment Date", "Credit", "Remaining",""]
     tm_header = ['லோன் எண்', 'கட்டணத் தேதி', 'வரவு ', 'மீதம்',""]
+    max_payment = max_loan_remaining(loan_id)
+    print(max_payment, "Loan Remaining")
+
     return render_template('loan/loan_ledger.html',
                            loan_id=loan_id,
+                           max_payment=max_payment,
                            owner_details=owner_details,
                            header=header,
                            loan_data=loan_data,
@@ -739,7 +757,7 @@ def invoice_loan_led(month=None, customer=None):
     """
 
     customer = request.args.get('customer', None)
-    print (month,customer)
+    print(month,customer)
     html = HTML('Paalkanakku/templates/milk/invoice_weasy.html')
 
     today = datetime.today().strftime("%B %-d, %Y")
@@ -832,7 +850,8 @@ def invoice_loan_led(month=None, customer=None):
                                header=header,
                                milking_charge=milked_charge,
                                tm_header=tm_header,
-                               customer_set=customer
+                               customer_set=customer,
+                               month=month
                                )
     html = HTML(string=rendered)
     rendered_pdf = html.write_pdf()

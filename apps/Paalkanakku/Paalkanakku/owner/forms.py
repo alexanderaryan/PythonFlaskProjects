@@ -28,7 +28,8 @@ class LoanLedgerForm(FlaskForm):
 
     loan_payment_date = DateField("Payment Date", validators=[DataRequired()])
     payment_id = IntegerField("PaymentId", validators=[DataRequired()])
-    credit = IntegerField('Credit',validators=[DataRequired()])
+    credit = IntegerField('Credit',validators=[DataRequired(),
+                                               NumberRange(min=1, message='Price should be greater than 0')])
     submit = SubmitField('Save')
     delete = SubmitField('Confirm')
 
