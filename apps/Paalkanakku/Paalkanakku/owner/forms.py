@@ -37,7 +37,7 @@ class DeleteCustForm(FlaskForm):
 
     checkbox = BooleanField("Delete")
     #checkbox = SelectField(u'Delete',choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
-    submit = SubmitField('Update')
+    submit = SubmitField('Activate/Deactivate')
 
 
 class AddLoanForm(FlaskForm):

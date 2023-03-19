@@ -14,9 +14,11 @@ from flask_login import current_user
 try:
     from Paalkanakku.models import Milkers, Loan
     from Paalkanakku.milkers.forms import milker_data
+    from Paalkanakku.milkdata import config_data
 except:
     from Paalkanakku.Paalkanakku.models import Milkers, Loan
     from Paalkanakku.Paalkanakku.milkers.forms import milker_data
+    from Paalkanakku.Paalkanakku.milkdata import config_data
 
 
 def loan_details():
@@ -40,9 +42,12 @@ class DailyData(FlaskForm):
     cust_name = StringField('Name', validators=[DataRequired()])
     place = StringField('Place', validators=[DataRequired()])
 
-    # After version 2.0
-    # milker = SelectField('Milker', choices=milkers)
-    # milker = SelectField('Milker', validators=[DataRequired()],choices=milkers)
+    no_milker = config_data()['no_milker']
+    print (no_milker,"nomilker")
+    if not no_milker:
+        # After version 2.0
+        # milker = SelectField('Milker', choices=milkers)
+        milker = SelectField('Milker', validators=[DataRequired()],choices=milkers,default="1")
 
     litre = IntegerField('Litre',
                          validators=[NumberRange(min=0, max=99, message='Max 3 digits')],

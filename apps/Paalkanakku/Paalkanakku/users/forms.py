@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, RadioField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from wtforms import ValidationError
 from flask_wtf.file import FileField, FileAllowed
@@ -51,7 +51,7 @@ class UpdateUserForm(FlaskForm):
 
     email = StringField('Email', validators=[DataRequired(), Email()])
     username = StringField('Username', validators=[DataRequired()])
-
+    milker_toggle = RadioField('Milker', choices=[('yes', 'Yes'), ('no', 'No')], default="yes")
     picture = FileField('Update Profile Picture',
                         validators=[FileAllowed(
                             ['jpg', 'jpeg', 'png'],
