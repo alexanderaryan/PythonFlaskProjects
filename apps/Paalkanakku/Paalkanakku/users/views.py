@@ -1,16 +1,21 @@
 from sqlalchemy import func
+import yaml
 try:
     from Paalkanakku import app, db
     from Paalkanakku.models import User
     from Paalkanakku.users.forms import RegistrationForm, UpdateUserForm, LoginForm
     from Paalkanakku.users.picture_handler import add_profile_pic
     #from Paalkanakku.config import google
+    from Paalkanakku.config import sheet_config
+    from Paalkanakku.milkdata import config_data
 except:
     from Paalkanakku.Paalkanakku import app, db
     from Paalkanakku.Paalkanakku.models import User
     from Paalkanakku.Paalkanakku.users.forms import RegistrationForm, UpdateUserForm, LoginForm
     from Paalkanakku.Paalkanakku.users.picture_handler import add_profile_pic
     #from Paalkanakku.Paalkanakku.config import google
+    from Paalkanakku.Paalkanakku.config import sheet_config
+    from Paalkanakku.Paalkanakku.milkdata import config_data
 
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
@@ -92,9 +97,19 @@ def logout():
 def account():
 
     form = UpdateUserForm()
-    #print (form.data,"after")
+    print (form.data,"after")
 
     if form.validate_on_submit():
+        print(form.milker_toggle.data,"form data")
+
+        data = config_data()
+        if form.milker_toggle.data == 'no':
+            data['no_milker'] = True
+        else:
+            data['no_milker'] = False
+
+        with open(sheet_config, 'w') as yaml_file:
+            yaml_file.write(yaml.dump(data, default_flow_style=False))
 
         if form.picture.data:
 
@@ -125,9 +140,20 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
 
+    no_milker = config_data()['no_milker']
+    print(no_milker, "nomilker")
+    if no_milker is True:
+        form.milker_toggle.data="no"
+    else:
+        form.milker_toggle.data = "yes"
+
     profile_image = url_for('static',filename='profile_pics/'+current_user.profile_image)
     #print (profile_image,"profile_pic name")
-    return render_template('account.html',profile_image=profile_image,form=form,flash=form.errors)
+    return render_template('account.html',
+                           profile_image=profile_image,
+                           no_milker=no_milker,
+                           form=form,
+                           flash=form.errors)
 
 
 

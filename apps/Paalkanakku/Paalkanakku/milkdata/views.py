@@ -35,17 +35,19 @@ import yaml
 try:
     from Paalkanakku import app, db, today_date, crontab
     from Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger, MilkCharge
-    from Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data, loan_choice
+    from Paalkanakku.milkdata.forms import  DailyData, AddDailyData, LedgerView, milker_data, loan_choice
     from Paalkanakku.owner.forms import LoanLedgerForm
     from Paalkanakku.milkdata import google_backup
     from Paalkanakku.config import sheet_config
+    from Paalkanakku.milkdata import config_data
 except:
     from Paalkanakku.Paalkanakku import app, db, today_date, crontab
     from Paalkanakku.Paalkanakku.models import Milkers, CowOwner, Milk, Loan, LoanLedger, MilkCharge
     from Paalkanakku.Paalkanakku.owner.forms import LoanLedgerForm
-    from Paalkanakku.Paalkanakku.milkdata.forms import AddDailyData, DailyData, LedgerView, milker_data, loan_choice
+    from Paalkanakku.Paalkanakku.milkdata.forms import DailyData, AddDailyData,  LedgerView, milker_data, loan_choice
     from Paalkanakku.Paalkanakku.milkdata import google_backup
     from Paalkanakku.Paalkanakku.config import sheet_config
+    from Paalkanakku.Paalkanakku.milkdata import config_data
 
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, login_required, logout_user, current_user
@@ -88,13 +90,6 @@ def check_google_sheet(year=datetime.today().year):
         #     return sheet_url
         # else:
         #     return False
-
-
-def config_data():
-    stream = open(sheet_config, 'r')
-    data = yaml.load(stream, Loader=yaml.FullLoader)
-
-    return data
 
 
 milking_charge = config_data()['milking_charge']
@@ -311,7 +306,7 @@ def add_daily_data(modified_day=None, milked_time=None):
         customers = customer_set()
 
     # print("Length", len(customers), len(milk_data_for_today))
-    print("customers", customers)
+    print("customers", customers[0].active,customers[1].active)
     print(form.data, "data of form")
     print("Form validation is ", form.validate_on_submit())
 
@@ -454,9 +449,8 @@ def add_daily_data(modified_day=None, milked_time=None):
                                     milked_time=form.milked_time.data))
 
     for error, message in form.errors.items():
-        print([(f.loan_id.data,f.loan_amount.data) for f in form.daily_data],"Form")
-        print ([f.loan_id.data for f in form.daily_data])
-        flash (form.daily_data)
+        # print([(f.loan_id.data,f.loan_amount.data) for f in form.daily_data],"Form")
+        # print ([f.loan_id.data for f in form.daily_data])
         for m in message:
             flash(f"{error.capitalize()} : {m}", category='error')
 
@@ -467,13 +461,23 @@ def add_daily_data(modified_day=None, milked_time=None):
                    daily_data_form.litre.label,
                    daily_data_form.ml.label,
                    ]
-    header = milk_header
     tm_header = ['வா.எண்', 'ஊர்', 'பெயர்', 'லிட்டர்', 'மில்லி']
+    if not no_milker:
+        milk_header=[daily_data_form.owner_id.label,
+                   daily_data_form.place.label,
+                   daily_data_form.cust_name.label,
+                     daily_data_form.milker.label,
+                   daily_data_form.litre.label,
+                   daily_data_form.ml.label,
+                   ]
+        tm_header = ['வா.எண்', 'ஊர்', 'பெயர்','கறவைக்காரர்', 'லிட்டர்', 'மில்லி']
+
     print("days", modified_day, day, milk_data_for_today, milked_time)
     for n in milk_data_for_today:
         print(n.milker_id, n.owner_id, n.am_litre, n.pm_litre)
 
     milked_charge = milk_charge_check(day.month,day.year).milk_charge if milk_charge_check(day.month,day.year) else 0
+    print ("customers",customers[0].active,customers[1].active)
 
     return render_template('milk/daily_data.html',
                            form=form,
@@ -481,7 +485,7 @@ def add_daily_data(modified_day=None, milked_time=None):
                            no_milker=no_milker,
                            modified_day=modified_day,
                            milking_charge=milked_charge,
-                           header=header,
+                           header=milk_header,
                            tm_header=tm_header,
                            rate=rate,
                            milk_data_for_today=milk_data_for_today,
