@@ -81,7 +81,6 @@
             <td class="unit">{{d.pm_litre}}</td>
               {% set price = (d.am_litre + d.pm_litre) * d.price %}
             <td class="qty">{{d.fodder}}</td>
-              <td class="qty">{{d.loan}}</td>
               <td class="qty">{{d.advance}}</td>
               <td class="qty">{{d.dr_service}}</td>
             <td class="total">{{"%.2f" | format(price) }}</td>
@@ -94,7 +93,6 @@
             <td>{{data['am']}}</td>
             <td>{{data['pm']}}</td>
             <td>{{data['fodder']}}</td>
-            <td>{{data['loan']}}</td>
             <td>{{data['advance']}}</td>
             <td>{{data['dr_service']}}</td>
             <td>{{data['total']}}</td>
@@ -117,9 +115,6 @@
             <td></td>
             <td></td>
             <td></td>
-            <td class="en">Loan</td>
-            <td class="tn">கடன்</td>
-            <td>{{data['loan']}}</td>
         </tr>
         <tr>
             <td></td>
@@ -165,7 +160,6 @@
             <td class="tn"></td>
             <td>{{"%.2f" | format(data['total'] -
                 data['fodder'] -
-                data['loan'] -
                 data['advance'] -
                 data['dr_service'] -
                 milking_charge)}}</td>
@@ -177,8 +171,8 @@
       <div id="notices">
         <div class="en">NOTICE:</div>
           <div class="tn">அறிவிப்பு:</div>
-        <div class="notice en">Total bill due is deducted with sum of fodder, loan, advance, milking charge and doctor service. </div>
-          <div class="notice tn">தீவனம், கடன், முன்பணம், பால் கறக்கும் கட்டணம் மற்றும் மருத்துவர் சேவை ஆகியவற்றுடன் நிலுவையில் உள்ள மொத்த பில் கழிக்கப்படுகிறது.</div>
+        <div class="notice en">Total bill due is deducted with sum of fodder, advance, milking charge and doctor service. </div>
+          <div class="notice tn">தீவனம், முன்பணம், பால் கறக்கும் கட்டணம் மற்றும் மருத்துவர் சேவை ஆகியவற்றுடன் நிலுவையில் உள்ள மொத்த பில் கழிக்கப்படுகிறது.</div>
       </div>
     </main>
     <footer>

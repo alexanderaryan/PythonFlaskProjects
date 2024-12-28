@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField, FormField, FieldList, Form, SelectMultipleField
 from wtforms.validators import DataRequired
 from wtforms.widgets import ListWidget,CheckboxInput
-from wtforms.fields.html5 import DateField
+from wtforms.fields import DateField
 import os
 from flask_dance.contrib.google import make_google_blueprint,google
 import flask_dance
