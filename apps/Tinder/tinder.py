@@ -11,7 +11,7 @@ class TinderBot():
         prefs = {"profile.default_content_setting_values.notifications": 2}
 
         chrome_options.add_experimental_option("prefs", prefs)
-        self.driver = webdriver.Chrome("D:\Softwares\chromedriver.exe", chrome_options=chrome_options)
+        self.driver = webdriver.Chrome("/home/alexanders/Softwares/chromedriver_linux64/chromedriver", chrome_options=chrome_options)
 
     def login(self):
         self.driver.get('https://tinder.com')
