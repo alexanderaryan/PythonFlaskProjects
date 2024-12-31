@@ -18,4 +18,4 @@ apps/Paalkanakku/Paalkanakku/milkers/__pycache__
 apps/Paalkanakku/Paalkanakku/owner/__pycache__
 apps/Paalkanakku/migrations
 apps/Paalkanakku/.idea
-../venc/lib/python3.10
+venc/lib/python3.10
