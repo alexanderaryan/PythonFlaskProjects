@@ -550,8 +550,13 @@ def milk_ledger_view(month=None):
         flash(f"The data is backed up for {mon}")
         return redirect(url_for("milk.milk_ledger_view", month=form.month.data))
 
+<<<<<<< HEAD
     header = ['Na   me','Place', 'Milk', 'M.Charge', 'Fodder', 'Advance', 'Dr_service', 'Debit']
     tm_header = ['பெயர்', 'ஊர்','பால்', 'க.காசு', 'புண்ணாக்கு', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
+=======
+    header = ['Na   me','Place', 'Milk', 'M.Charge', 'Fodder', 'Loan', 'Advance', 'Dr_service', 'Debit']
+    tm_header = ['பெயர்', 'ஊர்','பால்', 'க.காசு', 'புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
+>>>>>>> 75eca79d11b91cec12648a06f4fcfac18335b962
 
     milked_charge = milk_charge_check(month.month, year).milk_charge if milk_charge_check(month.month, year) else 0
     print (f"{month} {year} {milked_charge}","oioii")
@@ -830,12 +835,21 @@ def invoice_loan_led(month=None, customer=None):
                                      'am': am,
                                      'pm': pm,
                                      'fodder': fodder,
+<<<<<<< HEAD
+=======
+                                     'loan': loan,
+>>>>>>> 75eca79d11b91cec12648a06f4fcfac18335b962
                                      'advance': advance,
                                      'dr_service': dr_service,
                                      'total': total}
 
+<<<<<<< HEAD
     header = ['Date', 'Morn', 'Evng', 'Fodder', 'Advance', 'Dr_service', 'Debit']
     tm_header = ['தேதி', 'காலை', 'மாலை', 'புண்ணாக்கு', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
+=======
+    header = ['Date', 'Morn', 'Evng', 'Fodder', 'Loan', 'Advance', 'Dr_service', 'Debit']
+    tm_header = ['தேதி', 'காலை', 'மாலை', 'புண்ணாக்கு', 'கடன்', 'முன்பணம்', 'மருத்துவச் செலவு', 'பற்று ']
+>>>>>>> 75eca79d11b91cec12648a06f4fcfac18335b962
 
 
     ################################

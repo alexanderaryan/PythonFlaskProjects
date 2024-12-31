@@ -142,13 +142,25 @@
                     placeholder="Fodder") }}
                 </div>
 
+<<<<<<< HEAD
+=======
+                  <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].loan.label}}</label>
+                    <label data-error="wrong" data-success="right" class="ml-0 tn">கடன்</label>
+                  <div class="md-form ml-0 mr-0">
+                      {{ form.daily_data[0].loan(value=values.loan if values.loan != none else 0,
+                 id="daily_data-"+ (looping | string) +"-loan",class="form-control") }}
+                  </div>
+>>>>>>> 75eca79d11b91cec12648a06f4fcfac18335b962
                     <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].advance.label}}</label>
                     <label data-error="wrong" data-success="right" class="ml-0 tn">முன்பணம்</label>
                 <div class="md-form ml-0 mr-0">
                     {{ form.daily_data[0].advance(value=values.advance if values.advance != none else 0,
                  id="daily_data-"+ (looping | string) +"-advance",class="form-control") }}
                 </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 75eca79d11b91cec12648a06f4fcfac18335b962
                   <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].dr_service.label}}</label>
                   <label data-error="wrong" data-success="right" class="ml-0 tn">மருத்துவச் செலவு</label>
                 <div class="md-form ml-0 mr-0">
@@ -313,7 +325,16 @@
                     id="daily_data-"+ (looping | string) +"-fodder",class="form-control form-control-sm validate ml-0",
                     placeholder="Fodder"
                     ) }}
+<<<<<<< HEAD
 
+=======
+                    <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].loan.label}}</label>
+                    <label data-error="wrong" data-success="right" class="ml-0 tn">கடன்</label>
+                    {{ form.daily_data[0].loan(
+                    id="daily_data-"+ (looping | string) +"-loan",class="form-control form-control-sm validate ml-0",
+                    placeholder="Loan"
+                    ) }}
+>>>>>>> 75eca79d11b91cec12648a06f4fcfac18335b962
                     <label data-error="wrong" data-success="right" class="ml-0 en">{{form.daily_data[0].advance.label}}</label>
                     <label data-error="wrong" data-success="right" class="ml-0 tn">முன்பணம்</label>
                     {{ form.daily_data[0].advance(

@@ -114,9 +114,16 @@
          <td>{{"%.2f" | format(milking_charge) }}</td>
          {% set price = data[3] + data[4] %}
          <td>{{ data[5] }}</td>
+<<<<<<< HEAD
          <td>{{ data[7] }}</td>
          <td>{{ data[8] }}</td>
          {% set service_charge = data[5] + data[7] + data[8]  %}
+=======
+         <td>{{ data[9] }}</td>
+         <td>{{ data[7] }}</td>
+         <td>{{ data[8] }}</td>
+         {% set service_charge = data[5] + data[9] + data[7] + data[8]  %}
+>>>>>>> 75eca79d11b91cec12648a06f4fcfac18335b962
          <td>
              <a href="{{ url_for('milk.invoice_loan_led',month=month,customer=cust.owner_id ) }}">
                 {{"%.2f"| format(price - milking_charge - service_charge)}}</a></td>

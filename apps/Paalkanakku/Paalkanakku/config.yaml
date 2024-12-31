@@ -1,5 +1,9 @@
 gsheets_url:
   2022: https://docs.google.com/spreadsheets/d/1S_JpXXd-CKd7p3AQd_jgpk1j_8Alkh9537UYqGCbDxc
   2023: https://docs.google.com/spreadsheets/d/190S6XqgvRX0VKCFKUYLAbw7Lx7aOHzo4UbykPHSfFJ8
+<<<<<<< HEAD
 milking_charge: 450
+=======
+milking_charge: 400
+>>>>>>> 75eca79d11b91cec12648a06f4fcfac18335b962
 no_milker: true
