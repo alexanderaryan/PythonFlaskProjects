@@ -408,14 +408,19 @@ def dataframe_parse(filename):
         logger.info("Calculated all the time related info of the group!")
 
         times_calculator = {1: 'Once', 2: 'Twice', 3: 'Thrice'}
+        logger.info('in|'*80)
+        logger.info(type(df.groupby(df['Changed_Author']).count()['Message']))
+        logger.info(dir(df.groupby(df['Changed_Author']).count()['Message']))
+        logger.info(df.groupby(df['Changed_Author']).count()['Message'])
+        logger.info('out|'*80)
         changed_auth = [(name, times_calculator.setdefault(count, str(count) + ' times')) for name, count in
-                        df.groupby(df['Changed_Author']).count()['Message'].iteritems()]
+                        df.groupby(df['Changed_Author']).count()['Message'].items()]
         left_people = [(name, times_calculator.setdefault(count, str(count) + ' times')) for name, count in
-                       df.groupby(df['Left_People']).count()['Message'].iteritems()]
+                       df.groupby(df['Left_People']).count()['Message'].items()]
         removed_people = [(name, times_calculator.setdefault(count, str(count) + ' times')) for name, count in
-                          df.groupby(df['Removed_Author']).count()['Message'].iteritems()]
+                          df.groupby(df['Removed_Author']).count()['Message'].items()]
         added_people = [(name, times_calculator.setdefault(count, str(count) + ' times')) for name, count in
-                        df.groupby(df['Added_Author']).count()['Message'].iteritems()]
+                        df.groupby(df['Added_Author']).count()['Message'].items()]
 
 
 

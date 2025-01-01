@@ -6,7 +6,8 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
-app.config['UPLOAD_FOLDER'] = "D:\Localgit\PuppyFlask\PythonWork\ChatAnalyzer"
+#app.config['UPLOAD_FOLDER'] = "D:\Localgit\PuppyFlask\PythonWork\ChatAnalyzer"
+app.config['UPLOAD_FOLDER'] = "/home/alexanders/Documents/Python/GitPythonWork/apps/ChatAnalyzer/files"
 #app.config['UPLOAD_FOLDER'] = "CHATILYTIKZ/files/home/CHATILYTIKZ/ChatAnalyzer/files"
 app.config['RECAPTCHA_PUBLIC_KEY'] = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 app.config['RECAPTCHA_PRIVATE_KEY'] = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
@@ -30,7 +31,8 @@ def index():
         else:
             session['file_name'] = form.chat_file.data.filename
             logger.warning("Invalid Whatsapp file deducted %s", session['file_name'])
-        session['file_path'] = os.path.join(app.config['UPLOAD_FOLDER'], session['filename'])
+        session['file_path'] = os.path.normpath(os.path.join(app.config['UPLOAD_FOLDER'], session['filename']))
+
         try:
             form.chat_file.data.save(session['file_path'])
         except:
@@ -39,37 +41,39 @@ def index():
             logger.info("File saved successfully in the path %s",session['file_path'])
 
         #session['parsedData'] = dataframe_parse(session['file_path'])
-        try:
-            session['max_date'],session['min_date'],session['emoji_list'], \
-            session['word_list'],session['emoji_stacked_data'], \
-            session['final_output'],session['total_members'],session['total'],\
-                session['most'],session['longest_msg_count'],\
-                session['longest_msg_Author'],session['time_group'],\
-                session['year_group'],session['cal_group'],\
-                session['changed_auth'],session['left_people'],\
-            session['removed_people'],session['added_people']= dataframe_parse(
-                session['file_path'])
+
+        #try:
+        logger.info("Session data %s",dataframe_parse(session['file_path']))
+        session['max_date'],session['min_date'],session['emoji_list'], \
+        session['word_list'],session['emoji_stacked_data'], \
+        session['final_output'],session['total_members'],session['total'],\
+            session['most'],session['longest_msg_count'],\
+            session['longest_msg_Author'],session['time_group'],\
+            session['year_group'],session['cal_group'],\
+            session['changed_auth'],session['left_people'],\
+        session['removed_people'],session['added_people']= dataframe_parse(
+            session['file_path'])
 
 
-            #print (session['emoji_list'],session['emoji_stacked_data'], session['sent_emoji'],session['final_output'])
-            logger.info("Session data %s",session)
+        #print (session['emoji_list'],session['emoji_stacked_data'], session['sent_emoji'],session['final_output'])
+        logger.info("Session data %s",session)
 
 
 
-        except:
-            flash("Is this a valid Chat file? Check it.","Asshole!!")
-            logger.error("Invalid File Submitted!!")
-            return render_template('index.html', form=form,flash=flash)
+        #except:
+        #    flash("Is this a valid Chat file? Check it.","Asshole!!")
+        #    logger.error("Invalid File Submitted!!")
+        #    return render_template('index.html', form=form,flash=flash)
+        #else:
+
+        if os.path.exists(session['file_path']):
+            os.remove(session['file_path'])
+            logger.info("Deleted the source file of the session %s", session['file_path'])
         else:
+            logger.error("No .txt files in the directory")
 
-            if os.path.exists(session['file_path']):
-                os.remove(session['file_path'])
-                logger.info("Deleted the source file of the session %s", session['file_path'])
-            else:
-                logger.error("No .txt files in the directory")
-
-            return render_template("results.html", filename=session["file_name"],
-                                   max_date=session['max_date'],
+        return render_template("results.html", filename=session["file_name"],
+                               max_date=session['max_date'],
                                    min_date=session['min_date'],
                                    emoji_list=session['emoji_list'],
                                    word_list=session['word_list'],
