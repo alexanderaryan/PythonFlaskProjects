@@ -98,3 +98,4 @@ def index():
 @app.route("/demo")
 def howto():
     return render_template("howto.html")
+
