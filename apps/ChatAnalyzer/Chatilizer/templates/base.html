@@ -265,7 +265,9 @@
         chart.draw(data, options);
       }
     </script>
-
+{%for data in emoji_stacked_data %}
+                <p>{{data | tojson }},</p>
+               {% endfor %}
       <script language = "JavaScript">
          function drawChart() {
             // Define the chart to be drawn.
@@ -283,15 +285,17 @@
                {% endif %}
             ]);
 
-            var options = {title: 'Individual Emoji Contribution', isStacked:true,showRowNumber: true,
+            var options = {title: 'Individual Emoji Contribution', isStacked:false,showRowNumber: true,
             animation: {"startup": true,duration: 5000,easing: 'linear'},
             bar: {
-      groupWidth: '90%'
+      groupWidth: '100%'
     },
+
             };
 
             // Instantiate and draw the chart.
-            var chart = new google.visualization.ColumnChart(document.getElementById('stackedcolumn'));
+
+            var chart = new google.visualization.BarChart(document.getElementById('stackedcolumn'));
 
 
 

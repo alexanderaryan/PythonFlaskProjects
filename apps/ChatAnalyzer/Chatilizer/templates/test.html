@@ -422,16 +422,17 @@
             // Define the chart to be drawn.
             var data = google.visualization.arrayToDataTable([
 
-                   {% if emoji_stacked_data %}
-                {{emoji_stacked_data_title | tojson}},
+                {% if emoji_stacked_data %}
+                    {{emoji_stacked_data_title | tojson}},
 
-                {%for data in emoji_stacked_data %}
-                {{data | tojson }},
-               {% endfor %}
+                    {%for data in emoji_stacked_data %}
+                        {{data | tojson }},
+
+                        {% endfor %}
                {% else %}
-               ['Name','Emoji'],
-               ['',0]
-               {% endif %}
+                ['Name','Emoji'],
+                ['',0]
+                {% endif %}
             ]);
 
             var options = {title: 'Individual Emoji Contribution', isStacked:true,showRowNumber: true,

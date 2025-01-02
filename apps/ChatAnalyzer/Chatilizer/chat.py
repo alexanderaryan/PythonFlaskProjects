@@ -163,7 +163,7 @@ def dataframe_parse(filename):
 
         df['Changed_Author'] = df.loc[
             (df['Author'].isnull()) & (df['Message'].str.contains('changed|deleted', regex=True))].Message.apply(
-            lambda s: re.sub(r' (changed|deleted).*$', '', s) if re.sub(r' (changed|deleted).*$','',s)!= 'You' and re.sub(r' (changed|deleted).*$','',s).count('security code')!=1 else numpy.NaN)
+            lambda s: re.sub(r' (changed|deleted).*$', '', s) if re.sub(r' (changed|deleted).*$','',s)!= 'You' and re.sub(r' (changed|deleted).*$','',s).count('security code')!=1 else numpy.nan)
 
         logger.info("Group name Changed/deleted Authors column created")
 
@@ -259,12 +259,26 @@ def dataframe_parse(filename):
                             msg_emoji_stacked_data[key][name_col] += val
 
         emoji_stacked_data = [[m for m in msg_emoji_stacked_data.keys()]]
+        logger.info("this is keys")
+        logger.info(msg_emoji_stacked_data.keys())
+        logger.info("this is result")
+        logger.info(msg_emoji_stacked_data.values())
         logger.info("Stacked Emoji values for graph is calculated!")
 
+        # Transpose the data and unpack tuples
+        transposed_data = numpy.asarray([list(x) for x in msg_emoji_stacked_data.values()], dtype=object).transpose()
+
+        # Unpack tuples for the first column
+        final_result = [[item[0] if isinstance(item, tuple) else item for item in row] for row in
+                        transposed_data.tolist()]
 
         emoji_stacked_data.append(
-            (numpy.asarray([n for n in msg_emoji_stacked_data.values()], dtype=object).transpose()).tolist())
+            final_result
+        )
+        #    (numpy.asarray([n for n in msg_emoji_stacked_data.values()], dtype=object).transpose()).tolist()
+        #    )
 
+        logger.info(f"{emoji_stacked_data}")
         final_df = pd.concat([author_value_counts, sent_emoji, author_media_messages_value_counts, words_by_author], axis=1,
                              join="outer").astype(dtype='Int64').fillna(0)
         final_output = [[m, n[0], n[-3], n[-2], n[-1]] for m, n in [[n, list(j)] for n, j in final_df.iterrows()]]
