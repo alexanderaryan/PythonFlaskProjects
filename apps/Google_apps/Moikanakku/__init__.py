@@ -1,8 +1,7 @@
 import gspread
 
 
-cred_filename = "/home/alexanders/Documents/Python/Python_work/Localgit/Google/" \
-                "google_apps/MoiKanakku/Moikanakku/moikanakku-341816-5b7d7ef75ff9.json"
+cred_filename = "/home/alexanders//Documents/Python/Local_Copy/Localgit/Google/google_apps/MoiKanakku/Moikanakku/moikanakku-341816-5b7d7ef75ff9.json"
 file_name = "Aruna Swetha Sadangu"
 
 card = {
